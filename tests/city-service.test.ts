@@ -24,3 +24,22 @@ it("tick service dims only tagged facility instances and restores authored color
   mesh.geometry.dispose();
   (mesh.material as THREE.Material).dispose();
 });
+
+it("night window emissions follow service loss without dimming unrelated windows", () => {
+  const batch = new CityBatch();
+  batch.setOwner("hospital");
+  batch.box(0, 2, 0, 1, 1, 0.1, "#587c89", 0, "glass");
+  batch.setOwner();
+  batch.box(3, 2, 0, 1, 1, 0.1, "#587c89", 0, "glass");
+  const group = batch.finish(),
+    mesh = group.children[0] as THREE.InstancedMesh;
+  const service = mesh.geometry.getAttribute("nightService");
+  batch.setService("hospital", 0);
+  expect(service.getX(0)).toBe(0);
+  expect(service.getX(1)).toBe(1);
+  batch.setService("hospital", 0.5);
+  expect(service.getX(0)).toBe(0.5);
+  expect((mesh.material as THREE.Material).userData.nightUniform.value).toBe(0);
+  mesh.geometry.dispose();
+  (mesh.material as THREE.Material).dispose();
+});

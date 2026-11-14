@@ -3,6 +3,9 @@ const icon = (path: string) =>
   path +
   "</svg>";
 export const icons = {
+  moon: icon(
+    '<path d="M20.5 13.5A9 9 0 0 1 10.5 3a9 9 0 1 0 10 10.5Z"/><path d="m17 3 .5 1.5L19 5l-1.5.5L17 7l-.5-1.5L15 5l1.5-.5Z"/>',
+  ),
   city: icon(
     '<path d="M3 21V9h6v12M9 21V3h7v18M16 21V12h5v9M6 12v1m0 3v1m6-11v1m0 3v1m0 3v1m0 3v1M19 15v1M2 21h20"/>',
   ),

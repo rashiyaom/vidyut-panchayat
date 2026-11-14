@@ -1,4 +1,10 @@
 import * as THREE from "three";
+import {
+  createNightLighting,
+  lightingModes,
+  type LightingMode,
+} from "../world3d/nightLighting";
+import { CityAudio } from "../audio/CityAudio";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import sceneData from "../../data/scenes/city_v1.json";
 import { citySceneSchema } from "../world3d/sceneSchema";
@@ -13,7 +19,7 @@ import type { CityEntity } from "../world3d/city";
 import { coastProfile } from "../world3d/coast";
 import { createRendering } from "../world3d/rendering";
 import { createCamera } from "../world3d/camera";
-import { disasterState } from "../world3d/disasterState";
+import { disasterState, disasterWarnings } from "../world3d/disasterState";
 import { createDisasterEffects } from "../world3d/disasterEffects";
 import { createMobility } from "../world3d/mobility";
 import "./styles.css";
@@ -98,6 +104,22 @@ let city = createCity(config);
 scene.add(city.group);
 let mobility = createMobility(config);
 scene.add(mobility.group);
+const audio = new CityAudio(view.camera, view.controls.target);
+audio.register(
+  city.entities,
+  mobility.group,
+  (config.gridSize * config.blockSize) / 2,
+);
+let nightLighting = createNightLighting(
+  config,
+  city,
+  mobility.group,
+  scene,
+  sun,
+  hemi,
+  renderer,
+  rendering,
+);
 const selectOutline = new THREE.Mesh(
   new THREE.RingGeometry(14.7, 15, 4),
   new THREE.MeshBasicMaterial({
@@ -116,7 +138,7 @@ let selected: CityEntity | undefined,
   paused = false,
   speed = 1,
   showLabels = false,
-  golden = false,
+  lightingMode: LightingMode = "day",
   elapsed = 0,
   last = performance.now(),
   disposed = false;
@@ -163,6 +185,7 @@ function rebuildLabels() {
 function select(e: CityEntity, focus = false) {
   setDirectoryCollapsed(true);
   selected = e;
+  audio.select(e);
   $("selection").hidden = false;
   $("selection-name").textContent = e.name;
   $("selection-category").textContent = e.category;
@@ -197,6 +220,7 @@ function select(e: CityEntity, focus = false) {
 }
 function clearSelection() {
   selected = undefined;
+  audio.select();
   $("selection").hidden = true;
   selectOutline.visible = false;
   markers.forEach((m) => m.classList.remove("selected"));
@@ -312,6 +336,7 @@ $("zoom-out").onclick = () => view.zoom(1.25);
 function togglePause() {
   paused = !paused;
   mobility.setRunning(!paused);
+  audio.setMoving(!paused);
   $("pause").innerHTML = paused ? icons.play : icons.pause;
   $("pause").setAttribute(
     "aria-label",
@@ -328,18 +353,28 @@ $("labels").onclick = () => {
   $("labels").classList.toggle("active", showLabels);
   $("labels").setAttribute("aria-pressed", String(showLabels));
 };
-$("daylight").onclick = () => {
-  golden = !golden;
-  renderer.shadowMap.needsUpdate = true;
-  sun.color.set(golden ? "#ffbf80" : "#fff0d2");
-  sun.position.set(golden ? -160 : -80, golden ? 95 : 170, 80);
-  hemi.intensity = golden ? 0.65 : 0.85;
-  scene.background = new THREE.Color(golden ? "#ddd1ba" : "#c8dcde");
-  (scene.fog as THREE.FogExp2).color.copy(scene.background as THREE.Color);
-  $("daylight").querySelector("span")!.textContent = golden
-    ? "Golden hour"
-    : "Daylight";
-};
+function setLightingMode(mode: LightingMode) {
+  if (!lightingModes.includes(mode)) throw new Error("Unknown lighting mode");
+  lightingMode = mode;
+  nightLighting.setMode(mode);
+  const label =
+    mode === "night"
+      ? "Cozy night"
+      : mode === "golden"
+        ? "Golden hour"
+        : "Daylight";
+  $("daylight").innerHTML =
+    `${mode === "night" ? icons.moon : icons.sun}<span>${label}</span>`;
+  $("daylight").setAttribute("aria-label", `${label}. Change time of day`);
+  $("daylight").title = "Cycle daylight, cozy night and golden hour";
+  document.body.dataset.lighting = mode;
+}
+$("daylight").onclick = () =>
+  setLightingMode(
+    lightingModes[
+      (lightingModes.indexOf(lightingMode) + 1) % lightingModes.length
+    ],
+  );
 const dialog = $<HTMLDialogElement>("controls-dialog");
 $("help").onclick = () => dialog.showModal();
 $("close-help").onclick = () => dialog.close();
@@ -479,6 +514,7 @@ function animate(now: number) {
   if (moving) elapsed += dt * activitySpeed;
   view.update(dt);
   mobility.update(moving ? dt * activitySpeed : 0, elapsed);
+  nightLighting.update(dt, mobility.getResponse().rain);
   disasterEffects.update(elapsed, mobility.getResponse());
   city.water.material.uniforms.time.value = elapsed;
   city.update(elapsed);
@@ -546,6 +582,7 @@ function setScene(input: unknown) {
   }
   const built = createCity(next),
     moving = createMobility(next);
+  nightLighting.dispose();
   city.dispose();
   mobility.dispose();
   config = next;
@@ -562,6 +599,22 @@ function setScene(input: unknown) {
     city.applyTick(councilStore.tick);
   }
   mobility = moving;
+  nightLighting = createNightLighting(
+    config,
+    city,
+    mobility.group,
+    scene,
+    sun,
+    hemi,
+    renderer,
+    rendering,
+  );
+  nightLighting.setMode(lightingMode);
+  audio.register(
+    city.entities,
+    mobility.group,
+    (config.gridSize * config.blockSize) / 2,
+  );
   mobility.setRunning(disasterOpen || !paused);
   disasterEffects.dispose();
   disasterEffects = createDisasterEffects(
@@ -575,6 +628,9 @@ function setScene(input: unknown) {
   rebuildLabels();
 }
 const api = {
+  setLightingMode,
+  getLighting: () => nightLighting.stats(),
+  getAudio: () => audio.diagnostics(),
   getScene: () => structuredClone(config),
   setScene,
   updateBuilding(
@@ -652,6 +708,8 @@ window.vidyutCity = api;
 if (import.meta.hot)
   import.meta.hot.dispose(() => {
     disposed = true;
+    audio.dispose();
+    nightLighting.dispose();
     councilExperience.dispose();
     bridge.dispose();
     comparison.dispose();
@@ -683,28 +741,32 @@ let disasterEffects = createDisasterEffects(
   config.gridSize * config.blockSize + 80,
 );
 scene.add(disasterEffects.group);
-let normalAtmosphere = {
-  background: (scene.background as THREE.Color).clone(),
-  fog: (scene.fog as THREE.FogExp2).color.clone(),
-  density: (scene.fog as THREE.FogExp2).density,
-  sun: sun.intensity,
-  hemi: hemi.intensity,
-};
 function applyDisaster(tick: Tick | null) {
   const state = disasterState(tick, simulationConfig.scenario.initialSupply);
   renderSignalReadout(tick);
+  const warningPanel = document.getElementById("street-warnings");
+  if (warningPanel) {
+    const warnings = disasterWarnings(tick);
+    warningPanel.hidden = warnings.length === 0;
+    warningPanel.replaceChildren();
+    const heading = document.createElement("strong");
+    heading.textContent = "AREA WARNINGS · ILLUSTRATIVE";
+    warningPanel.append(heading);
+    for (const warning of warnings) {
+      const button = document.createElement("button");
+      button.dataset.warning = warning.id;
+      const title = document.createElement("b");
+      title.textContent = warning.title;
+      const detail = document.createElement("span");
+      detail.textContent = warning.detail;
+      button.append(title, detail);
+      button.onclick = () => focusStreet(warning.id);
+      warningPanel.append(button);
+    }
+  }
   mobility.setDisaster(state);
+  audio.setDisaster(state);
   disasterEffects.update(elapsed, state);
-  const fog = scene.fog as THREE.FogExp2;
-  (scene.background as THREE.Color)
-    .copy(normalAtmosphere.background)
-    .lerp(new THREE.Color("#657e8b"), state.rain * 0.75);
-  fog.color
-    .copy(normalAtmosphere.fog)
-    .lerp(new THREE.Color("#657e8b"), state.rain * 0.75);
-  fog.density = normalAtmosphere.density + state.rain * 0.0018;
-  sun.intensity = normalAtmosphere.sun * (1 - state.rain * 0.65);
-  hemi.intensity = normalAtmosphere.hemi * (1 - state.rain * 0.2);
   const title = document.getElementById("street-condition"),
     detail = document.getElementById("street-response");
   if (title && detail) {
@@ -716,7 +778,7 @@ function applyDisaster(tick: Tick | null) {
     detail.textContent = !tick
       ? "Approve a plan, then advance the simulation to see its effect."
       : state.active
-        ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People hurry or gather on sidewalks." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Wind-driven rain illustrates cyclone disruption." : ""}`
+        ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People run toward amber assembly markers or wait there." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Wind-driven rain illustrates cyclone disruption." : ""}`
         : "Services support ordinary street activity. Advance the disaster clock to see changing conditions.";
   }
 }
@@ -806,13 +868,8 @@ const councilExperience = mountCouncilExperience(
   },
   {
     enter() {
-      normalAtmosphere = {
-        background: (scene.background as THREE.Color).clone(),
-        fog: (scene.fog as THREE.FogExp2).color.clone(),
-        density: (scene.fog as THREE.FogExp2).density,
-        sun: sun.intensity,
-        hemi: hemi.intensity,
-      };
+      audio.setCouncil(true);
+      audio.setMoving(true);
       disasterOpen = true;
       mobility.setRunning(true);
       applyDisaster(councilStore.tick);
@@ -825,6 +882,8 @@ const councilExperience = mountCouncilExperience(
       }
     },
     exit() {
+      audio.setCouncil(false);
+      audio.setMoving(!paused);
       disasterOpen = false;
       applyDisaster(null);
       mobility.setRunning(!paused);
@@ -841,6 +900,7 @@ const councilExperience = mountCouncilExperience(
       comparisonLabels.hidden = true;
     },
     impact(visible) {
+      audio.setCouncil(disasterOpen && !visible);
       document.body.classList.toggle("council-city-impact", visible);
       if (visible) {
         document.getElementById("city-impact-view")!.prepend(canvas);
@@ -867,6 +927,32 @@ document
 document
   .getElementById("signal-visible")!
   .addEventListener("change", syncSignalControls);
+function focusStreet(id = "residential") {
+  const entity = city.entities.find((e) => e.id === id);
+  if (!entity) return;
+  if (id === "transit") view.focus(entity.position.clone().setY(11), 48);
+  else if (entity.facility) {
+    const [row, col] = entity.facility.cell;
+    view.focus(
+      mobility.pedestrianPosition(row * config.gridSize + col),
+      30,
+      1.3,
+      new THREE.Vector3(0.5, 1.8, 0.7),
+    );
+  } else view.focus(entity.position, 48);
+}
+document.getElementById("impact-street-view")!.addEventListener("click", () => {
+  const selected = (
+    document.getElementById("signal-focus") as HTMLSelectElement
+  ).value;
+  focusStreet(selected === "all" ? "residential" : selected);
+});
+document
+  .getElementById("impact-transit-view")!
+  .addEventListener("click", () => focusStreet("transit"));
+document
+  .getElementById("impact-city-view")!
+  .addEventListener("click", () => view.reset());
 let panelFrame = 0;
 bridge.subscribe((reply) => {
   councilStore.apply(reply);

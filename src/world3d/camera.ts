@@ -64,12 +64,16 @@ export function createCamera(canvas: HTMLCanvasElement) {
   window.addEventListener("keydown", down);
   window.addEventListener("keyup", up);
   window.addEventListener("blur", blur);
-  function focus(target: THREE.Vector3, distance = 110, duration = 1.3) {
+  function focus(
+    target: THREE.Vector3,
+    distance = 110,
+    duration = 1.3,
+    direction?: THREE.Vector3,
+  ) {
     overview = false;
     cancel();
-    const offset = camera.position
+    const offset = (direction ?? camera.position.clone().sub(controls.target))
       .clone()
-      .sub(controls.target)
       .normalize()
       .multiplyScalar(distance);
     offset.y = Math.max(offset.y, distance * 0.45);

@@ -1547,3 +1547,416 @@
     margin: 4px 0;
   }
 }
+
+/* Deliberation: topic labels and named sentiments remain readable without colour. */
+.discussion-modes {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin: 8px 0 14px;
+  background: #e9ede4;
+  border-radius: 9px;
+}
+.discussion-modes button {
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  border-radius: 6px;
+  color: #43584a;
+}
+#council-experience .discussion-modes button[aria-pressed="true"] {
+  background: #294f3e;
+  color: #fffdf3 !important;
+}
+.topic-filter {
+  margin-right: 14px;
+}
+.civic-advisory {
+  padding: 12px 15px;
+  margin: 0 0 16px;
+  border: 1px solid #c6d3c2;
+  border-left: 3px solid #668565;
+  border-radius: 7px;
+  background: #edf3e9;
+  color: #354d39;
+}
+.civic-advisory strong {
+  font-size: 12px;
+  letter-spacing: 0.3px;
+}
+.civic-advisory p {
+  margin: 6px 0 !important;
+  line-height: 1.5;
+  color: inherit !important;
+}
+.civic-advisory small {
+  font-size: 10px;
+  opacity: 0.8;
+}
+.advisory-amber {
+  background: #fff4dc;
+  border-color: #d8b572;
+  color: #765116;
+}
+.advisory-red {
+  background: #fff0ec;
+  border-color: #d49989;
+  color: #8a3427;
+}
+.discussion-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+.discussion-topic,
+.sentiment-badge {
+  font-size: 10px !important;
+  line-height: 1.4;
+  padding: 3px 7px;
+  border-radius: 5px;
+  background: #e7ece6;
+  color: #46564a;
+  font-weight: 600;
+}
+.sentiment-proposal {
+  --sentiment: #4e74a4;
+  --sentiment-bg: #f1f6fc;
+}
+.sentiment-concern {
+  --sentiment: #a67b2f;
+  --sentiment-bg: #fff9ed;
+}
+.sentiment-challenge {
+  --sentiment: #aa6240;
+  --sentiment-bg: #fff3eb;
+}
+.sentiment-agreement {
+  --sentiment: #4f805b;
+  --sentiment-bg: #eff7ee;
+}
+.sentiment-urgent {
+  --sentiment: #b04848;
+  --sentiment-bg: #fff0ef;
+}
+.sentiment-information {
+  --sentiment: #6a7785;
+  --sentiment-bg: #f3f5f7;
+}
+.sentiment-badge {
+  background: var(--sentiment-bg, #e7ece6);
+  color: var(--sentiment, #46564a);
+}
+.chat-message:nth-child(n) > div:last-child {
+  background: var(--sentiment-bg, #fffef8);
+  border-left: 3px solid var(--sentiment, #b5c4b0);
+}
+.chat-message:nth-child(n) {
+  margin-left: 0;
+}
+.chat-message header {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chat-message h3 {
+  color: #293c30;
+  font-size: 16px;
+  margin: 13px 0 7px;
+  line-height: 1.4;
+}
+.discussion-reply {
+  text-align: left;
+  padding: 8px 0 !important;
+  margin-top: 8px;
+  font-size: 11px !important;
+  line-height: 1.5;
+  color: #5f6c60 !important;
+  border-bottom: 1px solid #71836d22 !important;
+}
+.discussion-reply:hover {
+  text-decoration: underline;
+}
+.discussion-evidence {
+  font-size: 11px;
+  color: #5f6c60;
+  border-top: 1px solid #71836d22;
+  margin-top: 12px;
+  padding-top: 9px;
+}
+.discussion-evidence summary {
+  cursor: pointer;
+}
+.discussion-evidence p {
+  font-size: 11px;
+}
+#speaker-bubble {
+  width: min(440px, calc(100% - 40px));
+  max-height: 52%;
+  overflow-y: auto;
+  border-left: 3px solid var(--sentiment, #bba578);
+  background: var(--sentiment-bg, #fffcf3);
+}
+#speaker-bubble .discussion-badges {
+  margin-bottom: 9px;
+}
+#speaker-bubble h3 {
+  font-size: 14px;
+  margin: 8px 0;
+  color: #293c30;
+}
+.delegate-statement .discussion-badges {
+  margin-top: 10px;
+}
+#group-conversation > header {
+  position: relative;
+}
+@media (max-width: 700px) {
+  #group-conversation > header {
+    padding: 16px;
+  }
+  .topic-filter {
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  #show-all-messages {
+    margin: 10px 0 0;
+  }
+  .chat-message {
+    gap: 7px;
+  }
+  .chat-message > div:last-child {
+    min-width: 0;
+    padding: 12px;
+    flex: 1;
+  }
+  .chat-avatar {
+    width: 27px;
+    height: 27px;
+    font-size: 9px;
+  }
+  #chat-messages {
+    padding: 16px 10px 40px;
+  }
+  #speaker-bubble {
+    width: calc(100% - 20px);
+    right: 10px;
+    bottom: 10px;
+    max-height: 48%;
+  }
+}
+
+.civic-advisory summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+@media (max-width: 700px) {
+  #group-conversation h2 {
+    font-size: 23px;
+  }
+}
+.chat-message[data-topic="Water"] .discussion-topic {
+  background: #dceef2;
+  color: #2c6674;
+}
+.chat-message[data-topic="Electricity"] .discussion-topic {
+  background: #f2e9cc;
+  color: #786025;
+}
+.chat-message[data-topic="Public safety"] .discussion-topic {
+  background: #eae3f0;
+  color: #705282;
+}
+.chat-message[data-topic="Resolution"] .discussion-topic {
+  background: #deecde;
+  color: #456b48;
+}
+.street-view-controls {
+  display: flex;
+  gap: 6px;
+  margin: 10px 0;
+}
+.street-view-controls button {
+  border: 1px solid #b5c6c0;
+  background: #fff;
+  color: #244b42;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+#city-impact-view > #street-warnings {
+  top: auto;
+  left: auto;
+  bottom: 18px;
+  right: 18px;
+  width: 280px;
+  max-height: 45%;
+  overflow: auto;
+  padding: 13px;
+  pointer-events: auto;
+  background: #fff8eaf5;
+  border-color: #d6a650;
+}
+#street-warnings > strong {
+  display: block;
+  font-size: 10px;
+  color: #825000;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+#street-warnings button {
+  display: block;
+  text-align: left;
+  width: 100%;
+  padding: 8px 0;
+  border: 0;
+  border-top: 1px solid #dec89c;
+  background: none;
+  cursor: pointer;
+  color: #594523;
+}
+#street-warnings b {
+  display: block;
+  font-size: 12px;
+}
+#street-warnings span {
+  display: block;
+  font-size: 11px;
+  line-height: 1.45;
+  margin-top: 4px;
+}
+@media (max-width: 700px) {
+  #city-impact-view > .impact-guide {
+    max-height: 42%;
+  }
+  #city-impact-view > #street-warnings {
+    bottom: 8px;
+    right: 8px;
+    max-width: 230px;
+    max-height: 28%;
+    padding: 9px;
+  }
+  #street-warnings span {
+    display: none;
+  }
+  .impact-guide label {
+    margin-top: 6px;
+  }
+}
+#city-impact-view .street-view-controls {
+  flex-wrap: wrap;
+}
+#city-impact-view .street-view-controls button {
+  font-size: 11px;
+  padding: 7px;
+  min-height: 32px;
+}
+
+/* Messages stay tucked away until the viewer opens them. */
+#council-experience #speaker-toggle {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 5;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  color: #fff8df;
+  background: #23483c;
+  border: 1px solid #d0b77b;
+  box-shadow: 0 6px 20px #102b3540;
+  cursor: pointer;
+}
+#council-experience #speaker-toggle:hover,
+#council-experience #speaker-toggle[aria-expanded="true"] {
+  background: #34634f;
+}
+#speaker-bubble {
+  bottom: 84px;
+  right: 20px;
+  width: min(360px, calc(100% - 40px));
+  max-width: none;
+  max-height: min(48%, calc(100% - 104px));
+  padding: 12px 16px 16px;
+  pointer-events: auto;
+  z-index: 5;
+  border-radius: 12px;
+}
+.speaker-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+#speaker-bubble .speaker-card-header small {
+  color: #526454;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+#council-experience #speaker-collapse {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid #bbc8ba;
+  background: #fffdf5;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  #council-experience #speaker-toggle {
+    right: 10px;
+    bottom: 10px;
+  }
+  #speaker-bubble {
+    right: 10px;
+    bottom: 74px;
+    width: calc(100% - 20px);
+  }
+}
+.guide-allocations > div {
+  padding: 12px 0;
+  margin-top: 0;
+  border-bottom: 1px solid #dce3da;
+  grid-template-columns: 110px minmax(40px, 1fr) 115px;
+}
+.guide-allocations small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #69766b;
+  margin-top: 5px;
+}
+.guide-allocations > div > div {
+  position: relative;
+  height: 16px;
+  background: transparent;
+  overflow: visible;
+}
+.guide-allocations em {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 4px;
+  background: #e4e9e0;
+  border: 1px solid #b7c4b1;
+  box-sizing: border-box;
+}
+.guide-allocations i {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 8px;
+  border-radius: 3px;
+}
+@media (max-width: 700px) {
+  .guide-allocations > div {
+    grid-template-columns: 80px minmax(30px, 1fr) 85px;
+    gap: 8px;
+  }
+}

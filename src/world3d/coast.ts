@@ -169,7 +169,11 @@ export function createCoast(b: CityBatch, config: CityScene) {
 export function createWater(config: CityScene) {
   const half = (config.gridSize * config.blockSize) / 2;
   const material = new THREE.ShaderMaterial({
-    uniforms: { time: { value: 0 }, halfCity: { value: half } },
+    uniforms: {
+      time: { value: 0 },
+      halfCity: { value: half },
+      nightAmount: { value: 0 },
+    },
     vertexShader: `
       varying vec3 p;
       uniform float time;
@@ -183,6 +187,7 @@ export function createWater(config: CityScene) {
       varying vec3 p;
       uniform float time;
       uniform float halfCity;
+      uniform float nightAmount;
       float hash(vec2 v){return fract(sin(dot(v,vec2(127.1,311.7)))*43758.5453);}
       float noise(vec2 v){vec2 i=floor(v),f=fract(v); f=f*f*(3.0-2.0*f);return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+1.0),f.x),f.y);}
       void main(){
@@ -215,6 +220,14 @@ export function createWater(config: CityScene) {
         c=mix(c,vec3(.72,.84,.78),max(foam*.65,wash*.3));
         float horizon=smoothstep(300.0,1000.0,length(p.xz));
         c=mix(c,vec3(.56,.68,.69),horizon);
+        vec3 nightColor=mix(vec3(.008,.019,.045),vec3(.018,.085,.11),shallow);
+        nightColor+=vec3(.25,.35,.48)*glint*.6;
+        float reflected=exp(-abs(p.x-(halfCity+58.))*.075)*coast;
+        float ripple=pow(.5+.5*sin(p.z*2.+p.x*.35+time*.8+detail*5.),9.);
+        nightColor+=vec3(.4,.21,.075)*reflected*ripple*.35;
+        nightColor+=vec3(.1,.24,.27)*max(foam*.22,wash*.06);
+        nightColor=mix(nightColor,vec3(.014,.025,.05),horizon);
+        c=mix(c,nightColor,nightAmount);
         gl_FragColor=vec4(c,1.0);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>

@@ -74,7 +74,7 @@ export function createBeachfront(b: CityBatch, config: CityScene) {
           0.025,
           "#5c635b",
         );
-      b.sphere(x + dx, dy - 0.12, z, 0.09, 0.13, 0.09, "#f7df9e");
+      b.sphere(x + dx, dy - 0.12, z, 0.09, 0.13, 0.09, "#f7df9e", "lamp");
     }
   }
 
@@ -97,8 +97,10 @@ export function createBeachfront(b: CityBatch, config: CityScene) {
     roughness: 0.4,
   });
   const rim = new THREE.TorusGeometry(radius, 0.16, 8, 96);
+  const rimLight = metal.clone();
+  rimLight.userData.nightEmission = { color: "#ffd294", intensity: 1.9 };
   for (const z of [-1.15, 1.15]) {
-    const ring = new THREE.Mesh(rim, metal);
+    const ring = new THREE.Mesh(rim, rimLight);
     ring.position.z = z;
     rotor.add(ring);
     for (let n = 0; n < 16; n++) {
@@ -123,6 +125,7 @@ export function createBeachfront(b: CityBatch, config: CityScene) {
         0.16,
         0.16,
         n % 2 ? "#ebd8a4" : "#85b6aa",
+        "lamp",
       );
     }
   }
@@ -148,6 +151,7 @@ export function createBeachfront(b: CityBatch, config: CityScene) {
     }),
     count,
   );
+  glass.material.userData.nightEmission = { color: "#ffcc80", intensity: 1.1 };
   const roofs = new THREE.InstancedMesh(box, metal, count);
   for (let n = 0; n < count; n++)
     bodies.setColorAt(

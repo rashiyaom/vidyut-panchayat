@@ -962,3 +962,142 @@ dialog .muted {
     bottom: 100px;
   }
 }
+
+/* Compact audio control; detailed channel levels stay tucked away. */
+.audio-controls {
+  position: fixed;
+  bottom: max(24px, env(safe-area-inset-bottom));
+  left: 24px;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  color: #dce8df;
+  background: #1b302fe8;
+  border: 1px solid #c4d8cb30;
+  border-radius: 20px;
+  box-shadow: 0 3px 14px #10242020;
+  backdrop-filter: blur(16px);
+  font-size: 11px;
+}
+.audio-controls button {
+  color: inherit;
+  border: 0;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 7px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.audio-controls #audio-settings {
+  width: 24px;
+  padding: 5px;
+}
+.audio-controls svg {
+  width: 17px;
+  height: 17px;
+}
+.audio-controls button:hover {
+  background: #ffffff12;
+}
+.audio-controls :is(button, input, a, summary):focus-visible {
+  outline: 2px solid #e7cc92;
+  outline-offset: 3px;
+}
+.audio-muted-mark,
+.audio-controls[data-muted="true"] .audio-waves {
+  display: none;
+}
+.audio-controls[data-muted="true"] .audio-muted-mark {
+  display: block;
+}
+#audio-panel {
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 0;
+  width: 210px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #203735;
+  border: 1px solid #a6c7b633;
+  box-shadow: 0 12px 32px #10242030;
+  max-height: 65dvh;
+  overflow: auto;
+}
+#audio-panel[hidden] {
+  display: none;
+}
+.audio-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+#audio-close {
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+}
+#audio-panel label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 10px;
+  color: #c3d6cb;
+}
+#audio-panel output {
+  color: #a8beb2;
+  font-variant-numeric: tabular-nums;
+}
+#audio-panel input {
+  width: 100%;
+  height: 20px;
+  margin: 2px 0;
+  accent-color: #b6d4be;
+  cursor: pointer;
+}
+#audio-fine-tune {
+  border-top: 1px solid #bdd1c51f;
+  margin-top: 6px;
+  padding-top: 7px;
+}
+#audio-fine-tune summary {
+  cursor: pointer;
+  font-size: 10px;
+  color: #acbfb4;
+}
+#audio-panel a {
+  display: inline-block;
+  margin-top: 9px;
+  color: #b5c9bc;
+  font-size: 9px;
+}
+.bottom-left {
+  bottom: 77px;
+}
+.in-council .audio-controls {
+  bottom: 16px;
+  left: 14px;
+}
+.in-council .chamber-footer {
+  padding-left: 90px;
+}
+@media (max-width: 700px) {
+  .audio-controls {
+    left: 12px;
+    bottom: 90px;
+  }
+  .in-council .audio-controls {
+    bottom: 8px;
+    left: 14px;
+  }
+  .in-council .chamber-footer {
+    padding-left: 14px;
+    padding-bottom: 48px;
+    max-height: 200px;
+  }
+}

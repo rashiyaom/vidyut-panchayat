@@ -1,0 +1,130 @@
+{
+  "name": "Nagar",
+  "seed": 42,
+  "gridSize": 8,
+  "blockSize": 28,
+  "roadWidth": 6.8,
+  "districts": [
+    "RRRRCCCC",
+    "RRPRCCCC",
+    "RRRRRPCC",
+    "RRRPRCCC",
+    "RRRRRRPC",
+    "RRRRRRCC",
+    "RRPRRRRC",
+    "RRRRRPRR"
+  ],
+  "facilities": [
+    {
+      "id": "hospital",
+      "name": "City General Hospital",
+      "kind": "hospital",
+      "cell": [3, 4],
+      "color": "#f3eee0",
+      "description": "The heart of the medical quarter. Emergency care, operating theatres and intensive care serve the whole city.",
+      "category": "Healthcare"
+    },
+    {
+      "id": "water",
+      "name": "Westbank Waterworks",
+      "kind": "water",
+      "cell": [3, 0],
+      "color": "#c5e0da",
+      "description": "Reservoirs and pumping infrastructure keep drinking water and firefighting pressure available across Nagar.",
+      "category": "Water & sanitation"
+    },
+    {
+      "id": "telecom",
+      "name": "Nagar Communications",
+      "kind": "telecom",
+      "cell": [1, 4],
+      "color": "#e1dccf",
+      "description": "The communications tower connects emergency calls, utility operators and city residents.",
+      "category": "Communications"
+    },
+    {
+      "id": "emergency",
+      "name": "Central Fire & Rescue",
+      "kind": "emergency",
+      "cell": [5, 3],
+      "color": "#bd654f",
+      "description": "Fire crews, ambulances and emergency dispatch share this central response station.",
+      "category": "Emergency services"
+    },
+    {
+      "id": "traffic",
+      "name": "Mobility Control Centre",
+      "kind": "traffic",
+      "cell": [5, 4],
+      "color": "#c9d5d0",
+      "description": "The city's signal coordination centre keeps intersections and response routes moving.",
+      "category": "Roads & traffic"
+    },
+    {
+      "id": "shelter",
+      "name": "Community Relief Centre",
+      "kind": "shelter",
+      "cell": [6, 1],
+      "color": "#f2cf91",
+      "description": "A community hall and open courtyard that can become a relief shelter during an emergency.",
+      "category": "Community"
+    },
+    {
+      "id": "fuel",
+      "name": "Eastside Logistics Depot",
+      "kind": "fuel",
+      "cell": [6, 7],
+      "color": "#dedad1",
+      "description": "Storage and distribution facilities supporting fuel deliveries and backup generators.",
+      "category": "Fuel & logistics"
+    },
+    {
+      "id": "transit",
+      "name": "Nagar Central Station",
+      "kind": "transit",
+      "cell": [5, 6],
+      "color": "#c2d1d0",
+      "description": "A transport hub with passenger platforms, sheltered trains, glazed canopies and a clock-fronted concourse.",
+      "category": "Public transit"
+    },
+    {
+      "id": "residential",
+      "name": "West Garden Residences",
+      "kind": "residential",
+      "cell": [1, 0],
+      "color": "#efcfb4",
+      "description": "Tree-lined residential streets, courtyards and neighborhood shops on Nagar's quieter western side.",
+      "category": "Residential"
+    },
+    {
+      "id": "commercial",
+      "name": "Eastbank Business District",
+      "kind": "commercial",
+      "cell": [1, 6],
+      "color": "#8ab7bb",
+      "description": "A cluster of offices and retail spaces anchors the city's commercial skyline.",
+      "category": "Commercial"
+    },
+    {
+      "id": "substation",
+      "name": "East Grid Substation",
+      "kind": "substation",
+      "cell": [3, 7],
+      "color": "#cbd0c6",
+      "description": "The city's grid connection supplies three distribution buses. Electrical simulation will be connected in a later phase.",
+      "category": "Power infrastructure"
+    }
+  ],
+  "blockStyles": {
+    "0,5": "cylinder",
+    "2,6": "cylinder",
+    "0,7": "slabs",
+    "4,7": "hotel",
+    "6,6": "terraces",
+    "7,7": "villas",
+    "0,0": "townhouses",
+    "7,0": "lofts",
+    "4,0": "villas",
+    "4,3": "courtyard"
+  }
+}

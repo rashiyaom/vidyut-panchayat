@@ -4,7 +4,7 @@ import layout from "../data/scenes/city_v1.json";
 import { citySceneSchema } from "../src/world3d/sceneSchema";
 import { createCity } from "../src/world3d/city";
 import { createMobility } from "../src/world3d/mobility";
-import { disasterState } from "../src/world3d/disasterState";
+import { disasterState, disasterWarnings } from "../src/world3d/disasterState";
 import {
   createPowerEffects,
   overheadRoute,
@@ -56,7 +56,23 @@ it("actually stops buses/trains, changes pedestrian motion and resumes ordinary 
   expect(matrix(a, "buses")).not.toEqual(buses);
   expect(matrix(a, "trains")).not.toEqual(trains);
   expect(matrix(a, "pedestrians")).not.toEqual(matrix(b, "pedestrians"));
+  expect(b.group.getObjectByName("assembly-points")!.visible).toBe(true);
+  b.update(100, 100);
+  const people = b.group.getObjectByName("pedestrians") as THREE.InstancedMesh;
+  const markers = b.group.getObjectByName("assembly-points")!
+    .children[0] as THREE.InstancedMesh;
+  const person = new THREE.Matrix4(),
+    point = new THREE.Matrix4();
+  people.getMatrixAt(65, person);
+  markers.getMatrixAt(1, point);
+  expect(
+    Math.hypot(
+      person.elements[12] - point.elements[12],
+      person.elements[14] - point.elements[14],
+    ),
+  ).toBeLessThan(2);
   b.setDisaster(disasterState(null));
+  expect(b.group.getObjectByName("assembly-points")!.visible).toBe(false);
   b.update(0.05, 2);
   expect(matrix(b, "buses")).not.toEqual(buses);
   expect(b.group.getObjectByName("hazards")!.visible).toBe(false);
@@ -108,4 +124,19 @@ it("distinguishes capacity loss, zero flow, constrained and ordinary flows", () 
   expect(flowStyle(0, 10).state).toBe("idle");
   expect(flowStyle(9, 10).state).toBe("busy");
   expect(flowStyle(4, 10).state).toBe("flowing");
+});
+
+it("shows grounded area warnings and clears them when service recovers", () => {
+  expect(disasterWarnings(null)).toEqual([]);
+  expect(disasterWarnings(normal)).toEqual([]);
+  expect(disasterWarnings(crisis).map((w) => w.id)).toContain("residential");
+  expect(
+    disasterWarnings(crisis).find((w) => w.id === "transit")?.title,
+  ).toContain("halted");
+  const reduced = structuredClone(crisis);
+  reduced.agents.find((a) => a.id === "transit")!.service = 0.6;
+  expect(
+    disasterWarnings(reduced).find((w) => w.id === "transit")?.title,
+  ).toContain("reduced");
+  expect(disasterState(reduced).trainSpeed).toBeGreaterThan(0);
 });
