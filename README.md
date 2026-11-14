@@ -16,7 +16,7 @@
 
 ## System Architecture
 
-![Vidyut Panchayat Agent Architecture](docs/assets/agent-architecture-overview.png)
+![Vidyut Panchayat Agent Architecture]
 
 ```mermaid
 flowchart TD
