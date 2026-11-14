@@ -1,8 +1,8 @@
-> **Future implementation (12-hour plan):** Train an XGBoost demand-forecasting model on documented historical electricity data, evaluate it on held-out periods against a seasonal-naïve baseline, connect its forecasts to council planning, and compare resulting allocation outcomes. Cyclone disruptions remain explicitly simulated. See [pipeline.md](pipeline.md) for the staged plan and deliverables.
+> **Round-two technical work (12-hour plan):** XGBoost demand forecasting is trained on historical electricity data and evaluated on held-out periods; offline council replays compare its plans with baselines. The live city remains an authored cyclone simulation. See [pipeline.md](pipeline.md) for the plan and [ML evidence](docs/ml_evidence.md) for measured results.
 
 # Vidyut Panchayat
 
-Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. No API key, external service, model or runtime internet access is required.
+Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. The optional historical replay bundles saved XGBoost forecasts; neither mode requires an API key or runtime internet access.
 
 ## Agent System Architecture
 
@@ -91,6 +91,10 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 [Implementation and final validation record](docs/implementation_validation.md) lists delivered behavior, exact checks, a measured crisis trace, and limitations.
 
+The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
+
+Open `?historical=1` to run the bundled three-hour held-out electricity replay in the browser. It uses precomputed XGBoost forecasts, separate held-out demand, and the validated replay-only supply setting; the banner identifies it as an illustrative historical replay. The normal city simulation is unchanged. Regenerate the bundled evidence and replay episode with `npm run evidence:ml` after updating experiment results.
+
 ## Validate and reproduce
 
 ```sh
@@ -103,6 +107,7 @@ npm run build
 npm run preview -- --host 127.0.0.1
 # In another terminal, with preview running:
 npm run test:browser
+npm run test:historical-browser  # opt-in held-out replay and ML evidence
 ```
 
 The browser smoke test uses Playwright with the installed macOS Google Chrome executable; set `CHROME_PATH` for another installed browser location. It tests the production build with external requests blocked, then disables network after load. It records [browser evidence](experiments/results/browser-smoke.json) and a screenshot. [Performance measurements](experiments/results/performance.json) record whole-tick and 30-future pre-simulation timing. The Vitest suite includes 200 seeds × all four strategies (800 cyclone safety runs), deterministic replay, a brute-force optimum oracle, failures, planning, approval and worker ordering. `npm run batch -- --seeds=200` scales the measured experiment matrix separately.

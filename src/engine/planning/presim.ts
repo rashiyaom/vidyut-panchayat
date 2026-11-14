@@ -83,6 +83,8 @@ export function* preSimulate(
       "optimum",
     ] as Strategy[]) {
       let world = structuredClone(source);
+      // Historical actuals belong to execution only. Futures see forecasts.
+      if (source.forecastDemand) world.observedDemand = source.forecastDemand;
       world.config.seed = seed;
       world.config.strategy = strategy;
       world.config.scenario.demandNoise = 0.1;

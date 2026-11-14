@@ -1,7 +1,8 @@
 import { expect, it } from "vitest";
 import { EngineRuntime } from "../src/worker/runtime";
 import { config } from "./fixtures";
-import type { Reply, CommandInput, Plan } from "../src/contract/types";
+import browserReplay from "../data/ml/browser_replay_v1.json";
+import type { Reply, CommandInput, Plan, Allocation } from "../src/contract/types";
 function fixture() {
   const replies: Reply[] = [];
   const runtime = new EngineRuntime(
@@ -105,3 +106,23 @@ it("correlates invalid command errors to their request instead of the last valid
   expect(f.replies.at(-1)).toMatchObject({ type: "ERROR", requestId: 991 });
   f.runtime.dispose();
 });
+it("runs the trained-model historical replay with held-out demand and stops at 18 ticks", async () => {
+  const f = fixture();
+  const actualDemand = Array.from({ length: 18 }, (_, t) => browserReplay.actualDemand[String(t) as keyof typeof browserReplay.actualDemand] as Allocation);
+  const forecastDemand = Array.from({ length: 18 }, (_, t) => browserReplay.forecastDemand[String(t) as keyof typeof browserReplay.forecastDemand] as Allocation);
+  await f.send({ type: "INIT", config: { ...config, scenario: { ...config.scenario, demandNoise: 0, dropRate: 0, timingJitter: 0 } },
+    historicalReplay: { origin: browserReplay.origin, modelSha256: browserReplay.modelSha256,
+      actualDemand, forecastDemand, supplyFraction: 1 } });
+  await f.send({ type: "REQUEST_PLAN", horizonTicks: 18 });
+  const plan = f.replies.find((r) => r.type === "PLAN_READY") as { plan: Plan };
+  expect(plan.plan.constitution.ok).toBe(true);
+  await f.send({ type: "APPROVE", planId: plan.plan.id, hash: plan.plan.hash });
+  for (let i = 0; i < 18; i++) await f.send({ type: "STEP" });
+  const ticks = f.runtime.branches.get(0)!.ticks;
+  expect(ticks).toHaveLength(18);
+  expect(ticks[0].agents.find((a) => a.id === "hospital")?.demand).toBe(actualDemand[0].hospital);
+  expect(ticks.every((t) => t.constitution.ok)).toBe(true);
+  await f.send({ type: "STEP" });
+  expect(f.runtime.branches.get(0)!.ticks).toHaveLength(18);
+  f.runtime.dispose();
+}, 30000);

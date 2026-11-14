@@ -36,6 +36,13 @@ export interface World {
   states: Record<AgentId, PrivateState>;
   previous: Tick | null;
   injected: ScenarioEvent[];
+  /** Optional historical replay, in power units. Actuals are never read by planning. */
+  observedDemand?: Partial<Record<number, Allocation>>;
+  /** Forecast snapshot issued at the current decision point, in power units. */
+  forecastDemand?: Partial<Record<number, Allocation>>;
+  /** Replay-only policy experiment; the normal plan keeps its 85% reserve. */
+  planSupplyFraction?: number;
+  replayEndTick?: number;
 }
 export function initialWorld(input: Config): World {
   const config = configSchema.parse(input);
@@ -76,11 +83,11 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
     state.stress = dependencyStress(p, previous);
     state.missed = env.crashed.includes(p.id) ? state.missed + 1 : 0;
     const actor = new UtilityAgent(p, state),
-      demand = quantize(
+      demand = quantize(world.observedDemand?.[t]?.[p.id] ?? (
         p.demand *
           env.multipliers[p.id] *
-          (1 + (random() * 2 - 1) * config.scenario.demandNoise),
-      );
+          (1 + (random() * 2 - 1) * config.scenario.demandNoise)
+      ));
     bids.push(actor.observe(demand, c, rotation(p, state.starved, previous)));
     actors.push(actor);
   }
@@ -113,8 +120,8 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
       block &&
       (env.forceDrop ||
         config.enabledAgents.length < 10 ||
-        Math.abs(env.supply - block.supply / 0.85) /
-          Math.max(1, block.supply / 0.85) >
+        Math.abs(env.supply - block.supply / (world.planSupplyFraction ?? 0.85)) /
+          Math.max(1, block.supply / (world.planSupplyFraction ?? 0.85)) >
           0.15 ||
         env.crashed.length > 0 ||
         env.events.length > 0 ||
@@ -128,7 +135,13 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
         bids.some(
           (b) => b.reserveHours < 1 && !world.states[b.id].reserveAlarm,
         ));
-    const planned = block && !trigger ? block.allocations : undefined;
+    // Historical replay caps scheduled allocations at observed demand and
+    // current line limits. Normal execution retains strict plan validation.
+    const planned = block && !trigger
+      ? world.observedDemand
+        ? project(block.allocations, bids, c)
+        : block.allocations
+      : undefined;
     ({ allocation, trace } = negotiate(
       live,
       liveBids,

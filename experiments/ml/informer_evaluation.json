@@ -1,0 +1,30 @@
+{
+  "unit": "kW",
+  "test_windows": 3456,
+  "test_start": "2014-08-08 00:00:00",
+  "test_last_target": "2014-12-30 01:00:00",
+  "model": "Informer, 2 epochs, 48-hour context, 3-hour forecast",
+  "per_horizon": [
+    {
+      "hour_ahead": 1,
+      "informer_mae_kw": 10.259,
+      "informer_rmse_kw": 17.752,
+      "previous_day_mae_kw": 8.9431,
+      "previous_day_rmse_kw": 17.0836
+    },
+    {
+      "hour_ahead": 2,
+      "informer_mae_kw": 10.0028,
+      "informer_rmse_kw": 17.2534,
+      "previous_day_mae_kw": 8.9436,
+      "previous_day_rmse_kw": 17.0841
+    },
+    {
+      "hour_ahead": 3,
+      "informer_mae_kw": 10.9933,
+      "informer_rmse_kw": 18.8772,
+      "previous_day_mae_kw": 8.9432,
+      "previous_day_rmse_kw": 17.0839
+    }
+  ]
+}

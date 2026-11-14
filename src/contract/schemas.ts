@@ -339,7 +339,15 @@ export const stateSchema = z.enum([
 ]);
 const base = { requestId: z.number().int().nonnegative() };
 export const commandSchema = z.discriminatedUnion("type", [
-  z.object({ ...base, type: z.literal("INIT"), config: configSchema }),
+  z.object({ ...base, type: z.literal("INIT"), config: configSchema,
+    historicalReplay: z.object({
+      origin: z.string(),
+      modelSha256: z.string().regex(/^[0-9a-f]{64}$/),
+      actualDemand: z.array(allocationSchema).length(18),
+      forecastDemand: z.array(allocationSchema).length(18),
+      supplyFraction: z.literal(1),
+    }).optional(),
+  }),
   z.object({
     ...base,
     type: z.literal("RUN"),

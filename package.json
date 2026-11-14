@@ -10,8 +10,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "batch": "tsx scripts/batch.ts",
+    "replay:forecast": "node --import tsx scripts/forecast-replay.ts",
+    "evidence:ml": "node --import tsx scripts/export-ml-evidence.ts",
     "demo": "npm run build && tsx scripts/package-offline.ts",
     "test:browser": "tsx scripts/browser-smoke.ts",
+    "test:historical-browser": "node --import tsx scripts/forecast-browser-smoke.ts",
     "check:boundaries": "tsx scripts/check-boundaries.ts",
     "benchmark": "tsx scripts/performance.ts",
     "test:council": "node --import tsx scripts/council-room-smoke.ts"

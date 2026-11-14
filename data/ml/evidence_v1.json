@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "model": "XGBoost demand forecast + validation-derived upper residual buffer",
+  "modelSha256": "91264ff4362dad84678d83df49ce9ef4c1f4350c3c6104f18ac5772af60142d7",
+  "dataSource": "https://archive.ics.uci.edu/dataset/321/electricityloaddiagrams20112014",
+  "dataSha256": "f6c4d0e0df12ecdb9ea008dd6eef3518adb52c559d04a9bac2e1b81dcfc8d4e1",
+  "meterIds": [
+    "MT_002",
+    "MT_003",
+    "MT_004",
+    "MT_005",
+    "MT_006",
+    "MT_007",
+    "MT_008",
+    "MT_009",
+    "MT_010",
+    "MT_011"
+  ],
+  "forecastMetrics": [
+    {
+      "hour_ahead": 1,
+      "xgboost_mae_kw": 5.1222,
+      "xgboost_rmse_kw": 8.9924,
+      "informer_mae_kw": 10.259,
+      "informer_rmse_kw": 17.752,
+      "previous_day_mae_kw": 8.943,
+      "previous_day_rmse_kw": 17.0836
+    },
+    {
+      "hour_ahead": 2,
+      "xgboost_mae_kw": 6.7599,
+      "xgboost_rmse_kw": 11.9154,
+      "informer_mae_kw": 10.0028,
+      "informer_rmse_kw": 17.2534,
+      "previous_day_mae_kw": 8.9435,
+      "previous_day_rmse_kw": 17.0841
+    },
+    {
+      "hour_ahead": 3,
+      "xgboost_mae_kw": 7.7692,
+      "xgboost_rmse_kw": 13.6522,
+      "informer_mae_kw": 10.9933,
+      "informer_rmse_kw": 18.8772,
+      "previous_day_mae_kw": 8.9432,
+      "previous_day_rmse_kw": 17.0839
+    }
+  ],
+  "policy": {
+    "validationCandidates": [
+      0.85,
+      0.95,
+      1
+    ],
+    "selectedSupplyFraction": 1,
+    "confirmationDays": 30,
+    "medianPairedImprovementVs85": 16976,
+    "betterThan85Days": 30,
+    "betterThanStaticDays": 7,
+    "medianSyntheticServiceLoss": {
+      "council100": 180278,
+      "staticPriority": 162528
+    }
+  },
+  "limitations": "Historical measurements are anonymous customers mapped illustratively to utilities. Cyclone supply and service impacts are simulated. The normal live city remains on its 85% supply rule.",
+  "rows": [
+    {
+      "date": "2014-08-09",
+      "council100": 206932,
+      "council85": 222666,
+      "previousDay": 218227,
+      "staticPriority": 223088
+    },
+    {
+      "date": "2014-08-13",
+      "council100": 166727,
+      "council85": 183890,
+      "previousDay": 171217,
+      "staticPriority": 172609
+    },
+    {
+      "date": "2014-08-18",
+      "council100": 189707,
+      "council85": 207847,
+      "previousDay": 168744,
+      "staticPriority": 171802
+    },
+    {
+      "date": "2014-08-23",
+      "council100": 233448,
+      "council85": 253462,
+      "previousDay": 269688,
+      "staticPriority": 194846
+    },
+    {
+      "date": "2014-08-28",
+      "council100": 164841,
+      "council85": 182609,
+      "previousDay": 163131,
+      "staticPriority": 171967
+    },
+    {
+      "date": "2014-09-02",
+      "council100": 206150,
+      "council85": 223022,
+      "previousDay": 245068,
+      "staticPriority": 189208
+    },
+    {
+      "date": "2014-09-07",
+      "council100": 172726,
+      "council85": 191196,
+      "previousDay": 192808,
+      "staticPriority": 143772
+    },
+    {
+      "date": "2014-09-12",
+      "council100": 195379,
+      "council85": 211622,
+      "previousDay": 300264,
+      "staticPriority": 185920
+    },
+    {
+      "date": "2014-09-17",
+      "council100": 179653,
+      "council85": 193233,
+      "previousDay": 196344,
+      "staticPriority": 164005
+    },
+    {
+      "date": "2014-09-22",
+      "council100": 170155,
+      "council85": 184473,
+      "previousDay": 156936,
+      "staticPriority": 169857
+    },
+    {
+      "date": "2014-09-25",
+      "council100": 157525,
+      "council85": 172788,
+      "previousDay": 168031,
+      "staticPriority": 151427
+    },
+    {
+      "date": "2014-09-30",
+      "council100": 191054,
+      "council85": 206996,
+      "previousDay": 246792,
+      "staticPriority": 154248
+    },
+    {
+      "date": "2014-10-05",
+      "council100": 186473,
+      "council85": 201285,
+      "previousDay": 192906,
+      "staticPriority": 153850
+    },
+    {
+      "date": "2014-10-10",
+      "council100": 176540,
+      "council85": 190222,
+      "previousDay": 167988,
+      "staticPriority": 157183
+    },
+    {
+      "date": "2014-10-15",
+      "council100": 172757,
+      "council85": 185125,
+      "previousDay": 232245,
+      "staticPriority": 152307
+    },
+    {
+      "date": "2014-10-21",
+      "council100": 161541,
+      "council85": 175557,
+      "previousDay": 172298,
+      "staticPriority": 146037
+    },
+    {
+      "date": "2014-10-26",
+      "council100": 318494,
+      "council85": 338904,
+      "previousDay": 398019,
+      "staticPriority": 119437
+    },
+    {
+      "date": "2014-10-31",
+      "council100": 152375,
+      "council85": 169121,
+      "previousDay": 154033,
+      "staticPriority": 136185
+    },
+    {
+      "date": "2014-11-05",
+      "council100": 150522,
+      "council85": 170508,
+      "previousDay": 192153,
+      "staticPriority": 137035
+    },
+    {
+      "date": "2014-11-10",
+      "council100": 148546,
+      "council85": 169274,
+      "previousDay": 126973,
+      "staticPriority": 147144
+    },
+    {
+      "date": "2014-11-13",
+      "council100": 183061,
+      "council85": 201121,
+      "previousDay": 202798,
+      "staticPriority": 164465
+    },
+    {
+      "date": "2014-11-18",
+      "council100": 156488,
+      "council85": 175061,
+      "previousDay": 175132,
+      "staticPriority": 149305
+    },
+    {
+      "date": "2014-11-23",
+      "council100": 182120,
+      "council85": 199199,
+      "previousDay": 219052,
+      "staticPriority": 143772
+    },
+    {
+      "date": "2014-11-28",
+      "council100": 163805,
+      "council85": 180459,
+      "previousDay": 173986,
+      "staticPriority": 159662
+    },
+    {
+      "date": "2014-12-03",
+      "council100": 166612,
+      "council85": 184385,
+      "previousDay": 168158,
+      "staticPriority": 161051
+    },
+    {
+      "date": "2014-12-08",
+      "council100": 180903,
+      "council85": 198667,
+      "previousDay": 166601,
+      "staticPriority": 187952
+    },
+    {
+      "date": "2014-12-13",
+      "council100": 189590,
+      "council85": 204476,
+      "previousDay": 225260,
+      "staticPriority": 198108
+    },
+    {
+      "date": "2014-12-18",
+      "council100": 186492,
+      "council85": 201462,
+      "previousDay": 193760,
+      "staticPriority": 189504
+    },
+    {
+      "date": "2014-12-23",
+      "council100": 192401,
+      "council85": 215270,
+      "previousDay": 195080,
+      "staticPriority": 203704
+    },
+    {
+      "date": "2014-12-28",
+      "council100": 192061,
+      "council85": 217165,
+      "previousDay": 202545,
+      "staticPriority": 180979
+    }
+  ]
+}

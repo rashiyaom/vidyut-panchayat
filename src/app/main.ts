@@ -7,6 +7,7 @@ import {
 import { CityAudio } from "../audio/CityAudio";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import sceneData from "../../data/scenes/city_v1.json";
+import browserReplay from "../../data/ml/browser_replay_v1.json";
 import { citySceneSchema } from "../world3d/sceneSchema";
 import type {
   CityScene,
@@ -33,12 +34,13 @@ import { mountCouncilExperience } from "../ui/CouncilExperience";
 import { mountCouncil } from "../ui/CouncilPanel";
 import { createPowerEffects } from "../world3d/powerLines";
 import { SplitComparison } from "../compare/splitScreen";
-import type { CommandInput, Tick, Strategy, Config } from "../contract/types";
+import type { CommandInput, Tick, Strategy, Config, Allocation } from "../contract/types";
 
 import { icons, mountExplorer } from "../ui/CityExplorer";
 
 mountExplorer(document.querySelector<HTMLDivElement>("#app")!);
 const urlParams = new URLSearchParams(location.search);
+const historicalReplay = urlParams.get("historical") === "1";
 const isCalmMode =
   urlParams.get("calm") === "1" || urlParams.get("weather") === "calm";
 let simulationConfig: Config;
@@ -46,6 +48,8 @@ try {
   simulationConfig = defaultConfig(
     Number(urlParams.get("seed") ?? 42),
   );
+  if (historicalReplay)
+    simulationConfig.scenario = { ...simulationConfig.scenario, demandNoise: 0, dropRate: 0, timingJitter: 0 };
 } catch (error) {
   const alert = document.createElement("main");
   alert.setAttribute("role", "alert");
@@ -914,6 +918,13 @@ const panel = mountCouncil(
     }
   },
 );
+if (historicalReplay) {
+  (document.getElementById("sim-baseline") as HTMLSelectElement).disabled = true;
+  const badge = document.createElement("div");
+  badge.className = "historical-replay-badge";
+  badge.textContent = `HISTORICAL REPLAY · ${browserReplay.origin.slice(0, 10)} · precomputed XGBoost forecasts · illustrative utility mapping`;
+  document.querySelector("#app")!.append(badge);
+}
 let engineInitialized = false;
 let disasterOpen = false;
 const councilExperience = mountCouncilExperience(
@@ -932,7 +943,15 @@ const councilExperience = mountCouncilExperience(
       if (!engineInitialized) {
         engineInitialized = true;
         void bridge
-          .send({ type: "INIT", config: simulationConfig })
+          .send({ type: "INIT", config: simulationConfig,
+            ...(historicalReplay ? { historicalReplay: {
+              origin: browserReplay.origin,
+              modelSha256: browserReplay.modelSha256,
+              actualDemand: Array.from({ length: 18 }, (_, t) => browserReplay.actualDemand[String(t) as keyof typeof browserReplay.actualDemand] as Allocation),
+              forecastDemand: Array.from({ length: 18 }, (_, t) => browserReplay.forecastDemand[String(t) as keyof typeof browserReplay.forecastDemand] as Allocation),
+              supplyFraction: 1 as const,
+            } } : {}),
+          })
           .then(() => bridge.send({ type: "REQUEST_PLAN", horizonTicks: 18 }))
           .catch(showError);
       }

@@ -1,0 +1,22 @@
+{
+  "source": "https://archive.ics.uci.edu/dataset/321/electricityloaddiagrams20112014",
+  "source_sha256": "f6c4d0e0df12ecdb9ea008dd6eef3518adb52c559d04a9bac2e1b81dcfc8d4e1",
+  "selected_meters": [
+    "MT_002",
+    "MT_003",
+    "MT_004",
+    "MT_005",
+    "MT_006",
+    "MT_007",
+    "MT_008",
+    "MT_009",
+    "MT_010",
+    "MT_011"
+  ],
+  "selection": "first 10 meter IDs with >=95% positive quarter-hour readings in 2013",
+  "period": "2013-01-01 through 2014-12-31, Portuguese local timestamps",
+  "aggregation": "mean of four 15-minute kW readings after shifting timestamps back 15 minutes",
+  "rows": 17520,
+  "unit": "kW",
+  "note": "Meters are unlabeled clients, not measurements of the ten simulated utilities."
+}

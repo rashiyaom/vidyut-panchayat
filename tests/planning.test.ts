@@ -6,7 +6,7 @@ import { validatePlan } from "../src/engine/constitution/planValidator";
 import { planHash } from "../src/engine/planning/planDocument";
 import { preSim, guardrails, metricNames } from "../src/engine/planning/presim";
 import { verify } from "../src/engine/planning/verify";
-import type { Metrics } from "../src/contract/types";
+import type { Allocation, Metrics } from "../src/contract/types";
 it("negotiates six blocks, checks all contingency branches and rejects illegal plans", () => {
   const p = createPlan(initialWorld(config));
   expect(p.blocks.length).toBe(6);
@@ -43,4 +43,27 @@ it("does not trust a plan that claims a larger forecast envelope", () => {
   p.blocks[0].supply = 10000;
   p.hash = planHash(p);
   expect(validatePlan(p, config.network, w).ok).toBe(false);
+});
+it("permits a bounded replay supply fraction and validates its declared envelope", () => {
+  const baseline = createPlan(initialWorld(config), 3);
+  const replay = initialWorld(config);
+  replay.planSupplyFraction = 1;
+  const expanded = createPlan(replay, 3);
+  expect(expanded.constitution.ok).toBe(true);
+  expect(expanded.blocks[0].supply).toBeGreaterThan(baseline.blocks[0].supply);
+  expanded.blocks[0].supply += 1;
+  expanded.hash = planHash(expanded);
+  expect(validatePlan(expanded, config.network, replay).ok).toBe(false);
+  replay.planSupplyFraction = 1.01;
+  expect(() => createPlan(replay, 3)).toThrow();
+});
+it("keeps held-out observed demand out of plan construction", () => {
+  const first = initialWorld(config);
+  const second = initialWorld(config);
+  const forecast = Object.fromEntries(config.profiles.agents.map((p) => [p.id, p.demand])) as Allocation;
+  first.forecastDemand = { 0: forecast };
+  second.forecastDemand = { 0: forecast };
+  first.observedDemand = { 0: Object.fromEntries(config.profiles.agents.map((p) => [p.id, 1])) as Allocation };
+  second.observedDemand = { 0: Object.fromEntries(config.profiles.agents.map((p) => [p.id, 100])) as Allocation };
+  expect(createPlan(first, 3).hash).toBe(createPlan(second, 3).hash);
 });

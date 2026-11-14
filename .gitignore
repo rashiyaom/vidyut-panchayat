@@ -1,4 +1,11 @@
 node_modules/
+ml/.venv/
+ml/Informer2020/
+**/__pycache__/
+*.pyc
+data/raw/electricity/*.zip
+/electricityloaddiagrams20112014.zip
+experiments/ml/*.log
 dist/
 .vite/
 .DS_Store

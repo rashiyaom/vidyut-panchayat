@@ -1,0 +1,36 @@
+{
+  "unit": "kW",
+  "test_windows": 3456,
+  "best_iteration": 399,
+  "train_rows": 362820,
+  "validation_rows": 52500,
+  "per_horizon": [
+    {
+      "hour_ahead": 1,
+      "xgboost_mae_kw": 5.1222,
+      "xgboost_rmse_kw": 8.9924,
+      "informer_mae_kw": 10.259,
+      "informer_rmse_kw": 17.752,
+      "previous_day_mae_kw": 8.943,
+      "previous_day_rmse_kw": 17.0836
+    },
+    {
+      "hour_ahead": 2,
+      "xgboost_mae_kw": 6.7599,
+      "xgboost_rmse_kw": 11.9154,
+      "informer_mae_kw": 10.0028,
+      "informer_rmse_kw": 17.2534,
+      "previous_day_mae_kw": 8.9435,
+      "previous_day_rmse_kw": 17.0841
+    },
+    {
+      "hour_ahead": 3,
+      "xgboost_mae_kw": 7.7692,
+      "xgboost_rmse_kw": 13.6522,
+      "informer_mae_kw": 10.9933,
+      "informer_rmse_kw": 18.8772,
+      "previous_day_mae_kw": 8.9432,
+      "previous_day_rmse_kw": 17.0839
+    }
+  ]
+}

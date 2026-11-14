@@ -26,7 +26,13 @@ export function createPlan(
   note = "",
 ): Plan {
   if (source.t >= 144) throw new Error("Scenario complete");
+  const supplyFraction = source.planSupplyFraction ?? 0.85;
+  if (supplyFraction < 0.85 || supplyFraction > 1 || !Number.isFinite(supplyFraction))
+    throw new Error("Plan supply fraction must be between 0.85 and 1");
   let future = structuredClone(source);
+  // Roll planning state forward using forecasts; held-out actuals remain private
+  // to execution and evaluation.
+  future.observedDemand = source.forecastDemand;
   future.config.scenario.demandNoise = 0;
   future.config.scenario.dropRate = 0;
   const horizon = Math.min(horizonTicks, 144 - source.t),
@@ -48,7 +54,7 @@ export function createPlan(
         Math.min(...envs.map((e) => e.feederCaps[id])),
       ]),
     ) as Allocation;
-    const supply = quantize(Math.min(...envs.map((e) => e.supply)) * 0.85),
+    const supply = quantize(Math.min(...envs.map((e) => e.supply)) * supplyFraction),
       c: Constraints = {
         supply,
         busCaps,
@@ -60,11 +66,11 @@ export function createPlan(
     );
     const bids = actors.map((a) =>
       a.observe(
-        quantize(
+        quantize(source.forecastDemand?.[from]?.[a.profile.id] ?? (
           a.profile.demand *
             Math.min(...envs.map((e) => e.multipliers[a.profile.id])) *
-            0.9,
-        ),
+            0.9
+        )),
         c,
         1,
       ),
@@ -151,6 +157,6 @@ export function createPlan(
   plan.hash = planHash(plan);
   plan.id = `P-${source.t}-${revision}-${plan.hash}`;
   plan.constitution = validatePlan(plan, source.config.network, source);
-  plan.document = planDocument(plan);
+  plan.document = planDocument(plan, supplyFraction);
   return plan;
 }

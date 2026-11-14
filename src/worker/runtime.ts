@@ -163,6 +163,11 @@ export class EngineRuntime {
       this.stateTo("Idle");
       return;
     }
+    if (w.replayEndTick !== undefined && w.t >= w.replayEndTick) {
+      this.stop();
+      this.stateTo("Idle");
+      return;
+    }
     if (w.config.strategy === "council" && !this.plan) {
       await this.draft();
       return;
@@ -195,8 +200,9 @@ export class EngineRuntime {
         this.plan = null;
         this.evidence = null;
         this.stateTo("Idle");
-        if (result.world.t < 144) await this.draft(18, "", resume);
-      } else if (this.drift >= 2) {
+        if (result.world.t < (result.world.replayEndTick ?? 144))
+          await this.draft(18, "", resume);
+      } else if (this.drift >= 2 && result.world.replayEndTick === undefined) {
         await this.draft(
           18,
           "Persistent contingency: negotiated allocations diverged from the approved schedule.",
@@ -224,6 +230,13 @@ export class EngineRuntime {
       if (command.type === "INIT") {
         this.stop();
         this.world = initialWorld(command.config);
+        if (command.historicalReplay) {
+          const replay = command.historicalReplay;
+          this.world.observedDemand = Object.fromEntries(replay.actualDemand.entries());
+          this.world.forecastDemand = Object.fromEntries(replay.forecastDemand.entries());
+          this.world.planSupplyFraction = replay.supplyFraction;
+          this.world.replayEndTick = 18;
+        }
         this.branches.clear();
         this.branch = 0;
         this.cursor = -1;

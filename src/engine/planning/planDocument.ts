@@ -23,12 +23,12 @@ export function planHash(
     }),
   );
 }
-export function planDocument(p: Plan): string {
+export function planDocument(p: Plan, supplyFraction = 0.85): string {
   return [
     `Plan ${p.id} / hash ${p.hash}`,
     `Window: ticks ${p.startTick}–${p.startTick + p.horizonTicks - 1} (10 minutes/tick)`,
     `Constitution: ${p.constitution.ok ? "PASS" : "REJECTED"} — ${p.constitution.errors.join("; ") || "every block and contingency checked against pessimistic supply"}`,
-    `Forecast: 85% scheduled supply; demand bounded at 90% normal forecast.`,
+    `Forecast: ${(supplyFraction * 100).toFixed(0)}% scheduled supply; demand bounded by the declared forecast envelope.`,
     "Allocation schedule (PU):",
     ...p.blocks.map(
       (b) =>

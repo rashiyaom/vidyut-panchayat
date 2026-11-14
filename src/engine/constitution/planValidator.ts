@@ -31,7 +31,7 @@ export function validatePlan(
         (_, i) =>
           environment(source.config, block.fromTick + i, source.injected),
       );
-      if (block.supply > Math.min(...envs.map((e) => e.supply)) * 0.85 + 1e-7)
+      if (block.supply > Math.min(...envs.map((e) => e.supply)) * (source.planSupplyFraction ?? 0.85) + 1e-7)
         errors.push("I8: optimistic supply envelope");
       for (const bus of network.buses)
         if (
@@ -48,13 +48,9 @@ export function validatePlan(
         const profile = source.config.profiles.agents.find(
           (p) => p.id === f.id,
         )!;
-        if (
-          block.demands[f.id] >
-          profile.demand *
-            Math.min(...envs.map((e) => e.multipliers[f.id])) *
-            0.9 +
-            1e-7
-        )
+        if (block.demands[f.id] >
+            (source.forecastDemand?.[block.fromTick]?.[f.id] ??
+              profile.demand * Math.min(...envs.map((e) => e.multipliers[f.id])) * 0.9) + 1e-7)
           errors.push("I8: optimistic demand envelope");
       }
     }
