@@ -21,15 +21,15 @@ The frontend integrates a real-time 3D Three.js digital twin of the city with an
 
 *Live recording: Entering the 3D Panchayat chamber, inspecting delegates around the round table, reviewing the operator decision guide, and advancing real-time simulation ticks.*
 
-| 3D Council Chamber (Courtroom View) | Overhead Tactical Table |
+| 3D Council Chamber (Courtroom Perspective) | Overhead Tactical Table |
 |---|---|
 | ![3D Council Chamber](docs/assets/panchayat-chamber-3d.png) | ![Panchayat Overhead View](docs/assets/panchayat-overhead.png) |
-| *Retaken courtroom perspective: 10 delegates seated with name cards, microphones, and central city model* | *Overhead camera view tracking table seating and active turns* |
+| *Official courtroom view: 10 delegates seated at the round table with physical name cards, microphones, and center miniature skyline* | *Overhead tactical camera view tracking round-table seating, delegate turns, and committed state* |
 
-| Active Deliberation in Session | Representative Detail & Inspection |
+| Council Collective Result | Representative Inspection & Case |
 |---|---|
-| ![Panchayat Deliberation Active](docs/assets/panchayat-deliberation-active.png) | ![Delegate Inspection](docs/assets/panchayat-delegate-inspection.png) |
-| *Real-time speech bubbles and status rings during active negotiation* | *Inspecting real-time demand, allocated power, and backup runtime* |
+| ![Council Collective Result](docs/assets/council-collective-result.png) | ![Delegate Inspection](docs/assets/panchayat-delegate-inspection.png) |
+| *Committed decision: 200 PU available, 162 PU allocated, 0 violations, and 100% within-tier fairness progress bars* | *Inspecting representative statements, power demand, allocated capacity, and backup runtime* |
 
 ---
 
@@ -60,7 +60,7 @@ The frontend integrates a real-time 3D Three.js digital twin of the city with an
 | Living 3D City Grid | Disaster City & Power Route Tracing |
 |---|---|
 | ![City Overview](docs/assets/city-overview.png) | ![Disaster City Impact](docs/assets/disaster-city-impact.png) |
-| *Authored 3D city with street grid, traffic, rail, and coastline* | *Flooded road conditions, storm effects, and power flow arcs* |
+| *Authored 3D city with street grid, traffic, rail, and coastline* | *Disaster operations with elevated power flow lines across East, Central, and West districts* |
 
 ---
 
