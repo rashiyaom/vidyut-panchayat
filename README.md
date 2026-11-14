@@ -1,12 +1,23 @@
-# Crisis Grid
+# Vidyut Panchayat
 
-A replay driven simulation of autonomous city utilities negotiating limited power during a disaster. The Python engine will generate simulation runs; the Vite frontend will visualize and compare those replays.
+Vidyut Panchayat is a browser-based simulation of autonomous city utilities negotiating scarce power during a disaster. The engine is pure TypeScript and runs in Web Workers in the browser or under Node.js for batch experiments. The frontend renders engine output; it does not allocate power.
 
-## Development setup
+## Prerequisites
 
-- Frontend: `cd web && npm run dev`
-- Frontend production build: `cd web && npm run build`
-- Python dependencies: `engine/requirements.txt` (installed in `engine/.venv`)
-- Planned simulation commands: `make sim`, `make batch`, `make sync`, `make web`, `make demo`
+- Node.js and npm
+- `npm install` to install the pinned project dependencies
 
-The engine, shared contracts, scenarios, and replay format are scaffolded separately so the simulation and visualization can evolve against the same data.
+## Development commands
+
+- `npm run dev` starts the Vite development server.
+- `npm run typecheck` checks TypeScript.
+- `npm test` runs the Vitest suite.
+- `npm run batch` runs seeded experiments.
+- `npm run build` creates the static demo build.
+
+## Team
+
+- Om Rashiya — frontend, 3D and demo lead (`rashiyaom@gmail.com`)
+- Krish Ardeshana — simulation engine lead (`krishardeshana@gmail.com`)
+
+See [architecture.md](architecture.md) for the system and repository structure and [timeline.md](timeline.md) for the execution plan.

@@ -1,0 +1,33 @@
+{
+  "name": "vidyut-panchayat",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run typecheck && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "batch": "tsx scripts/batch.ts",
+    "demo": "npm run build && mkdir -p demo/offline_bundle && cp -R dist/. demo/offline_bundle/"
+  },
+  "dependencies": {
+    "gsap": "^3.15.1",
+    "three": "^0.187.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.5.1",
+    "@types/node": "^26.6.6",
+    "@types/three": "^0.187.0",
+    "lil-gui": "^0.21.0",
+    "tsx": "^4.21.0",
+    "typescript": "~7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}

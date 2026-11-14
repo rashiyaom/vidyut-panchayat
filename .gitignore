@@ -1,11 +1,9 @@
-__pycache__/
-*.py[cod]
-.venv/
-venv/
 node_modules/
 dist/
 .vite/
 .DS_Store
 *.mp4
 *.mov
+/presentation/*.pptx
+/presentation/*.png
 
