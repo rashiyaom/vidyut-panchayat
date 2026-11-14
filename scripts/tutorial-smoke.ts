@@ -17,7 +17,7 @@ try {
   await expect(page.locator("body")).toHaveAttribute("data-lighting", "day");
   await expect(page.locator("#labels")).toHaveAttribute("aria-pressed", "true");
   await expect(page.locator("#panchayat-pin")).toBeVisible();
-  await page.locator("#tutorial-next").click();
+  await page.keyboard.press("Enter");
   await expect(page.locator("#tutorial-title")).toContainText(
     "Panchayat Square",
   );
@@ -35,6 +35,28 @@ try {
   await page.locator("#tutorial-skip-confirm").click();
 
   await page.screenshot({ path: "/tmp/vidyut-city-controls.png" });
+  await page.locator("#panchayat-pin").click();
+  const selection = await page.locator("#selection").boundingBox();
+  const guide = await page.locator("#tutorial-launcher").boundingBox();
+  if (
+    selection && guide &&
+    selection.x < guide.x + guide.width &&
+    selection.x + selection.width > guide.x &&
+    selection.y < guide.y + guide.height &&
+    selection.y + selection.height > guide.y
+  ) throw new Error("Guide overlaps the selected building card");
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileSelection = await page.locator("#selection").boundingBox();
+  const mobileGuide = await page.locator("#tutorial-launcher").boundingBox();
+  if (
+    mobileSelection && mobileGuide &&
+    mobileSelection.x < mobileGuide.x + mobileGuide.width &&
+    mobileSelection.x + mobileSelection.width > mobileGuide.x &&
+    mobileSelection.y < mobileGuide.y + mobileGuide.height &&
+    mobileSelection.y + mobileSelection.height > mobileGuide.y
+  ) throw new Error("Mobile Guide overlaps the selected building card");
+  await page.locator("#close-selection").click();
+  await page.setViewportSize({ width: 1440, height: 900 });
   console.log("City tutorial passed; starting facilities.");
   await page.locator("#facility-tour").click();
   await expect(page.locator("#tutorial-mode")).toHaveText("FACILITY TOUR");
@@ -52,6 +74,7 @@ try {
 
   console.log("Facility tour passed; entering council.");
   await page.locator("#enter-council").click();
+  await expect(page.locator("#case-select")).toHaveCSS("color", "rgb(23, 58, 48)");
   await page.screenshot({ path: "/tmp/vidyut-council-compact.png" });
   await expect(page.locator("#tutorial-mode")).toHaveText(
     "DISASTER COUNCIL GUIDE",

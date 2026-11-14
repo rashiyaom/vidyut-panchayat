@@ -422,3 +422,61 @@ body.in-council #tutorial-launcher { top: 164px; bottom: auto; }
 }
 body.in-council #tutorial-launcher { left: 18px; right: auto; top: auto; bottom: 166px; }
 @media (max-width: 700px) { body.in-council #tutorial-launcher { left: 10px; right: auto; top: auto; bottom: 172px; } }
+
+/* Floating tour actions use the same dark glass language throughout the city. */
+#tutorial-launcher,
+.facility-tour {
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(247, 218, 159, .7);
+  border-radius: 13px;
+  background: linear-gradient(135deg, rgba(16, 45, 43, .93), rgba(12, 31, 32, .78));
+  box-shadow: 0 12px 32px rgba(3, 22, 23, .46), inset 0 1px rgba(255,255,255,.22), inset 0 -1px rgba(255,255,255,.07);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  text-shadow: 0 1px 2px #061b18;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+#tutorial-launcher::before,
+.facility-tour::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 15%, rgba(255,255,255,.13) 49%, transparent 78%);
+  transform: translateX(-115%);
+  transition: transform .55s ease;
+}
+#tutorial-launcher:hover::before,
+.facility-tour:hover::before { transform: translateX(115%); }
+#tutorial-launcher:hover,
+.facility-tour:hover { box-shadow: 0 15px 34px #051b1ab0, 0 0 0 2px #e8c98844, inset 0 1px #ffffff44; }
+#tutorial-launcher span,
+.facility-tour svg { color: #f5cf82; filter: drop-shadow(0 0 5px #e5b76588); }
+.facility-tour b { color: #f5cf82; font-size: 16px; font-weight: 500; }
+#tutorial-layer .tutorial-card { border-color: #e3cb99; box-shadow: 0 22px 60px #051d1cbb, inset 0 1px #fff; }
+#tutorial-layer .tutorial-actions button { border: 1px solid #d7dfd1; background: #f2f4eb; }
+#tutorial-layer .tutorial-actions button:hover { background: #e4eddf; }
+#tutorial-layer #tutorial-next {
+  border: 1px solid #d8bb7c;
+  background: linear-gradient(135deg, #2d624b, #163e32);
+  color: #fff8e8;
+  box-shadow: 0 4px 12px #18463244, inset 0 1px #ffffff33;
+}
+#tutorial-layer #tutorial-next:hover { background: linear-gradient(135deg, #39795a, #1c503d) !important; }
+#tutorial-layer #tutorial-skip { border-color: transparent; background: transparent; }
+body:not(.in-council):not(.reality-open):has(#selection:not([hidden])) #tutorial-launcher {
+  left: auto;
+  right: 18px;
+  top: 210px;
+  bottom: auto;
+}
+body:not(.in-council):not(.reality-open):has(#selection:not([hidden])) .facility-tour { display: none; }
+@media (max-width: 700px) {
+  body:not(.in-council):not(.reality-open):has(#selection:not([hidden])) #tutorial-launcher {
+    left: auto;
+    right: 10px;
+    top: 100px;
+    bottom: auto;
+  }
+}

@@ -341,7 +341,7 @@ export function mountTutorial(options: Options) {
     (inLayer("tutorial-back") as HTMLButtonElement).disabled = index === 0;
     (inLayer("tutorial-next") as HTMLButtonElement).disabled = false;
     inLayer("tutorial-next").textContent =
-      index === steps[active].length - 1 ? "Finish ✓" : "Next →";
+      index === steps[active].length - 1 ? "Finish ↵" : "Next ↵";
     place();
   }
   function start(mode: Tour, automatic = false) {
@@ -415,6 +415,16 @@ export function mountTutorial(options: Options) {
   document.addEventListener("close-reality", offReality);
   const onKey = (event: KeyboardEvent) => {
     if (!active) return;
+    const focused = document.activeElement;
+    if (
+      event.key === "Enter" &&
+      inLayer("tutorial-confirm").hidden &&
+      !focused?.matches("input, select, textarea, button, [contenteditable]")
+    ) {
+      event.preventDefault();
+      inLayer("tutorial-next").click();
+      return;
+    }
     if (event.key === "Escape") {
       event.stopPropagation();
       inLayer("tutorial-confirm").hidden = false;

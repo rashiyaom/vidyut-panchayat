@@ -2640,3 +2640,11 @@
   }
 }
 #council-experience .case-picker select { color: #203e33; }
+/* Native select text must stay legible in the dark case card, including focus. */
+#council-experience .case-picker select,
+#council-experience .case-picker select:focus,
+#council-experience .case-picker select option {
+  color: #173a30 !important;
+  -webkit-text-fill-color: #173a30;
+  background: #f7f5e9;
+}
