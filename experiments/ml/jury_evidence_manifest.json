@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "result": "PASS",
+  "dataset": {
+    "source": "https://archive.ics.uci.edu/dataset/321/electricityloaddiagrams20112014",
+    "sourceSha256": "f6c4d0e0df12ecdb9ea008dd6eef3518adb52c559d04a9bac2e1b81dcfc8d4e1",
+    "processedSha256": "9e17f3d05a738a2318379f83f03f8015264b8c3a181c905b4f7d542b87b16c81",
+    "selectedMeters": [
+      "MT_002",
+      "MT_003",
+      "MT_004",
+      "MT_005",
+      "MT_006",
+      "MT_007",
+      "MT_008",
+      "MT_009",
+      "MT_010",
+      "MT_011"
+    ]
+  },
+  "model": {
+    "type": "XGBoost",
+    "savedWeights": "artifacts/xgboost/electricity_10_meter_3h.json",
+    "sha256": "91264ff4362dad84678d83df49ce9ef4c1f4350c3c6104f18ac5772af60142d7"
+  },
+  "heldOutModelEvaluation": {
+    "file": "experiments/ml/model_comparison.json",
+    "sha256": "77354bb5ef2de27eeb1a7fcf0bccade8a16ab350bfe105b8881c85a88bf3c2e7",
+    "testWindows": 3456,
+    "perHorizonMetricsKw": [
+      {
+        "hour_ahead": 1,
+        "xgboost_mae_kw": 5.1222,
+        "xgboost_rmse_kw": 8.9924,
+        "informer_mae_kw": 10.259,
+        "informer_rmse_kw": 17.752,
+        "previous_day_mae_kw": 8.943,
+        "previous_day_rmse_kw": 17.0836
+      },
+      {
+        "hour_ahead": 2,
+        "xgboost_mae_kw": 6.7599,
+        "xgboost_rmse_kw": 11.9154,
+        "informer_mae_kw": 10.0028,
+        "informer_rmse_kw": 17.2534,
+        "previous_day_mae_kw": 8.9435,
+        "previous_day_rmse_kw": 17.0841
+      },
+      {
+        "hour_ahead": 3,
+        "xgboost_mae_kw": 7.7692,
+        "xgboost_rmse_kw": 13.6522,
+        "informer_mae_kw": 10.9933,
+        "informer_rmse_kw": 18.8772,
+        "previous_day_mae_kw": 8.9432,
+        "previous_day_rmse_kw": 17.0839
+      }
+    ]
+  },
+  "inference": {
+    "date": "2014-08-10",
+    "report": "experiments/ml/inference_revision_2014-08-10.json",
+    "reportSha256": "73232b5471e308de75450338e6f115b5b64153ccd77f3eceebb957587eb78c28",
+    "perHorizonMaeKw": [
+      {
+        "hourAhead": 1,
+        "xgboostMaeKw": 4.702,
+        "previousDayMaeKw": 8.5827
+      },
+      {
+        "hourAhead": 2,
+        "xgboostMaeKw": 3.4881,
+        "previousDayMaeKw": 7.5196
+      },
+      {
+        "hourAhead": 3,
+        "xgboostMaeKw": 3.7651,
+        "previousDayMaeKw": 10.3829
+      }
+    ]
+  },
+  "activeBrowserInference": {
+    "date": "2014-09-15",
+    "report": "experiments/ml/inference_revision_2014-09-15.json",
+    "reportSha256": "2a20a51b082561dc7503289462461640f155a69d51fe7623626905d6d9b1acdf",
+    "matchedBundledReplay": true
+  },
+  "policyAudit": {
+    "protocol": "experiments/ml/revision_audit_protocol.json",
+    "protocolSha256": "f46fe3060e0b93a331705b16007379ef512a7643a779a926c725b6dc09514ca8",
+    "report": "experiments/ml/revision_audit_summary.json",
+    "reportSha256": "2eac3b1c68493a43b9558d21af582999118f61a00b2bbadc16487448b89a5f31",
+    "dates": 30,
+    "selected": {
+      "medianPhl": 170241.39736480918,
+      "medianFairness": 0.9803624711750965,
+      "medianHospitalMin": 0.8343849492456441,
+      "lowerPhlThanStaticDays": 8
+    },
+    "former": {
+      "medianPhl": 172624.41585408238,
+      "medianFairness": 0.9890068310378791,
+      "medianHospitalMin": 0.8196132637956715,
+      "lowerPhlThanStaticDays": 5
+    },
+    "staticPriority": {
+      "medianPhl": 161894.10351499513,
+      "medianFairness": 0.9223943836135087,
+      "medianHospitalMin": 0.91
+    },
+    "pairedImprovement": 3409.9576753220026,
+    "lowerLossThanFormerDays": 27,
+    "lowerLossThanStaticDays": 8,
+    "criteria": {
+      "allCapacityChecksPass": true,
+      "medianFairnessAtLeast": true,
+      "medianHospitalMinAtLeast": true,
+      "medianPairedServiceLossImprovementAbove": true,
+      "lowerServiceLossThanOldCouncilOnAtLeastDays": true
+    }
+  },
+  "checks": {
+    "dataAndWeights": true,
+    "priorDateExclusion": true,
+    "inferenceMatchesReplay": true,
+    "activeBrowserMatchesInference": true,
+    "frozenPolicyAudit": true,
+    "engineBoundaries": true,
+    "unitTests": true,
+    "productionBuild": true,
+    "historicalBrowserReplay": true
+  },
+  "demoVideo": {
+    "file": "docs/assets/ml-demo.webm",
+    "sha256": "322844304e2340b472c1c76d4060651613e582ebeacbf09864074f496363ad3a"
+  },
+  "limitations": [
+    "Meters are anonymous customers mapped illustratively to utilities.",
+    "Cyclone supply, feeder disruption and service impacts are simulated.",
+    "Policy-audit dates are unused for allocation replay but belong to the existing model test period.",
+    "100% scripted-supply planning does not establish safety under uncertain real supply."
+  ]
+}

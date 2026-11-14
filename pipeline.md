@@ -105,3 +105,7 @@ Model metadata records features, split dates, training settings, data checksum, 
 > Round one demonstrated the negotiation system. This version adds a demand model trained on historical electricity measurements, evaluates it on unseen periods, and uses its forecasts to drive the same council's allocation plans.
 
 State plainly that the dataset meters do not represent local critical services, utility mappings are illustrative, cyclone disruptions remain scripted, and results do not establish local operational accuracy.
+
+## Next step after the policy audits: reproducible jury evidence package
+
+Add one command, `npm run jury:verify`, that checks the committed data and model hashes, reruns saved-model inference and the frozen revised-policy audit, runs the code tests and production build, and opens the historical replay in a local browser test. Write a machine-readable manifest and a short demonstration guide from the verified outputs. This is a packaging and verification step; it does not turn the scripted cyclone supply or simulated service impacts into measured field outcomes. Real supply/outage data and field impact validation remain later research work.

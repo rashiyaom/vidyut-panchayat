@@ -12,11 +12,12 @@ const browser = await chromium.launch({
   executablePath: process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   args: ["--enable-unsafe-swiftshader"],
 });
+const previewUrl = process.env.VIDYUT_PREVIEW_URL ?? "http://127.0.0.1:4173";
 const page = await browser.newPage();
 const errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));
 try {
-  await page.goto("http://127.0.0.1:4173/?historical=1");
+  await page.goto(new URL("/?historical=1", previewUrl).toString());
   await page.locator("#enter-council").click();
   await page.waitForFunction(() => window.vidyutCity?.getSimulation().state === "AwaitingHuman", null, { timeout: 30000 });
   if (!(await page.locator(".historical-replay-badge").isVisible())) throw new Error("Historical badge missing");

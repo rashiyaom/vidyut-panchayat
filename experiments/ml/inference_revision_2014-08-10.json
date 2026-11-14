@@ -1,0 +1,725 @@
+{
+  "version": 1,
+  "origin": "2014-08-10 00:00:00",
+  "modelSha256": "91264ff4362dad84678d83df49ce9ef4c1f4350c3c6104f18ac5772af60142d7",
+  "dataSha256": "9e17f3d05a738a2318379f83f03f8015264b8c3a181c905b4f7d542b87b16c81",
+  "sourceSha256": "f6c4d0e0df12ecdb9ea008dd6eef3518adb52c559d04a9bac2e1b81dcfc8d4e1",
+  "selection": "User-selected held-out test date; saved XGBoost inference",
+  "policy": {
+    "name": "blend_validation_025",
+    "sha256": "ea25d03c1268682e3990676fe8a50510777d134ce016155cd4f09d0dff3e55b7",
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.25
+  },
+  "meterIds": [
+    "MT_002",
+    "MT_003",
+    "MT_004",
+    "MT_005",
+    "MT_006",
+    "MT_007",
+    "MT_008",
+    "MT_009",
+    "MT_010",
+    "MT_011"
+  ],
+  "metrics": [
+    {
+      "hourAhead": 1,
+      "xgboostMaeKw": 4.702,
+      "previousDayMaeKw": 8.5827
+    },
+    {
+      "hourAhead": 2,
+      "xgboostMaeKw": 3.4881,
+      "previousDayMaeKw": 7.5196
+    },
+    {
+      "hourAhead": 3,
+      "xgboostMaeKw": 3.7651,
+      "previousDayMaeKw": 10.3829
+    }
+  ],
+  "meterReadings": [
+    {
+      "hourAhead": 1,
+      "meter": "MT_002",
+      "actualKw": 31.294,
+      "predictedKw": 33.307,
+      "bufferedKw": 36.225,
+      "previousDayKw": 31.117
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_003",
+      "actualKw": 1.303,
+      "predictedKw": 1.385,
+      "bufferedKw": 1.482,
+      "previousDayKw": 1.738
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_004",
+      "actualKw": 136.179,
+      "predictedKw": 121.467,
+      "bufferedKw": 135.672,
+      "previousDayKw": 114.837
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_005",
+      "actualKw": 50.61,
+      "predictedKw": 47.753,
+      "bufferedKw": 55.894,
+      "previousDayKw": 50.61
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_006",
+      "actualKw": 167.411,
+      "predictedKw": 147.913,
+      "bufferedKw": 167.055,
+      "previousDayKw": 146.577
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_007",
+      "actualKw": 3.25,
+      "predictedKw": 3.925,
+      "bufferedKw": 5.738,
+      "previousDayKw": 18.796
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_008",
+      "actualKw": 240.741,
+      "predictedKw": 244.429,
+      "bufferedKw": 269.306,
+      "previousDayKw": 258.418
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_009",
+      "actualKw": 39.773,
+      "predictedKw": 40.613,
+      "bufferedKw": 49.25,
+      "previousDayKw": 41.521
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_010",
+      "actualKw": 40.591,
+      "predictedKw": 40.303,
+      "bufferedKw": 50.671,
+      "previousDayKw": 43.817
+    },
+    {
+      "hourAhead": 1,
+      "meter": "MT_011",
+      "actualKw": 35.395,
+      "predictedKw": 37.763,
+      "bufferedKw": 42.875,
+      "previousDayKw": 40.238
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_002",
+      "actualKw": 27.205,
+      "predictedKw": 28.385,
+      "bufferedKw": 32.342,
+      "previousDayKw": 26.138
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_003",
+      "actualKw": 0.0,
+      "predictedKw": 1.248,
+      "bufferedKw": 1.392,
+      "previousDayKw": 1.738
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_004",
+      "actualKw": 112.805,
+      "predictedKw": 104.923,
+      "bufferedKw": 122.218,
+      "previousDayKw": 100.61
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_005",
+      "actualKw": 41.159,
+      "predictedKw": 42.779,
+      "bufferedKw": 52.875,
+      "previousDayKw": 48.78
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_006",
+      "actualKw": 139.881,
+      "predictedKw": 132.324,
+      "bufferedKw": 154.188,
+      "previousDayKw": 138.393
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_007",
+      "actualKw": 3.109,
+      "predictedKw": 4.295,
+      "bufferedKw": 6.646,
+      "previousDayKw": 19.361
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_008",
+      "actualKw": 220.539,
+      "predictedKw": 230.016,
+      "bufferedKw": 260.381,
+      "previousDayKw": 244.108
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_009",
+      "actualKw": 39.336,
+      "predictedKw": 36.836,
+      "bufferedKw": 47.706,
+      "previousDayKw": 44.58
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_010",
+      "actualKw": 38.71,
+      "predictedKw": 37.654,
+      "bufferedKw": 51.423,
+      "previousDayKw": 41.935
+    },
+    {
+      "hourAhead": 2,
+      "meter": "MT_011",
+      "actualKw": 34.091,
+      "predictedKw": 35.266,
+      "bufferedKw": 41.326,
+      "previousDayKw": 36.885
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_002",
+      "actualKw": 25.782,
+      "predictedKw": 26.487,
+      "bufferedKw": 30.832,
+      "previousDayKw": 26.316
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_003",
+      "actualKw": 0.217,
+      "predictedKw": 1.244,
+      "bufferedKw": 1.43,
+      "previousDayKw": 1.738
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_004",
+      "actualKw": 104.167,
+      "predictedKw": 93.624,
+      "bufferedKw": 109.737,
+      "previousDayKw": 88.415
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_005",
+      "actualKw": 42.378,
+      "predictedKw": 39.418,
+      "bufferedKw": 49.362,
+      "previousDayKw": 47.256
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_006",
+      "actualKw": 122.024,
+      "predictedKw": 124.223,
+      "bufferedKw": 146.627,
+      "previousDayKw": 131.696
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_007",
+      "actualKw": 3.25,
+      "predictedKw": 3.59,
+      "bufferedKw": 6.099,
+      "previousDayKw": 18.937
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_008",
+      "actualKw": 214.646,
+      "predictedKw": 223.738,
+      "bufferedKw": 257.384,
+      "previousDayKw": 265.993
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_009",
+      "actualKw": 38.899,
+      "predictedKw": 34.553,
+      "bufferedKw": 45.696,
+      "previousDayKw": 40.647
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_010",
+      "actualKw": 38.71,
+      "predictedKw": 35.752,
+      "bufferedKw": 53.204,
+      "previousDayKw": 38.441
+    },
+    {
+      "hourAhead": 3,
+      "meter": "MT_011",
+      "actualKw": 29.62,
+      "predictedKw": 33.102,
+      "bufferedKw": 39.544,
+      "previousDayKw": 32.042
+    }
+  ],
+  "actualDemand": {
+    "0": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "1": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "2": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "3": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "4": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "5": {
+      "hospital": 26.51,
+      "emergency": 6.32,
+      "water": 26.26,
+      "telecom": 11.72,
+      "shelter": 5.16,
+      "traffic": 3.95,
+      "fuel": 5.63,
+      "residential": 30.02,
+      "commercial": 24.88,
+      "transit": 14.0
+    },
+    "6": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "7": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "8": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "9": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "10": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "11": {
+      "hospital": 23.04,
+      "emergency": 0,
+      "water": 21.75,
+      "telecom": 9.53,
+      "shelter": 4.31,
+      "traffic": 3.78,
+      "fuel": 5.16,
+      "residential": 29.69,
+      "commercial": 23.73,
+      "transit": 13.48
+    },
+    "12": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    },
+    "13": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    },
+    "14": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    },
+    "15": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    },
+    "16": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    },
+    "17": {
+      "hospital": 21.84,
+      "emergency": 1.05,
+      "water": 20.09,
+      "telecom": 9.81,
+      "shelter": 3.76,
+      "traffic": 3.95,
+      "fuel": 5.02,
+      "residential": 29.36,
+      "commercial": 23.73,
+      "transit": 11.71
+    }
+  },
+  "forecastDemand": {
+    "0": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "1": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "2": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "3": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "4": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "5": {
+      "hospital": 30.69,
+      "emergency": 7.18,
+      "water": 26.16,
+      "telecom": 12.94,
+      "shelter": 5.14,
+      "traffic": 6.97,
+      "fuel": 6.31,
+      "residential": 37.17,
+      "commercial": 31.06,
+      "transit": 16.95
+    },
+    "6": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "7": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "8": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "9": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "10": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "11": {
+      "hospital": 27.4,
+      "emergency": 6.75,
+      "water": 23.57,
+      "telecom": 12.25,
+      "shelter": 4.74,
+      "traffic": 8.08,
+      "fuel": 6.08,
+      "residential": 36.0,
+      "commercial": 31.52,
+      "transit": 16.33
+    },
+    "12": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    },
+    "13": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    },
+    "14": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    },
+    "15": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    },
+    "16": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    },
+    "17": {
+      "hospital": 26.12,
+      "emergency": 6.93,
+      "water": 21.17,
+      "telecom": 11.43,
+      "shelter": 4.51,
+      "traffic": 7.42,
+      "fuel": 6.01,
+      "residential": 34.48,
+      "commercial": 32.61,
+      "transit": 15.63
+    }
+  },
+  "supplyFraction": 1,
+  "limitations": "Anonymous customer meters are mapped illustratively to utilities; cyclone supply and service impacts are simulated."
+}

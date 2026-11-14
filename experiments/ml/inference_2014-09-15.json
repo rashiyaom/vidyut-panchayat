@@ -6,12 +6,12 @@
   "sourceSha256": "f6c4d0e0df12ecdb9ea008dd6eef3518adb52c559d04a9bac2e1b81dcfc8d4e1",
   "selection": "User-selected held-out test date; saved XGBoost inference",
   "policy": {
-    "name": "blend_validation_025",
-    "sha256": "ea25d03c1268682e3990676fe8a50510777d134ce016155cd4f09d0dff3e55b7",
+    "name": "blend_validation_045",
+    "sha256": "43fa078df1a3fe177cb6a5f2970b8be6ee1eb3523b39237f682cee94f2cf8933",
     "supplyFraction": 1,
     "fillFraction": 1,
     "bufferMultiplier": 2,
-    "priorityBlend": 0.25
+    "priorityBlend": 0.45
   },
   "meterIds": [
     "MT_002",

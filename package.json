@@ -26,6 +26,7 @@
     "demo": "npm run build && tsx scripts/package-offline.ts",
     "test:browser": "tsx scripts/browser-smoke.ts",
     "test:historical-browser": "node --import tsx scripts/forecast-browser-smoke.ts",
+    "jury:verify": "node --import tsx scripts/jury-verify.ts",
     "check:boundaries": "tsx scripts/check-boundaries.ts",
     "benchmark": "tsx scripts/performance.ts",
     "test:council": "node --import tsx scripts/council-room-smoke.ts"

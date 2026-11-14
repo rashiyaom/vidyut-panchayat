@@ -114,7 +114,7 @@ report = {
     "supplyFraction": 1,
     "limitations": "Anonymous customer meters are mapped illustratively to utilities; cyclone supply and service impacts are simulated.",
 }
-out = ROOT / f"experiments/ml/inference_{args.date}.json"
+out = ROOT / f"experiments/ml/inference_revision_{args.date}.json"
 out.write_text(json.dumps(report, indent=2) + "\n")
 if args.activate:
     (ROOT / "data/ml/browser_replay_v1.json").write_text(json.dumps(report, indent=2) + "\n")
