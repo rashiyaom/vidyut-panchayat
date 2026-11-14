@@ -130,6 +130,18 @@ Results: [summary](experiments/results/summary.md), [CSV](experiments/results/cy
 
 `npm run demo` copies the production build into `demo/offline_bundle/`. Serve that folder with a local static HTTP server when disconnected from the internet; opening ES modules directly with `file://` is not supported. After dependencies are installed, building and serving locally also work offline.
 
+## Repository Structure & Subsystems
+
+A clean architecture separates the pure TypeScript simulation engine, frontend digital twin, offline Python pipeline, and frozen audit evidence:
+
+- **[`src/`](src/)**: Pure TypeScript multi-agent negotiation engine, Web Worker runtime, Three.js 3D city digital twin, and procedural spatial audio synthesizer.
+- **[`ml/`](ml/)**: Python offline training, inference, and data preparation pipeline (`train_xgboost.py`, `train_weather.py`, Informer baseline). See [`ml/README.md`](ml/README.md).
+- **[`data/ml/`](data/ml/)**: Precomputed, client-bundled JSON replay episodes (`browser_replay_v1.json`, `weather_browser_replay_v1.json`) enabling zero-dependency offline browser execution. See [`data/ml/README.md`](data/ml/README.md).
+- **[`experiments/ml/`](experiments/ml/)**: Frozen policy audits, candidate sweeps, and jury evidence manifests (`policy_selected.json`, `jury_evidence_manifest.json`). See [`experiments/ml/README.md`](experiments/ml/README.md).
+- **[`experiments/results/`](experiments/results/)**: Core simulation engine benchmark summaries, Monte Carlo CSV matrices, and crisis traces.
+- **[`docs/`](docs/)**: Formal validation records, damage cascade formulas, telemetry specs, and demonstration runbooks.
+- **[`folder_structure.md`](folder_structure.md)**: Exhaustive directory map and technical subsystem reference.
+
 ## Implementation and limits
 
 - Agents compute candidates from their own received bids. The Constitution only validates; it never chooses allocations. Unanimous hash commits, one retry, deterministic safe fallback, unmanaged draw and crash hold are explicit in [protocol](docs/protocol.md).
