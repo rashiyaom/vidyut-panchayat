@@ -2,6 +2,12 @@
 
 Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. No API key, external service, model or runtime internet access is required.
 
+## Agent System Architecture
+
+![Vidyut Panchayat Agent Architecture](docs/assets/agent-architecture-overview.png)
+
+*Decentralized Multi-Agent Crisis Negotiation & Grid Allocation Architecture — Citizen Governance, Invariant Constitution, 10 Tiered Utility Agents, and Physical Digital Twin.*
+
 ## Run
 
 ```sh
