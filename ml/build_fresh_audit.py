@@ -1,6 +1,7 @@
 """Generate frozen-date replay episodes from saved XGBoost weights, without training."""
 import hashlib
 import json
+import argparse
 from pathlib import Path
 
 import numpy as np
@@ -8,7 +9,11 @@ import pandas as pd
 import xgboost as xgb
 
 ROOT = Path(__file__).resolve().parents[1]
-protocol_path = ROOT / "experiments/ml/fresh_policy_audit_protocol.json"
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--revision", action="store_true", help="Use the frozen second-audit policy and dates")
+args = parser.parse_args()
+prefix = "revision" if args.revision else "fresh"
+protocol_path = ROOT / f"experiments/ml/{'revision_audit' if args.revision else 'fresh_policy_audit'}_protocol.json"
 protocol_bytes = protocol_path.read_bytes()
 protocol = json.loads(protocol_bytes)
 data_path = ROOT / "data/processed/electricity/ecl_10_hourly.csv"
@@ -16,7 +21,7 @@ model_path = ROOT / "artifacts/xgboost/electricity_10_meter_3h.json"
 sha = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
 if sha(data_path) != protocol["processedDataSha256"] or sha(model_path) != protocol["savedModelSha256"]:
     raise ValueError("Frozen dataset or model checksum changed")
-if sha(ROOT / "experiments/ml/policy_selected.json") != protocol["frozenPolicySha256"]:
+if sha(ROOT / protocol.get("policySourceFile", "experiments/ml/policy_selected.json")) != protocol["frozenPolicySha256"]:
     raise ValueError("Frozen policy changed")
 for source in protocol["priorSources"]:
     if sha(ROOT / source["file"]) != source["sha256"]:
@@ -86,14 +91,14 @@ replay = {
     "protocolSha256": hashlib.sha256(protocol_bytes).hexdigest(),
     "episodes": episodes,
 }
-out = ROOT / "experiments/ml/replay_fresh_audit.json"
+out = ROOT / f"experiments/ml/replay_{prefix}_audit.json"
 out.write_text(json.dumps(replay, indent=2) + "\n")
 forecast_metrics = [{
     "hourAhead": h + 1,
     "xgboostMaeKw": round(float(np.abs(prediction[:, h] - actual[:, h]).mean()), 4),
     "previousDayMaeKw": round(float(np.abs(previous_day[:, h] - actual[:, h]).mean()), 4),
 } for h in range(3)]
-(ROOT / "experiments/ml/fresh_audit_forecast_metrics.json").write_text(json.dumps({
+(ROOT / f"experiments/ml/{prefix}_audit_forecast_metrics.json").write_text(json.dumps({
     "episodeCount": 30, "meterCount": len(meters), "unit": "kW", "perHorizon": forecast_metrics,
 }, indent=2) + "\n")
 print(json.dumps({"episodes": len(episodes), "first": episodes[0]["origin"], "last": episodes[-1]["origin"],

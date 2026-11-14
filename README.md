@@ -93,9 +93,9 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
 
-The [validation-selected allocation policy](docs/ml_policy_optimization.md) records the candidate search and separate 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. Only the opt-in historical replay uses this policy.
+The [allocation-policy experiment](docs/ml_policy_optimization.md) records the initial candidate search and 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. The later audits below determined which rule the opt-in historical replay uses.
 
-The [frozen unused-date audit](docs/ml_fresh_policy_audit.md) tested that policy on 30 additional dates. Service loss improved, but the policy failed its prespecified fairness gate; the historical replay is marked **experimental**. Reproduce the audit with `npm run policy:audit:episodes` and `npm run policy:audit`.
+The [first frozen unused-date audit](docs/ml_fresh_policy_audit.md) found a fairness failure for the 45% blend. A [revised 25% blend](docs/ml_revision_audit.md), chosen with a stricter validation margin, passed all frozen criteria on 30 further unused allocation-replay dates. The opt-in historical replay now uses that revision. These are simulation audits using the existing model test period, not real-grid validation.
 
 Open `?historical=1` to run the bundled three-hour held-out electricity replay in the browser. It uses precomputed XGBoost forecasts, separate held-out demand, and the validated replay-only supply setting; the banner identifies it as an illustrative historical replay. The normal city simulation is unchanged. Regenerate the aggregate evidence with `npm run evidence:ml` after updating experiment results.
 

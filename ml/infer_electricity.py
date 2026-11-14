@@ -24,7 +24,13 @@ data_path = ROOT / "data/processed/electricity/ecl_10_hourly.csv"
 model_path = ROOT / "artifacts/xgboost/electricity_10_meter_3h.json"
 manifest = json.loads((data_path.parent / "manifest.json").read_text())
 buffer = json.loads((model_path.parent / "demand_buffer.json").read_text())
-selected_policy = json.loads((ROOT / "experiments/ml/policy_selected.json").read_text())["selected"]
+revision_audit = json.loads((ROOT / "experiments/ml/revision_audit_summary.json").read_text())
+if not revision_audit["passAllCriteria"]:
+    raise ValueError("Revised policy did not pass its frozen audit")
+selected_policy = json.loads((ROOT / "experiments/ml/policy_revision_selected.json").read_text())["selected"]
+if any(selected_policy[key] != revision_audit["frozenPolicy"][key]
+       for key in ("supplyFraction", "fillFraction", "bufferMultiplier", "priorityBlend")):
+    raise ValueError("Revised policy differs from audited settings")
 df = pd.read_csv(data_path, parse_dates=["date"])
 meter_names = list(df.columns[1:])
 if meter_names != manifest["selected_meters"] or meter_names != buffer["meter_order"]:

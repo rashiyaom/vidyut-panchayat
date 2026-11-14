@@ -18,6 +18,8 @@
     "policy:audit:episodes": "ml/.venv/bin/python ml/build_fresh_audit.py",
     "policy:audit": "node --import tsx scripts/policy-experiment.ts audit",
     "policy:revision:freeze": "node --import tsx scripts/freeze-policy-revision.ts",
+    "policy:revision:episodes": "ml/.venv/bin/python ml/build_fresh_audit.py --revision",
+    "policy:revision:audit": "node --import tsx scripts/policy-experiment.ts revision",
     "evidence:ml": "node --import tsx scripts/export-ml-evidence.ts",
     "ml:infer": "ml/.venv/bin/python ml/infer_electricity.py",
     "demo:ml": "node --import tsx scripts/record-ml-demo.ts",

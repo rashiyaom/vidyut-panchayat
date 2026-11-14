@@ -1,0 +1,22 @@
+{
+  "episodeCount": 30,
+  "meterCount": 10,
+  "unit": "kW",
+  "perHorizon": [
+    {
+      "hourAhead": 1,
+      "xgboostMaeKw": 3.2479,
+      "previousDayMaeKw": 5.8975
+    },
+    {
+      "hourAhead": 2,
+      "xgboostMaeKw": 3.8257,
+      "previousDayMaeKw": 6.1752
+    },
+    {
+      "hourAhead": 3,
+      "xgboostMaeKw": 4.3559,
+      "previousDayMaeKw": 5.3454
+    }
+  ]
+}

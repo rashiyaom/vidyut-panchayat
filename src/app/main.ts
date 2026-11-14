@@ -8,7 +8,7 @@ import { CityAudio } from "../audio/CityAudio";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import sceneData from "../../data/scenes/city_v1.json";
 import browserReplay from "../../data/ml/browser_replay_v1.json";
-import freshAudit from "../../experiments/ml/fresh_policy_audit_summary.json";
+import revisionAudit from "../../experiments/ml/revision_audit_summary.json";
 import { citySceneSchema } from "../world3d/sceneSchema";
 import type {
   CityScene,
@@ -923,7 +923,7 @@ if (historicalReplay) {
   (document.getElementById("sim-baseline") as HTMLSelectElement).disabled = true;
   const badge = document.createElement("div");
   badge.className = "historical-replay-badge";
-  const auditLabel = freshAudit.passAllCriteria ? "audit criteria passed" : "experimental policy: fairness gate missed";
+  const auditLabel = revisionAudit.passAllCriteria ? "revised policy passed 30-date simulation audit" : "policy audit criteria missed";
   badge.textContent = `HISTORICAL REPLAY · ${browserReplay.origin.slice(0, 10)} · ${auditLabel} · illustrative utility mapping`;
   document.querySelector("#app")!.append(badge);
 }
