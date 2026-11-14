@@ -1,3 +1,5 @@
+> **Future implementation (12-hour plan):** Train an XGBoost demand-forecasting model on documented historical electricity data, evaluate it on held-out periods against a seasonal-naïve baseline, connect its forecasts to council planning, and compare resulting allocation outcomes. Cyclone disruptions remain explicitly simulated. See [pipeline.md](pipeline.md) for the staged plan and deliverables.
+
 # Vidyut Panchayat
 
 Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. No API key, external service, model or runtime internet access is required.
