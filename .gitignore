@@ -7,3 +7,8 @@ dist/
 /presentation/*.pptx
 /presentation/*.png
 
+# Test artifacts and build bundles
+experiments/results/*.png
+demo/offline_bundle/*
+!demo/offline_bundle/.gitkeep
+
