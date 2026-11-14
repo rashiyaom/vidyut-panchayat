@@ -28,6 +28,11 @@ export class CityBatch {
         binding.color.clone().multiplyScalar(0.25 + 0.75 * level),
       );
       binding.mesh.instanceColor!.needsUpdate = true;
+      const nightService = binding.mesh.geometry.getAttribute("nightService");
+      if (nightService) {
+        nightService.setX(binding.index, level);
+        nightService.needsUpdate = true;
+      }
     }
   }
   setTransform(x: number, z: number, rotation = 0, scale = 1) {
@@ -95,8 +100,9 @@ export class CityBatch {
     h: number,
     d: number,
     c: string,
+    surface = "matte",
   ) {
-    this.add("sphere", x, y, z, w, h, d, c);
+    this.add("sphere", x, y, z, w, h, d, c, 0, surface);
   }
   /** A beam between arbitrary points, in the current lot's local coordinates. */
   beam(
@@ -188,7 +194,7 @@ export class CityBatch {
         side: kind === "leaf" ? THREE.DoubleSide : THREE.FrontSide,
       });
       // Subtle physical-scale surface grain; shared shader, no image requests.
-      if (surface !== "glass")
+      if (!["glass", "lamp", "signal"].includes(surface))
         material.onBeforeCompile = (shader) => {
           shader.vertexShader =
             "varying vec3 vSurfacePosition;\n" + shader.vertexShader;
@@ -213,11 +219,74 @@ export class CityBatch {
           diffuseColor.rgb *= 1.0+(grain-.5)*.045*detailFade;`,
           );
         };
-      const mesh = new THREE.InstancedMesh(
-        geometries[kind as Primitive],
-        material,
-        items.length,
-      );
+      const luminous = ["glass", "lamp", "signal"].includes(surface);
+      const geometry = luminous
+        ? geometries[kind as Primitive].clone()
+        : geometries[kind as Primitive];
+      if (luminous) {
+        const night = { value: 0 };
+        material.userData.nightUniform = night;
+        material.userData.nightSurface = surface;
+        geometry.setAttribute(
+          "nightService",
+          new THREE.InstancedBufferAttribute(
+            new Float32Array(items.length).fill(1),
+            1,
+          ),
+        );
+        const isWindow = surface === "glass";
+        material.customProgramCacheKey = () => `nagar-night-${surface}-v1`;
+        material.onBeforeCompile = (shader) => {
+          shader.uniforms.nightAmount = night;
+          shader.vertexShader =
+            `attribute float nightService; varying float vNightService; varying vec3 vNightLocal; varying vec3 vNightSize; varying float vNightSeed;\n` +
+            shader.vertexShader;
+          shader.vertexShader = shader.vertexShader.replace(
+            "#include <begin_vertex>",
+            `
+            #include <begin_vertex>
+            vNightService = nightService;
+            vNightSize = vec3(length(instanceMatrix[0].xyz),length(instanceMatrix[1].xyz),length(instanceMatrix[2].xyz));
+            vNightLocal = position * vNightSize;
+            vNightSeed = fract(sin(dot(instanceMatrix[3].xz,vec2(12.9898,78.233))) * 43758.5453);
+          `,
+          );
+          shader.fragmentShader =
+            `uniform float nightAmount; varying float vNightService; varying vec3 vNightLocal; varying vec3 vNightSize; varying float vNightSeed;\n` +
+            shader.fragmentShader;
+          shader.fragmentShader = shader.fragmentShader.replace(
+            "#include <emissivemap_fragment>",
+            `
+            #include <emissivemap_fragment>
+            ${
+              isWindow
+                ? `
+              float u = vNightSize.x > vNightSize.z ? vNightLocal.x : vNightLocal.z;
+              vec2 cell = vec2(u/1.45, vNightLocal.y/2.2);
+              float occupied = step(.23, fract(sin(dot(floor(cell)+vNightSeed, vec2(43.11,91.73)))*437.13));
+              vec2 grid = abs(fract(cell)-.5);
+              float pane = (1.-smoothstep(.39,.49,grid.x))*(1.-smoothstep(.36,.49,grid.y));
+              float large = step(3.5,max(vNightSize.x,vNightSize.z))*step(3.,vNightSize.y);
+              float pattern = mix(.55+vNightSeed*.45, .035+pane*(.18+occupied*.82), large);
+              vec3 glow = mix(vec3(1.,.55,.20),vec3(.57,.76,1.),step(.86,vNightSeed));
+              if(vNightSize.y<.3 && vNightSize.x>2. && vNightSize.z>2.) { glow=vec3(.12,.57,.62); pattern=.35; }
+              totalEmissiveRadiance += glow * pattern * nightAmount * 0.95 * vNightService;
+            `
+                : `totalEmissiveRadiance += vColor.rgb * nightAmount * 2.1 * vNightService;`
+            }
+          `,
+          );
+        };
+        if (surface === "lamp") {
+          this.group.userData.lightAnchors ??= [];
+          for (const item of items)
+            this.group.userData.lightAnchors.push({
+              position: new THREE.Vector3().setFromMatrixPosition(item.matrix),
+              color: item.color.clone(),
+            });
+        }
+      }
+      const mesh = new THREE.InstancedMesh(geometry, material, items.length);
       items.forEach((v, i) => {
         mesh.setMatrixAt(i, v.matrix);
         mesh.setColorAt(i, v.color);
@@ -295,6 +364,8 @@ export function lamp(b: CityBatch, x: number, z: number, rotation = 0) {
     0.05,
     0.3,
     "#fff3cc",
+    0,
+    "lamp",
   );
 }
 export function bench(b: CityBatch, x: number, z: number, r = 0) {

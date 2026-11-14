@@ -1,6 +1,20 @@
 import type { Tick } from "../contract/types";
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
+/** Preseeded severe cyclone state with wind-driven rain and street-level disruption. */
+export function defaultCycloneState(): DisasterState {
+  return {
+    active: true,
+    severity: 0.72,
+    rain: 0.75,
+    carSpeed: 0.28,
+    busSpeed: 0.25,
+    trainSpeed: 0.35,
+    pedestrianSpeed: 2.1,
+    gathering: true,
+  };
+}
+
 /** Illustrative street behaviour; never feeds back into the utility model. */
 export function disasterState(tick: Tick | null, initialSupply = 200) {
   const service = (id: string) =>

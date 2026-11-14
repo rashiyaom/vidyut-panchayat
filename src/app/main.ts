@@ -19,7 +19,11 @@ import type { CityEntity } from "../world3d/city";
 import { coastProfile } from "../world3d/coast";
 import { createRendering } from "../world3d/rendering";
 import { createCamera } from "../world3d/camera";
-import { disasterState, disasterWarnings } from "../world3d/disasterState";
+import {
+  disasterState,
+  disasterWarnings,
+  defaultCycloneState,
+} from "../world3d/disasterState";
 import { createDisasterEffects } from "../world3d/disasterEffects";
 import { createMobility } from "../world3d/mobility";
 import "./styles.css";
@@ -34,10 +38,13 @@ import type { CommandInput, Tick, Strategy, Config } from "../contract/types";
 import { icons, mountExplorer } from "../ui/CityExplorer";
 
 mountExplorer(document.querySelector<HTMLDivElement>("#app")!);
+const urlParams = new URLSearchParams(location.search);
+const isCalmMode =
+  urlParams.get("calm") === "1" || urlParams.get("weather") === "calm";
 let simulationConfig: Config;
 try {
   simulationConfig = defaultConfig(
-    Number(new URLSearchParams(location.search).get("seed") ?? 42),
+    Number(urlParams.get("seed") ?? 42),
   );
 } catch (error) {
   const alert = document.createElement("main");
@@ -375,6 +382,8 @@ $("daylight").onclick = () =>
       (lightingModes.indexOf(lightingMode) + 1) % lightingModes.length
     ],
   );
+$("weather-toggle").onclick = () =>
+  setWeather(currentWeather === "raining" ? "sunny" : "raining");
 const dialog = $<HTMLDialogElement>("controls-dialog");
 $("help").onclick = () => dialog.showModal();
 $("close-help").onclick = () => dialog.close();
@@ -621,7 +630,10 @@ function setScene(input: unknown) {
     config.gridSize * config.blockSize + 80,
   );
   scene.add(city.group, mobility.group, disasterEffects.group);
-  applyDisaster(disasterOpen ? councilStore.tick : null);
+  applyDisaster(
+    disasterOpen ? councilStore.tick : null,
+    !disasterOpen && isCalmMode,
+  );
   syncSignalControls();
   renderer.shadowMap.needsUpdate = true;
   clearSelection();
@@ -629,6 +641,8 @@ function setScene(input: unknown) {
 }
 const api = {
   setLightingMode,
+  setWeather,
+  getWeather: () => currentWeather,
   getLighting: () => nightLighting.stats(),
   getAudio: () => audio.diagnostics(),
   getScene: () => structuredClone(config),
@@ -741,8 +755,46 @@ let disasterEffects = createDisasterEffects(
   config.gridSize * config.blockSize + 80,
 );
 scene.add(disasterEffects.group);
-function applyDisaster(tick: Tick | null) {
-  const state = disasterState(tick, simulationConfig.scenario.initialSupply);
+let currentWeather: "raining" | "sunny" = isCalmMode ? "sunny" : "raining";
+
+function updateWeatherToggle(weather: "raining" | "sunny") {
+  currentWeather = weather;
+  const toggle = document.getElementById("weather-toggle");
+  if (!toggle) return;
+  const isRain = weather === "raining";
+  toggle.innerHTML = `${isRain ? icons.cloudRain : icons.sun}<span>${isRain ? "Raining" : "Sunny day"}</span>`;
+  toggle.title = isRain
+    ? "Currently raining · Click for sunny day"
+    : "Currently sunny · Click for raining";
+  toggle.setAttribute(
+    "aria-label",
+    `${isRain ? "Raining" : "Sunny day"}. Toggle between raining and sunny day.`,
+  );
+  toggle.classList.toggle("is-raining", isRain);
+}
+
+function setWeather(weather: "raining" | "sunny") {
+  if (weather === "raining") {
+    applyDisaster(null, false, true);
+  } else {
+    applyDisaster(null, true);
+  }
+}
+
+function applyDisaster(
+  tick: Tick | null,
+  forceCalm = false,
+  forceCyclone = false,
+) {
+  const state = forceCalm
+    ? disasterState(tick, simulationConfig.scenario.initialSupply)
+    : forceCyclone
+      ? defaultCycloneState()
+      : isCalmMode
+        ? disasterState(tick, simulationConfig.scenario.initialSupply)
+        : tick
+          ? disasterState(tick, simulationConfig.scenario.initialSupply)
+          : defaultCycloneState();
   renderSignalReadout(tick);
   const warningPanel = document.getElementById("street-warnings");
   if (warningPanel) {
@@ -770,18 +822,22 @@ function applyDisaster(tick: Tick | null) {
   const title = document.getElementById("street-condition"),
     detail = document.getElementById("street-response");
   if (title && detail) {
-    title.textContent = !tick
-      ? "Waiting for a decision"
-      : state.active
+    title.textContent = state.active
+      ? tick
         ? "City under disruption"
-        : "City moving normally";
-    detail.textContent = !tick
-      ? "Approve a plan, then advance the simulation to see its effect."
-      : state.active
-        ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People run toward amber assembly markers or wait there." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Wind-driven rain illustrates cyclone disruption." : ""}`
-        : "Services support ordinary street activity. Advance the disaster clock to see changing conditions.";
+        : "Cyclone in progress · Preseeded disruption"
+      : tick
+        ? "City moving normally"
+        : "Waiting for a decision";
+    detail.textContent = state.active
+      ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People run toward amber assembly markers or wait there." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Wind-driven rain illustrates cyclone disruption." : ""}`
+      : tick
+        ? "Services support ordinary street activity. Advance the disaster clock to see changing conditions."
+        : "Approve a plan, then advance the simulation to see its effect.";
   }
+  updateWeatherToggle(state.rain > 0.15 ? "raining" : "sunny");
 }
+applyDisaster(null);
 function renderSignalReadout(tick: Tick | null) {
   const el = document.getElementById("signal-readout");
   if (!el) return;
@@ -885,7 +941,7 @@ const councilExperience = mountCouncilExperience(
       audio.setCouncil(false);
       audio.setMoving(!paused);
       disasterOpen = false;
-      applyDisaster(null);
+      applyDisaster(null, true);
       mobility.setRunning(!paused);
       if (engineInitialized)
         void bridge.send({ type: "PAUSE" }).catch(showError);

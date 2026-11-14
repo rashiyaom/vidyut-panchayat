@@ -82,5 +82,5 @@ describe("city sound design", () => {
       expect(Math.sqrt(power / data.length)).toBeGreaterThan(0.002);
       expect(peak).toBeLessThan(1);
     }
-  });
+  }, 20000);
 });

@@ -15,9 +15,10 @@ try {
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(process.env.PREVIEW_URL ?? "http://127.0.0.1:4174/");
   await page.waitForFunction(() => !!window.vidyutCity);
-  expect(
-    (await page.evaluate(() => window.vidyutCity.getStats())).disaster.active,
-  ).toBe(false);
+  const preseeded = (await page.evaluate(() => window.vidyutCity.getStats()))
+    .disaster;
+  expect(preseeded.active).toBe(true);
+  expect(preseeded.rain).toBeGreaterThan(0.5);
   await page.locator("#enter-council").click();
   await page.waitForFunction(
     () => window.vidyutCity.getSimulation().state === "AwaitingHuman",

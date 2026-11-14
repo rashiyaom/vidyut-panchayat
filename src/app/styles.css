@@ -154,6 +154,28 @@ button:active {
   padding: 0 12px;
   font-size: 11px;
 }
+.top-actions #weather-toggle {
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.top-actions #weather-toggle.is-raining {
+  color: #72beff;
+  border-color: rgba(90, 165, 230, 0.4);
+  background: rgba(20, 52, 85, 0.55);
+}
+.top-actions #weather-toggle.is-raining:hover {
+  background: rgba(30, 70, 115, 0.7);
+  border-color: rgba(120, 195, 255, 0.6);
+}
+.top-actions #weather-toggle:not(.is-raining) {
+  color: #f7ca5a;
+  border-color: rgba(220, 175, 70, 0.35);
+  background: rgba(70, 55, 20, 0.35);
+}
+.top-actions #weather-toggle:not(.is-raining):hover {
+  background: rgba(95, 75, 25, 0.5);
+  border-color: rgba(245, 200, 80, 0.55);
+}
 .top-actions #help {
   font-size: 15px;
   padding: 0;
@@ -653,10 +675,12 @@ dialog .muted {
   .top-actions {
     padding: 3px;
   }
+  .top-actions #weather-toggle,
   .top-actions #daylight {
     width: 34px;
     padding: 0;
   }
+  .top-actions #weather-toggle > span,
   .top-actions #daylight > span {
     display: none;
   }

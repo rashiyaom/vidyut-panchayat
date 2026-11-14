@@ -105,6 +105,30 @@ export function createRail(config: CityScene) {
         );
     }
   }
+  for (const side of [-1, 1]) {
+    b.box(
+      side * edge,
+      deck + 0.42,
+      0,
+      0.08,
+      0.05,
+      span - 6,
+      "#e9c785",
+      0,
+      "lamp",
+    );
+    b.box(
+      0,
+      deck + 0.42,
+      side * edge,
+      span - 6,
+      0.05,
+      0.08,
+      "#e9c785",
+      0,
+      "lamp",
+    );
+  }
   group.add(b.finish());
   const count = 6,
     dummy = new THREE.Object3D(),
@@ -139,6 +163,11 @@ export function createRail(config: CityScene) {
     nose = meshes("#507a80"),
     lights = meshes("#f1d7a0");
   body.name = "trains";
+  windows.material.userData.nightEmission = {
+    color: "#ffe5b0",
+    intensity: 1.1,
+  };
+  lights.material.userData.nightEmission = { color: "#fff3dd", intensity: 3.8 };
   const pillars = new THREE.InstancedMesh(
     new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshStandardMaterial({ color: "#d3ded7" }),

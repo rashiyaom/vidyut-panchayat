@@ -30,6 +30,9 @@ export const icons = {
   ),
   close: icon('<path d="m6 6 12 12M6 18 18 6"/>'),
   arrow: icon('<path d="M5 12h14m-6-6 6 6-6 6"/>'),
+  cloudRain: icon(
+    '<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M8 19v2m8-2v2m-4-1v2"/>',
+  ),
 };
 
 export function mountExplorer(app: HTMLElement) {
@@ -38,7 +41,13 @@ export function mountExplorer(app: HTMLElement) {
     <div id="landmarks"></div>
     <header class="topbar">
       <div class="brand glass"><span class="brand-icon">${icons.city}</span><div><strong>VIDYUT PANCHAYAT</strong><span>Nagar <i>/</i> City explorer</span></div><span class="live-dot" title="City sandbox"></span></div>
-      <div class="top-actions glass"><button id="daylight" title="Change lighting">${icons.sun}<span>Daylight</span></button><span class="dock-divider"></span><button id="help" aria-label="Show controls">?</button></div>
+      <div class="top-actions glass">
+        <button id="weather-toggle" class="weather-toggle" title="Toggle world: Raining / Sunny day">${icons.cloudRain}<span>Raining</span></button>
+        <span class="dock-divider"></span>
+        <button id="daylight" title="Change lighting">${icons.sun}<span>Daylight</span></button>
+        <span class="dock-divider"></span>
+        <button id="help" aria-label="Show controls">?</button>
+      </div>
     </header>
     <aside class="directory glass collapsed" aria-label="Explore Nagar">
       <div class="panel-heading"><div><span class="eyebrow">YOUR NEXT PERSPECTIVE</span><h1>Explore Nagar</h1></div><button id="close-directory" class="icon-button" aria-label="Close city directory">${icons.close}</button></div>

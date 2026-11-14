@@ -179,6 +179,15 @@ export function createMobility(config: CityScene) {
       ),
     ),
   );
+  for (const m of [lights, busLights])
+    m.material.userData.nightEmission = { color: "#fff0ce", intensity: 3.4 };
+  for (const m of [tail, busTail])
+    m.material.userData.nightEmission = { color: "#ff3424", intensity: 2.2 };
+  for (const m of [glass, windscreen, busWindows, busFront])
+    m.material.userData.nightEmission = {
+      color: "#ffd69a",
+      intensity: m === glass || m === windscreen ? 0.1 : 0.6,
+    };
   bodies.name = "cars";
   busBody.name = "buses";
   coats.name = "pedestrians";
@@ -194,14 +203,43 @@ export function createMobility(config: CityScene) {
     w: number,
     h: number,
     d: number,
+    tilt = 0,
   ) {
     local.set(ox, 0, oz).applyAxisAngle(THREE.Object3D.DEFAULT_UP, p.angle);
     dummy.position.set(p.x + local.x, y, p.z + local.z);
-    dummy.rotation.set(0, p.angle, 0);
+    dummy.rotation.set(tilt, p.angle, 0, "YXZ");
     dummy.scale.set(w, h, d);
     dummy.updateMatrix();
     m.setMatrixAt(i, dummy.matrix);
   }
+  const assembly = new THREE.Group();
+  assembly.name = "assembly-points";
+  const assemblyRoutes = [...walks, boardwalk];
+  const discs = new THREE.InstancedMesh(
+    new THREE.RingGeometry(0.8, 1.2, 16),
+    new THREE.MeshBasicMaterial({ color: "#ffbf36", side: THREE.DoubleSide }),
+    assemblyRoutes.length,
+  );
+  const flags = new THREE.InstancedMesh(
+    new THREE.ConeGeometry(0.7, 1.4, 4),
+    new THREE.MeshBasicMaterial({ color: "#ffbf36" }),
+    assemblyRoutes.length,
+  );
+  assemblyRoutes.forEach((route, i) => {
+    const p = sampleRoute(route, 0.25);
+    dummy.position.set(p.x, i === walks.length ? 0.65 : 0.15, p.z);
+    dummy.rotation.set(-Math.PI / 2, 0, 0);
+    dummy.scale.setScalar(1);
+    dummy.updateMatrix();
+    discs.setMatrixAt(i, dummy.matrix);
+    dummy.position.y += 3.8;
+    dummy.rotation.set(Math.PI, 0, 0);
+    dummy.updateMatrix();
+    flags.setMatrixAt(i, dummy.matrix);
+  });
+  assembly.add(discs, flags);
+  assembly.visible = false;
+  group.add(assembly);
   let running = true;
   let response = disasterState(null);
   let motionTime = 0;
@@ -214,9 +252,16 @@ export function createMobility(config: CityScene) {
     peopleCount: people.length,
     setDisaster(state: DisasterState) {
       response = state;
+      assembly.visible = state.gathering;
       if (!state.gathering) gatherings.clear();
     },
     getResponse: () => ({ ...response }),
+    pedestrianPosition(cell: number) {
+      const person =
+        people[(cell + walks.length) % Math.min(180, people.length)];
+      const p = sampleRoute(person.route, person.phase);
+      return new THREE.Vector3(p.x, 1, p.z);
+    },
     setRunning(v: boolean) {
       running = v;
       rail.setRunning(v);
@@ -415,13 +460,16 @@ export function createMobility(config: CityScene) {
       rail.update(dt * response.trainSpeed);
       people.forEach((person, i) => {
         let walking = running;
-        if (response.gathering && i % 3 === 0) {
-          // Walk along the existing sidewalk to a nearby corner; never cross blocks.
-          if (!gatherings.has(i))
-            gatherings.set(
-              i,
-              Math.round(person.phase * 4) / 4 + (i % 5) * 0.008,
-            );
+        if (response.gathering && Math.floor(i / walks.length) % 4 !== 0) {
+          // Nearest wrapped path to a marked corner, with space between arrivals.
+          if (!gatherings.has(i)) {
+            const slot =
+              i >= 180
+                ? (i - 180) * 0.0015
+                : Math.floor(i / walks.length) * 0.01;
+            const target = 0.25 + slot;
+            gatherings.set(i, target + Math.round(person.phase - target));
+          }
           const delta = gatherings.get(i)! - person.phase;
           const step =
             (dt * Math.abs(person.speed) * response.pedestrianSpeed) /
@@ -435,13 +483,24 @@ export function createMobility(config: CityScene) {
             person.route.length;
         const p = sampleRoute(person.route, person.phase);
         if (
-          (response.gathering && i % 3 === 0
+          (response.gathering && Math.floor(i / walks.length) % 4 !== 0
             ? gatherings.get(i)! - person.phase
             : person.speed) < 0
         )
           p.angle += Math.PI;
         const h = person.height;
-        set(coats, i, p, 0, 1.2 * h + person.ground, 0, 0.38, 0.55 * h, 0.25);
+        set(
+          coats,
+          i,
+          p,
+          0,
+          1.2 * h + person.ground,
+          0,
+          0.38,
+          0.55 * h,
+          0.25,
+          response.active && walking ? 0.2 : 0,
+        );
         set(heads, i, p, 0, 1.66 * h + person.ground, 0, 0.24, 0.28 * h, 0.24);
         for (let k = 0; k < 2; k++)
           set(
@@ -458,6 +517,11 @@ export function createMobility(config: CityScene) {
             0.13,
             0.5 * h,
             0.15,
+            walking
+              ? Math.sin(
+                  time * 7 * response.pedestrianSpeed + i + k * Math.PI,
+                ) * (response.active ? 0.7 : 0.2)
+              : 0,
           );
         for (let k = 0; k < 2; k++) {
           const swing = walking
@@ -473,6 +537,7 @@ export function createMobility(config: CityScene) {
             0.12,
             0.45 * h,
             0.13,
+            -swing * (response.active ? 0.9 : 0.25),
           );
         }
       });
