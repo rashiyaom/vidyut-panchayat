@@ -1,6 +1,7 @@
 import { chromium } from "@playwright/test";
 import activeReplay from "../data/ml/browser_replay_v1.json";
 import revisionAudit from "../experiments/ml/revision_audit_summary.json";
+import weatherReplay from "../data/ml/weather_browser_replay_v1.json";
 
 if (!revisionAudit.passAllCriteria ||
     activeReplay.policy.priorityBlend !== revisionAudit.frozenPolicy.priorityBlend ||
@@ -29,6 +30,9 @@ try {
   if (!(await page.getByText("30 separate test days").isVisible())) throw new Error("ML evidence missing");
   if (!(await page.getByText("Revised policy · frozen audit passed", { exact: false }).isVisible()))
     throw new Error("Revised policy audit missing from evidence panel");
+  if (weatherReplay.originPortugal.slice(0, 10) === activeReplay.origin.slice(0, 10) &&
+      !(await page.getByText("Weather forecast for the same local date", { exact: false }).isVisible()))
+    throw new Error("Weather forecast missing from historical evidence panel");
   if (!(await page.getByText(`Selected held-out date: ${activeReplay.origin.slice(0, 10)}`, { exact: false }).isVisible()))
     throw new Error("Selected model inference report missing");
   await page.getByText("Inspect selected date predictions and measured readings").click();

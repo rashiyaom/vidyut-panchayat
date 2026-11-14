@@ -1,4 +1,4 @@
-> **Round-two technical work (12-hour plan):** XGBoost demand forecasting is trained on historical electricity data and evaluated on held-out periods; offline council replays compare its plans with baselines. The live city remains an authored cyclone simulation. See [pipeline.md](pipeline.md) for the plan and [ML evidence](docs/ml_evidence.md) for measured results.
+> **Round-two technical work:** XGBoost demand and weather forecasting are trained on historical electricity and ERA5 weather data and evaluated on held-out periods. Offline council replays compare electricity plans with baselines. The live city remains an authored cyclone simulation. See [pipeline.md](pipeline.md), [electricity evidence](docs/ml_evidence.md), and [weather evidence](docs/weather_evidence.md).
 
 # Vidyut Panchayat
 
@@ -93,6 +93,8 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
 
+A separate [Lisbon weather forecast](docs/weather_evidence.md) predicts three hours of wind speed and evaluates rainfall forecasts using 2013–2014 ERA5 reanalysis. The opt-in historical evidence panel shows the matching date's forecast and later reanalysis. Weather currently does not alter the authored cyclone supply or feeder failures.
+
 The [allocation-policy experiment](docs/ml_policy_optimization.md) records the initial candidate search and 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. The later audits below determined which rule the opt-in historical replay uses.
 
 The [first frozen unused-date audit](docs/ml_fresh_policy_audit.md) found a fairness failure for the 45% blend. A [revised 25% blend](docs/ml_revision_audit.md), chosen with a stricter validation margin, passed all frozen criteria on 30 further unused allocation-replay dates. The opt-in historical replay now uses that revision. These are simulation audits using the existing model test period, not real-grid validation.
@@ -101,7 +103,7 @@ For jury review, run `npm run jury:verify` after installing Node and Python depe
 
 Open `?historical=1` to run the bundled three-hour held-out electricity replay in the browser. It uses precomputed XGBoost forecasts, separate held-out demand, and the validated replay-only supply setting; the banner identifies it as an illustrative historical replay. The normal city simulation is unchanged. Regenerate the aggregate evidence with `npm run evidence:ml` after updating experiment results.
 
-To run the saved model on another held-out midnight, use `npm run ml:infer -- --date 2014-09-15 --activate`, then `npm run build` and open `?historical=1`. The command saves `experiments/ml/inference_revision_YYYY-MM-DD.json` and updates the browser replay with its predicted and measured kW readings; earlier frozen inference reports stay unchanged. Omit `--activate` to generate a report without changing the browser episode. On a new machine, first run `python3 -m venv ml/.venv` and `ml/.venv/bin/python -m pip install -r ml/requirements-inference.txt`. With preview on port 4173, `npm run demo:ml` records the model-to-decision walkthrough in `docs/assets/ml-demo.webm`.
+To run the saved models on another held-out midnight, use `npm run ml:infer -- --date 2014-09-15 --activate` and `npm run weather:infer -- --date 2014-09-15 --activate`, then `npm run build` and open `?historical=1`. These commands save separate dated reports and update the browser replay; earlier frozen inference reports stay unchanged. Omit `--activate` to generate reports without changing the browser episode. On a new machine, first run `python3 -m venv ml/.venv` and `ml/.venv/bin/python -m pip install -r ml/requirements-inference.txt`. With preview on port 4173, `npm run demo:ml` records the walkthrough in `docs/assets/ml-demo.webm`.
 
 ## Validate and reproduce
 

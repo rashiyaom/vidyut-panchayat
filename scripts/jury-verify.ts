@@ -58,6 +58,14 @@ check(activeInference.modelSha256 === activeReplay.modelSha256 &&
   JSON.stringify(activeInference.forecastDemand) === JSON.stringify(activeReplay.forecastDemand) &&
   JSON.stringify(activeInference.actualDemand) === JSON.stringify(activeReplay.actualDemand),
   "Bundled browser replay differs from fresh saved-model inference");
+run("ml/.venv/bin/python", ["ml/verify_weather.py"]);
+run("ml/.venv/bin/python", ["ml/infer_weather.py", "--date", activeDate]);
+const weatherFile = `experiments/ml/weather_inference_${activeDate}.json`;
+const weatherInference = await json(weatherFile);
+const weatherReplay = await json("data/ml/weather_browser_replay_v1.json");
+check(weatherReplay.originPortugal.slice(0, 10) === activeDate &&
+  JSON.stringify(weatherInference) === JSON.stringify(weatherReplay),
+  "Bundled weather forecast differs from fresh saved-model inference");
 run("ml/.venv/bin/python", ["ml/build_fresh_audit.py", "--revision"]);
 run(process.execPath, ["--import", "tsx", "scripts/policy-experiment.ts", "revision"]);
 
@@ -123,6 +131,8 @@ try {
 const forecastEvaluation = await json("experiments/ml/model_comparison.json");
 check(forecastEvaluation.test_windows === 3456 && forecastEvaluation.per_horizon.length === 3,
   "Committed held-out model evaluation is incomplete");
+const weatherEvaluation = await json("experiments/ml/weather_model_evaluation.json");
+const weatherManifest = await json("data/processed/weather/manifest.json");
 const report = {
   version: 1,
   result: "PASS",
@@ -136,6 +146,18 @@ const report = {
     perHorizonMaeKw: inference.metrics },
   activeBrowserInference: { date: activeDate, report: activeInferenceFile,
     reportSha256: sha(await bytes(activeInferenceFile)), matchedBundledReplay: true },
+  weather: {
+    source: weatherManifest.documentation, provider: weatherManifest.provider,
+    license: weatherManifest.license, sourceSha256: weatherManifest.source_sha256,
+    processedSha256: weatherEvaluation.processed_data_sha256,
+    gridCell: weatherManifest.returned_grid_cell,
+    modelWeights: Object.fromEntries(Object.entries(weatherEvaluation.targets).map(([name, target]) =>
+      [name, (target as { model_sha256: string }).model_sha256])),
+    testWindows: weatherEvaluation.split.test.windows,
+    perHorizon: Object.fromEntries(Object.entries(weatherEvaluation.targets).map(([name, target]) =>
+      [name, (target as { per_horizon: unknown }).per_horizon])),
+    activeReport: weatherFile, activeReportSha256: sha(await bytes(weatherFile)),
+  },
   policyAudit: { protocol: protocolFile, protocolSha256: sha(protocolBytes),
     report: "experiments/ml/revision_audit_summary.json", reportSha256: sha(await bytes("experiments/ml/revision_audit_summary.json")),
     dates: audit.episodeCount, selected: audit.selectedMetrics, former: audit.formerMetrics,
@@ -144,11 +166,14 @@ const report = {
     lowerLossThanStaticDays: audit.selectedLowerPhlThanStaticDays, criteria: audit.checks },
   checks: { dataAndWeights: true, priorDateExclusion: true, inferenceMatchesReplay: true,
     activeBrowserMatchesInference: true,
+    savedWeatherModelEvaluation: true, weatherPastOnlyFeatures: true,
+    activeWeatherMatchesInference: true,
     frozenPolicyAudit: true, engineBoundaries: true, unitTests: true, productionBuild: true,
     historicalBrowserReplay: true },
   demoVideo: { file: "docs/assets/ml-demo.webm", sha256: sha(await bytes("docs/assets/ml-demo.webm")) },
   limitations: ["Meters are anonymous customers mapped illustratively to utilities.",
     "Cyclone supply, feeder disruption and service impacts are simulated.",
+    "ERA5 weather is reanalysis; rainfall XGBoost was weaker than simple baselines and weather does not drive the grid scenario.",
     "Policy-audit dates are unused for allocation replay but belong to the existing model test period.",
     "100% scripted-supply planning does not establish safety under uncertain real supply."],
 };

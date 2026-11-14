@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "data_source": "Open-Meteo ERA5 reanalysis, Lisbon grid cell",
+  "processed_data_sha256": "a3a28a6a5f84de204d895cd18ad1f1dc9232a66d8f6a8aed8e532fd2f4105e8d",
+  "feature_count": 32,
+  "features": [
+    "hour_ahead",
+    "target_hour_sin",
+    "target_hour_cos",
+    "target_year_sin",
+    "target_year_cos",
+    "temperature_2m_lag_1",
+    "temperature_2m_lag_2",
+    "temperature_2m_lag_3",
+    "temperature_2m_lag_6",
+    "temperature_2m_lag_24",
+    "temperature_2m_lag_48",
+    "temperature_2m_lag_168",
+    "precipitation_lag_1",
+    "precipitation_lag_2",
+    "precipitation_lag_3",
+    "precipitation_lag_6",
+    "precipitation_lag_24",
+    "precipitation_lag_48",
+    "precipitation_lag_168",
+    "wind_speed_10m_lag_1",
+    "wind_speed_10m_lag_2",
+    "wind_speed_10m_lag_3",
+    "wind_speed_10m_lag_6",
+    "wind_speed_10m_lag_24",
+    "wind_speed_10m_lag_48",
+    "wind_speed_10m_lag_168",
+    "temperature_2m_mean_6",
+    "temperature_2m_mean_24",
+    "precipitation_mean_6",
+    "precipitation_mean_24",
+    "wind_speed_10m_mean_6",
+    "wind_speed_10m_mean_24"
+  ],
+  "split": {
+    "train": {
+      "start": "2013-01-08 00:00:00",
+      "last_target": "2014-05-26 23:00:00",
+      "windows": 12094
+    },
+    "validation": {
+      "start": "2014-05-27 00:00:00",
+      "last_target": "2014-08-07 23:00:00",
+      "windows": 1750
+    },
+    "test": {
+      "start": "2014-08-08 00:00:00",
+      "last_target": "2014-12-31 23:00:00",
+      "windows": 3502
+    }
+  },
+  "targets": {
+    "wind_speed_10m": {
+      "unit": "m/s",
+      "model_sha256": "c9fc899179961fef417ac8814c87a137b6d25f79f775f13d42c335e7fd346b63",
+      "best_iteration": 238,
+      "selected_method_by_horizon": [
+        "xgboost",
+        "xgboost",
+        "xgboost"
+      ],
+      "per_horizon": [
+        {
+          "hour_ahead": 1,
+          "xgboost_mae": 0.3286,
+          "xgboost_rmse": 0.4869,
+          "persistence_mae": 0.3274,
+          "persistence_rmse": 0.4526,
+          "previous_day_mae": 1.6648,
+          "previous_day_rmse": 2.2241,
+          "selected_method": "xgboost",
+          "selected_mae": 0.3286,
+          "validation_mae_by_method": {
+            "xgboost": 0.2656,
+            "persistence": 0.3118,
+            "previous_day": 1.3171
+          }
+        },
+        {
+          "hour_ahead": 2,
+          "xgboost_mae": 0.524,
+          "xgboost_rmse": 0.74,
+          "persistence_mae": 0.5641,
+          "persistence_rmse": 0.7616,
+          "previous_day_mae": 1.6646,
+          "previous_day_rmse": 2.2239,
+          "selected_method": "xgboost",
+          "selected_mae": 0.524,
+          "validation_mae_by_method": {
+            "xgboost": 0.4433,
+            "persistence": 0.5573,
+            "previous_day": 1.3175
+          }
+        },
+        {
+          "hour_ahead": 3,
+          "xgboost_mae": 0.6795,
+          "xgboost_rmse": 0.9302,
+          "persistence_mae": 0.7536,
+          "persistence_rmse": 0.998,
+          "previous_day_mae": 1.6646,
+          "previous_day_rmse": 2.2239,
+          "selected_method": "xgboost",
+          "selected_mae": 0.6795,
+          "validation_mae_by_method": {
+            "xgboost": 0.594,
+            "persistence": 0.7545,
+            "previous_day": 1.3178
+          }
+        }
+      ]
+    },
+    "precipitation": {
+      "unit": "mm/hour",
+      "model_sha256": "890374dcfb8c78f7aa752910e93ccc623f19fd96d3c5ec345b8614e8fb9b778c",
+      "best_iteration": 63,
+      "selected_method_by_horizon": [
+        "persistence",
+        "zero_rain",
+        "zero_rain"
+      ],
+      "per_horizon": [
+        {
+          "hour_ahead": 1,
+          "xgboost_mae": 0.1195,
+          "xgboost_rmse": 0.4727,
+          "persistence_mae": 0.0754,
+          "persistence_rmse": 0.2833,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "persistence",
+          "selected_mae": 0.0754,
+          "validation_mae_by_method": {
+            "xgboost": 0.0192,
+            "persistence": 0.0138,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        },
+        {
+          "hour_ahead": 2,
+          "xgboost_mae": 0.1422,
+          "xgboost_rmse": 0.5151,
+          "persistence_mae": 0.1081,
+          "persistence_rmse": 0.3939,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "zero_rain",
+          "selected_mae": 0.1132,
+          "validation_mae_by_method": {
+            "xgboost": 0.0233,
+            "persistence": 0.0171,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        },
+        {
+          "hour_ahead": 3,
+          "xgboost_mae": 0.1522,
+          "xgboost_rmse": 0.5298,
+          "persistence_mae": 0.1208,
+          "persistence_rmse": 0.4276,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "zero_rain",
+          "selected_mae": 0.1132,
+          "validation_mae_by_method": {
+            "xgboost": 0.026,
+            "persistence": 0.0191,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        }
+      ]
+    }
+  },
+  "limitations": "ERA5 is reanalysis, not a weather-station observation or archived operational forecast. No cyclone or outage labels were used."
+}

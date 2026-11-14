@@ -85,6 +85,132 @@
     "reportSha256": "2a20a51b082561dc7503289462461640f155a69d51fe7623626905d6d9b1acdf",
     "matchedBundledReplay": true
   },
+  "weather": {
+    "source": "https://open-meteo.com/en/docs/historical-weather-api",
+    "provider": "Open-Meteo, ERA5 reanalysis",
+    "license": "CC BY 4.0; attribution to Open-Meteo and Copernicus/ECMWF ERA5",
+    "sourceSha256": "b8f9e6bc6ceafd6434a30a076326e1d796e1cbd40d6861564e7a9faa42abf7cd",
+    "processedSha256": "a3a28a6a5f84de204d895cd18ad1f1dc9232a66d8f6a8aed8e532fd2f4105e8d",
+    "gridCell": [
+      38.75,
+      -9.25
+    ],
+    "modelWeights": {
+      "wind_speed_10m": "c9fc899179961fef417ac8814c87a137b6d25f79f775f13d42c335e7fd346b63",
+      "precipitation": "890374dcfb8c78f7aa752910e93ccc623f19fd96d3c5ec345b8614e8fb9b778c"
+    },
+    "testWindows": 3502,
+    "perHorizon": {
+      "wind_speed_10m": [
+        {
+          "hour_ahead": 1,
+          "xgboost_mae": 0.3286,
+          "xgboost_rmse": 0.4869,
+          "persistence_mae": 0.3274,
+          "persistence_rmse": 0.4526,
+          "previous_day_mae": 1.6648,
+          "previous_day_rmse": 2.2241,
+          "selected_method": "xgboost",
+          "selected_mae": 0.3286,
+          "validation_mae_by_method": {
+            "xgboost": 0.2656,
+            "persistence": 0.3118,
+            "previous_day": 1.3171
+          }
+        },
+        {
+          "hour_ahead": 2,
+          "xgboost_mae": 0.524,
+          "xgboost_rmse": 0.74,
+          "persistence_mae": 0.5641,
+          "persistence_rmse": 0.7616,
+          "previous_day_mae": 1.6646,
+          "previous_day_rmse": 2.2239,
+          "selected_method": "xgboost",
+          "selected_mae": 0.524,
+          "validation_mae_by_method": {
+            "xgboost": 0.4433,
+            "persistence": 0.5573,
+            "previous_day": 1.3175
+          }
+        },
+        {
+          "hour_ahead": 3,
+          "xgboost_mae": 0.6795,
+          "xgboost_rmse": 0.9302,
+          "persistence_mae": 0.7536,
+          "persistence_rmse": 0.998,
+          "previous_day_mae": 1.6646,
+          "previous_day_rmse": 2.2239,
+          "selected_method": "xgboost",
+          "selected_mae": 0.6795,
+          "validation_mae_by_method": {
+            "xgboost": 0.594,
+            "persistence": 0.7545,
+            "previous_day": 1.3178
+          }
+        }
+      ],
+      "precipitation": [
+        {
+          "hour_ahead": 1,
+          "xgboost_mae": 0.1195,
+          "xgboost_rmse": 0.4727,
+          "persistence_mae": 0.0754,
+          "persistence_rmse": 0.2833,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "persistence",
+          "selected_mae": 0.0754,
+          "validation_mae_by_method": {
+            "xgboost": 0.0192,
+            "persistence": 0.0138,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        },
+        {
+          "hour_ahead": 2,
+          "xgboost_mae": 0.1422,
+          "xgboost_rmse": 0.5151,
+          "persistence_mae": 0.1081,
+          "persistence_rmse": 0.3939,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "zero_rain",
+          "selected_mae": 0.1132,
+          "validation_mae_by_method": {
+            "xgboost": 0.0233,
+            "persistence": 0.0171,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        },
+        {
+          "hour_ahead": 3,
+          "xgboost_mae": 0.1522,
+          "xgboost_rmse": 0.5298,
+          "persistence_mae": 0.1208,
+          "persistence_rmse": 0.4276,
+          "previous_day_mae": 0.1914,
+          "previous_day_rmse": 0.6027,
+          "zero_rain_mae": 0.1132,
+          "selected_method": "zero_rain",
+          "selected_mae": 0.1132,
+          "validation_mae_by_method": {
+            "xgboost": 0.026,
+            "persistence": 0.0191,
+            "previous_day": 0.0288,
+            "zero_rain": 0.0151
+          }
+        }
+      ]
+    },
+    "activeReport": "experiments/ml/weather_inference_2014-09-15.json",
+    "activeReportSha256": "c6ae2a1b9f7c47701b735fc55da802c3321e74113a6dc7f656756c062e116555"
+  },
   "policyAudit": {
     "protocol": "experiments/ml/revision_audit_protocol.json",
     "protocolSha256": "f46fe3060e0b93a331705b16007379ef512a7643a779a926c725b6dc09514ca8",
@@ -124,6 +250,9 @@
     "priorDateExclusion": true,
     "inferenceMatchesReplay": true,
     "activeBrowserMatchesInference": true,
+    "savedWeatherModelEvaluation": true,
+    "weatherPastOnlyFeatures": true,
+    "activeWeatherMatchesInference": true,
     "frozenPolicyAudit": true,
     "engineBoundaries": true,
     "unitTests": true,
@@ -132,11 +261,12 @@
   },
   "demoVideo": {
     "file": "docs/assets/ml-demo.webm",
-    "sha256": "322844304e2340b472c1c76d4060651613e582ebeacbf09864074f496363ad3a"
+    "sha256": "aafdfeafb82dc8147755d46f3d7019afdf764cd1842480750beda29fcb2262d9"
   },
   "limitations": [
     "Meters are anonymous customers mapped illustratively to utilities.",
     "Cyclone supply, feeder disruption and service impacts are simulated.",
+    "ERA5 weather is reanalysis; rainfall XGBoost was weaker than simple baselines and weather does not drive the grid scenario.",
     "Policy-audit dates are unused for allocation replay but belong to the existing model test period.",
     "100% scripted-supply planning does not establish safety under uncertain real supply."
   ]

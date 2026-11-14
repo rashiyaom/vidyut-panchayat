@@ -1,0 +1,24 @@
+{
+  "source": "https://archive-api.open-meteo.com/v1/archive?latitude=38.72&longitude=-9.14&start_date=2013-01-01&end_date=2014-12-31&hourly=temperature_2m,precipitation,wind_speed_10m&models=era5&timezone=GMT&wind_speed_unit=ms&precipitation_unit=mm",
+  "documentation": "https://open-meteo.com/en/docs/historical-weather-api",
+  "provider": "Open-Meteo, ERA5 reanalysis",
+  "license": "CC BY 4.0; attribution to Open-Meteo and Copernicus/ECMWF ERA5",
+  "source_sha256": "b8f9e6bc6ceafd6434a30a076326e1d796e1cbd40d6861564e7a9faa42abf7cd",
+  "requested_coordinates": [
+    38.72,
+    -9.14
+  ],
+  "returned_grid_cell": [
+    38.75,
+    -9.25
+  ],
+  "time_zone": "UTC (GMT API response)",
+  "period": "2013-01-01T00:00 through 2014-12-31T23:00 UTC",
+  "rows": 17520,
+  "units": {
+    "temperature_2m": "\u00b0C",
+    "precipitation": "mm",
+    "wind_speed_10m": "m/s"
+  },
+  "note": "ERA5 is reanalysis, not an archived operational forecast or a station sensor. No outage labels are included."
+}

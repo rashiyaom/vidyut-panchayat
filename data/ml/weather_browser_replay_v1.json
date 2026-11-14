@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "originPortugal": "2014-09-15T00:00:00+01:00",
+  "originUtc": "2014-09-14T23:00:00+00:00",
+  "source": "https://open-meteo.com/en/docs/historical-weather-api",
+  "sourceSha256": "b8f9e6bc6ceafd6434a30a076326e1d796e1cbd40d6861564e7a9faa42abf7cd",
+  "processedDataSha256": "a3a28a6a5f84de204d895cd18ad1f1dc9232a66d8f6a8aed8e532fd2f4105e8d",
+  "gridCell": [
+    38.75,
+    -9.25
+  ],
+  "weather": {
+    "wind_speed_10m": {
+      "unit": "m/s",
+      "modelSha256": "c9fc899179961fef417ac8814c87a137b6d25f79f775f13d42c335e7fd346b63",
+      "rows": [
+        {
+          "hourAhead": 1,
+          "validTimeUtc": "2014-09-14T23:00:00+00:00",
+          "validTimePortugal": "2014-09-15T00:00:00+01:00",
+          "method": "xgboost",
+          "forecast": 4.746,
+          "xgboostForecast": 4.746,
+          "persistenceForecast": 4.83,
+          "actualReanalysis": 4.79
+        },
+        {
+          "hourAhead": 2,
+          "validTimeUtc": "2014-09-15T00:00:00+00:00",
+          "validTimePortugal": "2014-09-15T01:00:00+01:00",
+          "method": "xgboost",
+          "forecast": 4.68,
+          "xgboostForecast": 4.68,
+          "persistenceForecast": 4.83,
+          "actualReanalysis": 5.2
+        },
+        {
+          "hourAhead": 3,
+          "validTimeUtc": "2014-09-15T01:00:00+00:00",
+          "validTimePortugal": "2014-09-15T02:00:00+01:00",
+          "method": "xgboost",
+          "forecast": 4.649,
+          "xgboostForecast": 4.649,
+          "persistenceForecast": 4.83,
+          "actualReanalysis": 5.68
+        }
+      ]
+    },
+    "precipitation": {
+      "unit": "mm/hour",
+      "modelSha256": "890374dcfb8c78f7aa752910e93ccc623f19fd96d3c5ec345b8614e8fb9b778c",
+      "rows": [
+        {
+          "hourAhead": 1,
+          "validTimeUtc": "2014-09-14T23:00:00+00:00",
+          "validTimePortugal": "2014-09-15T00:00:00+01:00",
+          "method": "persistence",
+          "forecast": 0.4,
+          "xgboostForecast": 1.084,
+          "persistenceForecast": 0.4,
+          "actualReanalysis": 0.4
+        },
+        {
+          "hourAhead": 2,
+          "validTimeUtc": "2014-09-15T00:00:00+00:00",
+          "validTimePortugal": "2014-09-15T01:00:00+01:00",
+          "method": "zero_rain",
+          "forecast": 0.0,
+          "xgboostForecast": 1.162,
+          "persistenceForecast": 0.4,
+          "actualReanalysis": 0.2
+        },
+        {
+          "hourAhead": 3,
+          "validTimeUtc": "2014-09-15T01:00:00+00:00",
+          "validTimePortugal": "2014-09-15T02:00:00+01:00",
+          "method": "zero_rain",
+          "forecast": 0.0,
+          "xgboostForecast": 1.506,
+          "persistenceForecast": 0.4,
+          "actualReanalysis": 0.1
+        }
+      ]
+    }
+  },
+  "limitations": "ERA5 reanalysis is a historical reference, not a live sensor or archived forecast. The rainfall model underperformed simple baselines; the validation-selected forecast uses persistence/zero rain. No outage risk is inferred."
+}

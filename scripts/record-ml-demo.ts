@@ -23,8 +23,10 @@ try {
   await page.locator('[data-room-tab="evidence"]').click();
   await page.locator("#technical-evidence>summary").click();
   await page.getByText("Trained model & historical evidence").click();
+  await page.locator(".ml-evidence table").first().scrollIntoViewIfNeeded();
+  await page.waitForTimeout(2200);
   await page.getByText("Inspect selected date predictions and measured readings").click();
-  await page.locator(".ml-evidence").scrollIntoViewIfNeeded();
+  await page.getByText("Selected date MAE, kW").scrollIntoViewIfNeeded();
   await page.waitForTimeout(2200);
   await page.getByText("Inspect selected date predictions and measured readings").click();
   await page.waitForTimeout(1000);
