@@ -40,6 +40,11 @@ try {
   );
   await expect(page.locator("#conference-canvas")).toBeVisible();
   await expect(page.locator(".delegate-label")).toHaveCount(10);
+  await expect(page.locator("#global-approve")).toBeVisible();
+  await expect(page.locator("#action-title")).toHaveText(
+    "Your approval is needed",
+  );
+  await expect(page.locator("#replay-status")).toContainText("speaking");
   await page.waitForTimeout(800);
   await page.screenshot({ path: "experiments/results/council-room.png" });
   await page.locator('[data-delegate="telecom"]').click();
@@ -51,8 +56,16 @@ try {
   await expect(page.locator("#decision-guide")).toContainText(
     "Before the city moves",
   );
+  await expect(page.locator(".guide-timeline-row")).toHaveCount(6);
+  await expect(page.locator(".guide-comparison-row").first()).toContainText(
+    "Council plan",
+  );
   await page.screenshot({ path: "experiments/results/council-decision.png" });
-  await page.locator("#guide-approve").click();
+  await page.locator('[data-room-tab="room"]').click();
+  await page.locator("#global-approve").click();
+  await page.waitForFunction(
+    () => window.vidyutCity.getSimulation().state === "Executing",
+  );
   await page.locator("#room-step").click();
   await page.waitForFunction(
     () => window.vidyutCity.getSimulation().tick?.t === 0,
@@ -80,6 +93,10 @@ try {
   await page.screenshot({ path: "experiments/results/council-chat.png" });
   await page.locator('[data-room-tab="results"]').click();
   await expect(page.locator(".allocation-bars>div")).toHaveCount(10);
+  await expect(page.locator(".result-balance>div")).toHaveCount(3);
+  await expect(page.locator(".history-chart>div")).toHaveCount(1);
+  await expect(page.locator(".result-tier")).toHaveCount(3);
+  await page.screenshot({ path: "experiments/results/council-results.png" });
   await page.locator('[data-room-tab="impact"]').click();
   await expect(page.locator("#city-impact-view #city-canvas")).toBeVisible();
   await page.waitForTimeout(300);
