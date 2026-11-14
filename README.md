@@ -14,6 +14,23 @@
 
 ---
 
+
+### 1. The 3D Panchayat Chamber & Multi-Agent Deliberation
+
+![Panchayat Council Deliberation](docs/assets/panchayat-council-deliberation.gif)
+*Live recording: Entering the 3D Panchayat chamber, inspecting delegates around the circular council table, reviewing the operator decision guide, and advancing real-time simulation ticks.*
+
+| 3D Council Chamber (Courtroom View) | Overhead Tactical Table |
+|:---:|:---:|
+| ![3D Council Chamber](docs/assets/panchayat-chamber-3d.png) | ![Panchayat Overhead View](docs/assets/panchayat-overhead.png) |
+| *Official courtroom view: 10 delegates seated at the round table with physical name cards, microphones, and central miniature skyline.* | *Overhead tactical camera view tracking round-table seating, delegate turns, and committed power state.* |
+
+| Council Collective Result Dashboard | Representative Inspection & Case |
+|:---:|:---:|
+| ![Council Collective Result](docs/assets/council-collective-result.png) | ![Delegate Inspection](docs/assets/panchayat-delegate-inspection.png) |
+| *Committed decision: 200 PU available, 162 PU allocated, 0 violations, and 100% within-tier fairness.* | *Inspecting representative statements, power demand, allocated capacity, and battery runtime.* |
+
+---
 ## System Architecture
 
 ![Vidyut Panchayat Agent Architecture]
@@ -63,29 +80,6 @@ flowchart TD
 
 The user interface combines a real-time Three.js 3D city digital twin with an interactive Panchayat Council deliberation chamber. All animations, vehicle movements, power route lines, and character gestures are driven by engine ticks and Web Worker messages without mock data or external video assets.
 
-### 1. The 3D Panchayat Chamber & Multi-Agent Deliberation
-
-![Panchayat Council Deliberation](docs/assets/panchayat-council-deliberation.gif)
-*Live recording: Entering the 3D Panchayat chamber, inspecting delegates around the circular council table, reviewing the operator decision guide, and advancing real-time simulation ticks.*
-
-| 3D Council Chamber (Courtroom View) | Overhead Tactical Table |
-|:---:|:---:|
-| ![3D Council Chamber](docs/assets/panchayat-chamber-3d.png) | ![Panchayat Overhead View](docs/assets/panchayat-overhead.png) |
-| *Official courtroom view: 10 delegates seated at the round table with physical name cards, microphones, and central miniature skyline.* | *Overhead tactical camera view tracking round-table seating, delegate turns, and committed power state.* |
-
-| Council Collective Result Dashboard | Representative Inspection & Case |
-|:---:|:---:|
-| ![Council Collective Result](docs/assets/council-collective-result.png) | ![Delegate Inspection](docs/assets/panchayat-delegate-inspection.png) |
-| *Committed decision: 200 PU available, 162 PU allocated, 0 violations, and 100% within-tier fairness.* | *Inspecting representative statements, power demand, allocated capacity, and battery runtime.* |
-
----
-
-### 2. Concept Artwork & Command Center Architecture
-
-![Panchayat Command Chamber Concept](docs/assets/panchayat-command-chamber-concept.jpg)
-*High-resolution architectural concept: The Vidyut Panchayat Crisis Command Chamber integrating circular council deliberation, live grid telemetry walls, and physical city twin.*
-
----
 
 ### 3. Dynamic Time-of-Day Illumination & Night Mode
 
