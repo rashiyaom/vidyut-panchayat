@@ -21,14 +21,37 @@ The frontend integrates a real-time 3D Three.js digital twin of the city with an
 
 *Live recording: Entering the 3D Panchayat chamber, inspecting delegates around the round table, reviewing the operator decision guide, and advancing real-time simulation ticks.*
 
-| 3D Chamber Perspective | Overhead Tactical Table |
+| 3D Council Chamber (Courtroom View) | Overhead Tactical Table |
 |---|---|
 | ![3D Council Chamber](docs/assets/panchayat-chamber-3d.png) | ![Panchayat Overhead View](docs/assets/panchayat-overhead.png) |
-| *Procedural representatives with name cards and microphones* | *Overhead camera view tracking table seating and active turns* |
+| *Retaken courtroom perspective: 10 delegates seated with name cards, microphones, and central city model* | *Overhead camera view tracking table seating and active turns* |
+
+| Active Deliberation in Session | Representative Detail & Inspection |
+|---|---|
+| ![Panchayat Deliberation Active](docs/assets/panchayat-deliberation-active.png) | ![Delegate Inspection](docs/assets/panchayat-delegate-inspection.png) |
+| *Real-time speech bubbles and status rings during active negotiation* | *Inspecting real-time demand, allocated power, and backup runtime* |
 
 ---
 
-### 2. Living 3D City & Disaster Response
+### 2. Time-of-Day Lighting & Night Mode
+
+![Daylight to Night Lighting Cycle](docs/assets/lighting-cycle-day-to-night.gif)
+
+*Live recording: Cycling through Nagar's dynamic illumination engine — transition from Daylight to Golden Hour to Cozy Night with glowing streetlamps, illuminated windows, traffic headlights, and coastal reflections.*
+
+| Cozy Night Skyline | Golden Hour Warm Sunset |
+|---|---|
+| ![City Night Mode](docs/assets/city-night-mode.png) | ![City Golden Hour](docs/assets/city-golden-hour.png) |
+| *Night mode: illuminated building facades, active bridge/boardwalk lamps, train lights, and ocean glint* | *Golden hour lighting casting long shadows across residential courtyards and civic towers* |
+
+| Disaster Operations at Night | Living 3D City Grid (Daylight) |
+|---|---|
+| ![Disaster Night Impact](docs/assets/disaster-night-impact.png) | ![City Overview](docs/assets/city-overview.png) |
+| *Disaster response at night: illuminated elevated power routes and status triage rings* | *Authored 3D city with street grid, traffic, rail, and coastline* |
+
+---
+
+### 3. Living 3D City & Disaster Response
 
 ![Living 3D City and Disaster Navigation](docs/assets/city-exploration-and-disaster.gif)
 
@@ -41,7 +64,7 @@ The frontend integrates a real-time 3D Three.js digital twin of the city with an
 
 ---
 
-### 3. Operator Interface & Negotiation Trace
+### 4. Operator Interface & Negotiation Trace
 
 | Operator Decision Guide | Negotiation Deliberation Chat |
 |---|---|
@@ -102,3 +125,5 @@ Click **Disaster council** in the city, or select the central Panchayat Square a
 Start in **Your decision**, approve the exact reviewed proposal, then choose **Next decision**. **Council room** shows each revealed message as a speaker bubble. Select a person or name label to inspect their latest revealed statement alongside the separately labelled committed service state. **Group conversation** presents actual protocol messages in a chat layout, with agent filtering, explicit failed deliveries, replay and a read-entire-decision option. Duplicate broadcast deliveries are summarized; no dialogue or emotional reactions are invented. **Collective result** shows committed allocations and service outcomes.
 
 Discussion replay has its own speed and never advances the engine. Simulation speed advances the disaster clock. Use **City impact** to inspect the same disaster run. **Leave disaster mode** pauses the simulation and restores the ordinary city, its colors and its independent activity controls. Technical controls remain available under **Advanced controls & detailed evidence**. Human figures and gestures are stylized procedural illustrations, not photorealistic scans. No external character assets or network calls are required.
+
+In **City impact**, use **People close-up** for a closer street view, or click an area warning to inspect that block. Disruption brings running pedestrians, amber assembly markers, hazard lights and reduced or halted transit. These are illustrative responses to committed service levels, not a safe-route or evacuation-order model. **Trace electricity to** isolates a facility's supply route; **Understand the map & signals** explains colors and quantities. Electricity routes sit above the skyline and can be hidden to inspect the streets.
