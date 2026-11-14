@@ -1,3 +1,9 @@
-# Damage model
+# Damage and reserve model
 
-Placeholder for the service-loss, cascade, and person-hours-lost model described in `architecture.md`.
+Tick duration Δt=1/6 hour. Grid fraction is min(1,a/d). Backup fraction is min(1-grid, profile coverage, reserve/Δt). Reserve decreases by backup×Δt, avoiding an extra full tick when energy runs out. At ≥95% grid coverage, reserve recharges by .25×Δt hours up to capacity. Diesel additionally requires previous fuel service ≥.5; flooding disables refilling immediately. Fuel's non-electric stockpile is not grid backup. Commercial generators cover at most .5 demand. Other backups cover up to full demand.
+
+Own service is grid+backup, capped at 1. Fuel flooding forces its own service to zero while flood remains active. Effective service is own service multiplied by `Π (1-w_ij(1-service_j_previous))`. All dependencies use prior-tick values (initially 1), so processing order cannot create an instantaneous cascade. The initial fuel/traffic dependency graph actually contains a cycle, despite the architecture calling it acyclic; lagged evaluation makes this well-defined.
+
+Harm per agent per tick is `W (1-effectiveService)^1.5 Δt`. Damage is cumulative harm, a dimensionless priority-weighted service-loss score with hour scaling. Critical uptime is the fraction of Tier-1 agent-ticks at service ≥.9; hospital minimum is the worst effective service in the window. Status: down below .01, critical below .5, rationed below .9, otherwise ok. A software DOWN/HOLD flag is separate from physical service.
+
+Fairness is Jain's index of effective service within each tier, weighted by that tier's demand. All-zero tier service scores zero (perfectly shared blackout is not good service); otherwise `(Σs)^2/(nΣs²)`. Headline fairness is the mean over the measured window. Weighted service objective is explicitly ΣW×allocated PU, not effective service. Static fixed-weight priority and the optimum coincide on this linear tree model; that is reported rather than artificially making static worse.

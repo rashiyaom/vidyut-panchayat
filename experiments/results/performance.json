@@ -1,0 +1,20 @@
+{
+  "engineVersion": "1.1.0",
+  "node": "v26.13.1",
+  "platform": "darwin",
+  "cpu": "Apple M3",
+  "ticks": 144,
+  "tickMs": {
+    "median": 0.4143749999999784,
+    "p95": 0.6861670000000117,
+    "max": 2.4428330000000074,
+    "mean": 0.47827227083333235
+  },
+  "presim": {
+    "futures": 30,
+    "horizon": 18,
+    "strategies": 4,
+    "ms": 432.58620799999994
+  },
+  "note": "Local Node wall-clock measurement; includes whole engine tick, not rendering. Cold-start/GC outliers are retained. Browser FPS is measured separately."
+}

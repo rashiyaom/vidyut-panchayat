@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "unit": "PU",
+  "agents": [
+    {
+      "id": "hospital",
+      "facilityId": "hospital",
+      "label": "Hospital",
+      "tier": 1,
+      "weight": 1,
+      "demand": 24,
+      "minViable": 17,
+      "flexibility": 0.1,
+      "exposure": 3000,
+      "reserve": {
+        "kind": "diesel",
+        "hours": 4,
+        "refillPerHour": 0.25,
+        "coverage": 1
+      },
+      "dependsOn": [
+        {
+          "agent": "water",
+          "weight": 0.5
+        },
+        {
+          "agent": "fuel",
+          "weight": 0.3
+        },
+        {
+          "agent": "telecom",
+          "weight": 0.1
+        }
+      ]
+    },
+    {
+      "id": "emergency",
+      "facilityId": "emergency",
+      "label": "Emergency",
+      "tier": 1,
+      "weight": 0.9,
+      "demand": 10,
+      "minViable": 6,
+      "flexibility": 0.2,
+      "exposure": 10000,
+      "reserve": {
+        "kind": "battery",
+        "hours": 2,
+        "refillPerHour": 0.25,
+        "coverage": 1
+      },
+      "dependsOn": [
+        {
+          "agent": "telecom",
+          "weight": 0.6
+        },
+        {
+          "agent": "traffic",
+          "weight": 0.3
+        },
+        {
+          "agent": "fuel",
+          "weight": 0.2
+        }
+      ]
+    },
+    {
+      "id": "water",
+      "facilityId": "water",
+      "label": "Water",
+      "tier": 1,
+      "weight": 0.85,
+      "demand": 22,
+      "minViable": 12,
+      "flexibility": 0.3,
+      "exposure": 150000,
+      "reserve": null,
+      "dependsOn": [
+        {
+          "agent": "telecom",
+          "weight": 0.2
+        }
+      ]
+    },
+    {
+      "id": "telecom",
+      "facilityId": "telecom",
+      "label": "Telecom",
+      "tier": 1,
+      "weight": 0.8,
+      "demand": 12,
+      "minViable": 7,
+      "flexibility": 0.2,
+      "exposure": 150000,
+      "reserve": {
+        "kind": "battery",
+        "hours": 1,
+        "refillPerHour": 0.25,
+        "coverage": 1
+      },
+      "dependsOn": []
+    },
+    {
+      "id": "shelter",
+      "facilityId": "shelter",
+      "label": "Shelter",
+      "tier": 2,
+      "weight": 0.6,
+      "demand": 6,
+      "minViable": 3,
+      "flexibility": 0.5,
+      "exposure": 12000,
+      "reserve": null,
+      "dependsOn": [
+        {
+          "agent": "water",
+          "weight": 0.4
+        },
+        {
+          "agent": "telecom",
+          "weight": 0.1
+        }
+      ]
+    },
+    {
+      "id": "traffic",
+      "facilityId": "traffic",
+      "label": "Traffic",
+      "tier": 2,
+      "weight": 0.5,
+      "demand": 8,
+      "minViable": 3,
+      "flexibility": 0.6,
+      "exposure": 30000,
+      "reserve": {
+        "kind": "battery",
+        "hours": 0.5,
+        "refillPerHour": 0.25,
+        "coverage": 1
+      },
+      "dependsOn": [
+        {
+          "agent": "telecom",
+          "weight": 0.2
+        }
+      ]
+    },
+    {
+      "id": "fuel",
+      "facilityId": "fuel",
+      "label": "Fuel",
+      "tier": 2,
+      "weight": 0.6,
+      "demand": 6,
+      "minViable": 3,
+      "flexibility": 0.3,
+      "exposure": 10000,
+      "reserve": null,
+      "dependsOn": [
+        {
+          "agent": "traffic",
+          "weight": 0.3
+        },
+        {
+          "agent": "telecom",
+          "weight": 0.2
+        }
+      ]
+    },
+    {
+      "id": "residential",
+      "facilityId": "residential",
+      "label": "Residential",
+      "tier": 3,
+      "weight": 0.5,
+      "demand": 40,
+      "minViable": 10,
+      "flexibility": 0.9,
+      "exposure": 150000,
+      "reserve": null,
+      "dependsOn": [
+        {
+          "agent": "water",
+          "weight": 0.3
+        },
+        {
+          "agent": "telecom",
+          "weight": 0.2
+        }
+      ]
+    },
+    {
+      "id": "commercial",
+      "facilityId": "commercial",
+      "label": "Commercial",
+      "tier": 3,
+      "weight": 0.2,
+      "demand": 36,
+      "minViable": 0,
+      "flexibility": 1,
+      "exposure": 20000,
+      "reserve": {
+        "kind": "diesel",
+        "hours": 3,
+        "refillPerHour": 0.25,
+        "coverage": 0.5
+      },
+      "dependsOn": []
+    },
+    {
+      "id": "transit",
+      "facilityId": "transit",
+      "label": "Transit",
+      "tier": 3,
+      "weight": 0.4,
+      "demand": 16,
+      "minViable": 4,
+      "flexibility": 0.7,
+      "exposure": 25000,
+      "reserve": null,
+      "dependsOn": []
+    }
+  ]
+}

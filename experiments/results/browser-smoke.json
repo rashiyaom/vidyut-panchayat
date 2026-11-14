@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "completed144Ticks": true,
+  "crashDetected": true,
+  "rejoined": true,
+  "unmanagedDraw": 37.62,
+  "productionURL": "http://127.0.0.1:4173/",
+  "externalRequests": [],
+  "consoleErrors": [],
+  "requests": [
+    "http://127.0.0.1:4173/?seed=42",
+    "http://127.0.0.1:4173/assets/index-By1JXYCc.js",
+    "http://127.0.0.1:4173/assets/index-CZPtpPEM.css",
+    "http://127.0.0.1:4173/assets/engine.worker-ButKFLAi.js",
+    "http://127.0.0.1:4173/assets/engine.worker-ButKFLAi.js",
+    "http://127.0.0.1:4173/favicon.svg"
+  ],
+  "comparisonFps": 55.22937605707345,
+  "stats": {
+    "drawCalls": 218,
+    "triangles": 1547384,
+    "buildings": 64,
+    "ambientPaused": false,
+    "ambientSpeed": 1,
+    "ambientTime": 1.913798,
+    "vehicles": 96,
+    "buses": 12,
+    "trains": 2,
+    "pedestrians": 204
+  },
+  "crisis": {
+    "tick": 55,
+    "supply": 55,
+    "triage": [
+      "residential",
+      "traffic",
+      "transit"
+    ],
+    "violations": 0
+  },
+  "fallback": {
+    "tick": 13,
+    "aborts": 2,
+    "branch": 1
+  },
+  "verification": "FAIL"
+}

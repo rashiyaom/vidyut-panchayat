@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "errors": [],
+  "seats": 10,
+  "checks": [
+    "normal city starts animated without disaster",
+    "normal pause and resume",
+    "guided approval",
+    "disaster city impact view",
+    "normal mode restored on exit",
+    "3D room",
+    "overhead",
+    "agent selection",
+    "approval and real tick",
+    "group messages",
+    "filter",
+    "collective result",
+    "city return",
+    "Panchayat entry",
+    "mobile layout"
+  ]
+}

@@ -10,7 +10,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "batch": "tsx scripts/batch.ts",
-    "demo": "npm run build && mkdir -p demo/offline_bundle && cp -R dist/. demo/offline_bundle/"
+    "demo": "npm run build && tsx scripts/package-offline.ts",
+    "test:browser": "tsx scripts/browser-smoke.ts",
+    "check:boundaries": "tsx scripts/check-boundaries.ts",
+    "benchmark": "tsx scripts/performance.ts",
+    "test:council": "node --import tsx scripts/council-room-smoke.ts"
   },
   "dependencies": {
     "gsap": "^3.15.1",
@@ -19,9 +23,11 @@
   },
   "devDependencies": {
     "@gltf-transform/cli": "^4.5.1",
+    "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6",
     "@types/three": "^0.187.0",
     "lil-gui": "^0.21.0",
+    "prettier": "^3.10.1",
     "tsx": "^4.21.0",
     "typescript": "~7.0.2",
     "vite": "^8.3.6",

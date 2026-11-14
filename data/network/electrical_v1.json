@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "root": "substation",
+  "buses": [
+    {
+      "id": "east",
+      "capacity": 90
+    },
+    {
+      "id": "central",
+      "capacity": 80
+    },
+    {
+      "id": "west",
+      "capacity": 100
+    }
+  ],
+  "feeders": [
+    {
+      "id": "commercial",
+      "bus": "east",
+      "capacity": 60
+    },
+    {
+      "id": "transit",
+      "bus": "east",
+      "capacity": 25
+    },
+    {
+      "id": "fuel",
+      "bus": "east",
+      "capacity": 10
+    },
+    {
+      "id": "hospital",
+      "bus": "central",
+      "capacity": 40
+    },
+    {
+      "id": "telecom",
+      "bus": "central",
+      "capacity": 20
+    },
+    {
+      "id": "emergency",
+      "bus": "central",
+      "capacity": 20
+    },
+    {
+      "id": "traffic",
+      "bus": "central",
+      "capacity": 15
+    },
+    {
+      "id": "water",
+      "bus": "west",
+      "capacity": 35
+    },
+    {
+      "id": "shelter",
+      "bus": "west",
+      "capacity": 18
+    },
+    {
+      "id": "residential",
+      "bus": "west",
+      "capacity": 60
+    }
+  ]
+}

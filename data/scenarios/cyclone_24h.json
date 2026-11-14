@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "id": "cyclone_24h",
+  "ticks": 144,
+  "tickMinutes": 10,
+  "initialSupply": 200,
+  "demandNoise": 0.1,
+  "dropRate": 0,
+  "timingJitter": 0,
+  "events": [
+    {
+      "type": "supply",
+      "tick": 12,
+      "value": 70,
+      "label": "Grid collapse"
+    },
+    {
+      "type": "supply",
+      "tick": 36,
+      "value": 110,
+      "label": "Partial restoration"
+    },
+    {
+      "type": "demand",
+      "tick": 48,
+      "id": "hospital",
+      "value": 1.4,
+      "label": "Hospital surge"
+    },
+    {
+      "type": "demand",
+      "tick": 48,
+      "id": "shelter",
+      "value": 2.3333333333333335,
+      "label": "Evacuation"
+    },
+    {
+      "type": "supply",
+      "tick": 54,
+      "value": 55,
+      "label": "Cyclone landfall"
+    },
+    {
+      "type": "bus",
+      "tick": 54,
+      "id": "central",
+      "value": 30,
+      "label": "Central feeder failure"
+    },
+    {
+      "type": "flood",
+      "tick": 66,
+      "id": "fuel",
+      "label": "Fuel depot flooded"
+    },
+    {
+      "type": "supply",
+      "tick": 84,
+      "value": 120,
+      "label": "Grid restoration"
+    },
+    {
+      "type": "bus",
+      "tick": 84,
+      "id": "central",
+      "value": 80,
+      "label": "Central feeder repaired"
+    },
+    {
+      "type": "crash",
+      "tick": 108,
+      "id": "telecom",
+      "duration": 3,
+      "label": "Telecom software crash"
+    },
+    {
+      "type": "supply",
+      "tick": 132,
+      "value": 170,
+      "label": "Near recovery"
+    }
+  ]
+}
