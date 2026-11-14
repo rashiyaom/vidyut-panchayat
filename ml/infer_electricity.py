@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 
@@ -70,7 +71,11 @@ for h in range(3):
         for m, profile in enumerate(profiles):
             scale = profile["demand"] / float(mean[m])
             actual_demand[str(tick)][profile["id"]] = round(max(0, float(actual[h, m]) * scale), 2)
-            forecast_demand[str(tick)][profile["id"]] = round(max(0, float(prediction[h, m] + effective_buffer[h, m]) * scale), 2)
+            raw_pu = round(max(0, float(prediction[h, m]) * scale), 2)
+            base_buffered_pu = round(max(0, float(prediction[h, m] + upper_buffer[h, m]) * scale), 2)
+            forecast_demand[str(tick)][profile["id"]] = math.floor(
+                max(0, raw_pu + (base_buffered_pu - raw_pu) * selected_policy["bufferMultiplier"]) * 100 + 0.5
+            ) / 100
 
 rows = []
 for h in range(3):

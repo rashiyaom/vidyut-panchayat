@@ -15,6 +15,8 @@
     "policy:validate": "node --import tsx scripts/policy-experiment.ts validate",
     "policy:confirm": "node --import tsx scripts/policy-experiment.ts confirm",
     "policy:audit:freeze": "node --import tsx scripts/freeze-policy-audit.ts",
+    "policy:audit:episodes": "ml/.venv/bin/python ml/build_fresh_audit.py",
+    "policy:audit": "node --import tsx scripts/policy-experiment.ts audit",
     "evidence:ml": "node --import tsx scripts/export-ml-evidence.ts",
     "ml:infer": "ml/.venv/bin/python ml/infer_electricity.py",
     "demo:ml": "node --import tsx scripts/record-ml-demo.ts",

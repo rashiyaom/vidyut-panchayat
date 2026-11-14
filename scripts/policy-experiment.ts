@@ -21,7 +21,7 @@ const validationCandidates = [
   { name: "blend_validation_100", fill: 1, buffer: 2, blend: 1 },
   { name: "blend_validation_150_025", fill: 1, buffer: 1.5, blend: 0.25 },
 ];
-type Episode = { origin: string; calibrated: { phl: number; fairness: number; hospitalMin: number; violations: number }; staticPriority: { phl: number } };
+type Episode = { origin: string; calibrated: { phl: number; fairness: number; hospitalMin: number; violations: number }; staticPriority: { phl: number; fairness: number; hospitalMin: number } };
 type Replay = { episodeCount: number; allRunsSafe: boolean; supplyFraction: number; fillFraction?: number; bufferMultiplier?: number; priorityBlend?: number; episodes: Episode[] };
 const median = (items: number[]) => {
   const sorted = items.slice().sort((a, b) => a - b);
@@ -107,6 +107,60 @@ if (mode === "validate") {
   };
   await writeFile("experiments/ml/policy_confirmation_summary.json", JSON.stringify(summary, null, 2) + "\n");
   console.log(JSON.stringify(summary, null, 2));
+} else if (mode === "audit") {
+  const protocolBytes = await readFile("experiments/ml/fresh_policy_audit_protocol.json");
+  const protocol = JSON.parse(protocolBytes.toString());
+  const selectedBytes = await readFile(selectedPath);
+  const selected = JSON.parse(selectedBytes.toString()).selected;
+  if (createHash("sha256").update(selectedBytes).digest("hex") !== protocol.frozenPolicySha256 ||
+      JSON.stringify(protocol.frozenPolicy) !== JSON.stringify({
+        supplyFraction: selected.supplyFraction, fillFraction: selected.fillFraction,
+        bufferMultiplier: selected.bufferMultiplier, priorityBlend: selected.priorityBlend,
+      })) throw new Error("Frozen policy does not match the public audit protocol");
+  const replayPath = "experiments/ml/replay_fresh_audit.json";
+  const replay = JSON.parse(await readFile(replayPath, "utf8"));
+  if (replay.protocolSha256 !== createHash("sha256").update(protocolBytes).digest("hex") ||
+      JSON.stringify(replay.episodes.map((e: { origin: string }) => e.origin)) !== JSON.stringify(protocol.dates))
+    throw new Error("Audit episodes differ from the frozen date list");
+  const run = (file: string, fill: number, buffer: number, blend: number) =>
+    execFileSync(process.execPath, ["--import", "tsx", "scripts/forecast-replay.ts", replayPath,
+      String(selected.supplyFraction), file, String(fill), String(buffer), String(blend)], { stdio: "pipe" });
+  run("experiments/ml/fresh_audit_former.json", 0, 1, 0);
+  run("experiments/ml/fresh_audit_selected.json", selected.fillFraction, selected.bufferMultiplier, selected.priorityBlend);
+  const former = (await load("experiments/ml/fresh_audit_former.json")).data;
+  const current = (await load("experiments/ml/fresh_audit_selected.json")).data;
+  if (former.episodeCount !== 30 || current.episodeCount !== 30 ||
+      !former.allRunsSafe || !current.allRunsSafe ||
+      current.episodes.some((e, i) => e.origin !== protocol.dates[i] || e.origin !== former.episodes[i].origin))
+    throw new Error("Audit run is unsafe or dates do not match");
+  const formerMetrics = metrics(former), selectedMetrics = metrics(current);
+  const paired = current.episodes.map((e, i) => former.episodes[i].calibrated.phl - e.calibrated.phl);
+  const wins = paired.filter((value) => value > 0).length;
+  const checks = {
+    allCapacityChecksPass: former.allRunsSafe && current.allRunsSafe,
+    medianFairnessAtLeast: selectedMetrics.medianFairness >= protocol.criteria.medianFairnessAtLeast,
+    medianHospitalMinAtLeast: selectedMetrics.medianHospitalMin >= protocol.criteria.medianHospitalMinAtLeast,
+    medianPairedServiceLossImprovementAbove: median(paired) > protocol.criteria.medianPairedServiceLossImprovementAbove,
+    lowerServiceLossThanOldCouncilOnAtLeastDays: wins >= protocol.criteria.lowerServiceLossThanOldCouncilOnAtLeastDays,
+  };
+  const summary = {
+    version: 1, protocolSha256: createHash("sha256").update(protocolBytes).digest("hex"),
+    episodeCount: 30, frozenPolicy: protocol.frozenPolicy,
+    selectedMetrics, formerMetrics,
+    staticMetrics: {
+      medianPhl: median(current.episodes.map((e) => e.staticPriority.phl)),
+      medianFairness: median(current.episodes.map((e) => e.staticPriority.fairness)),
+      medianHospitalMin: median(current.episodes.map((e) => e.staticPriority.hospitalMin)),
+    },
+    selectedLowerPhlThanStaticDays: selectedMetrics.lowerPhlThanStaticDays,
+    medianPairedPhlImprovement: median(paired),
+    selectedLowerPhlThanFormerDays: wins,
+    criteria: protocol.criteria, checks,
+    passAllCriteria: Object.values(checks).every(Boolean),
+    recommendation: Object.values(checks).every(Boolean) ? "retain as validated historical-replay candidate" : "keep experimental; do not claim all targets are met",
+  };
+  await writeFile("experiments/ml/fresh_policy_audit_summary.json", JSON.stringify(summary, null, 2) + "\n");
+  console.log(JSON.stringify(summary, null, 2));
 } else {
-  throw new Error("Usage: node --import tsx scripts/policy-experiment.ts validate|select|confirm");
+  throw new Error("Usage: node --import tsx scripts/policy-experiment.ts validate|select|confirm|audit");
 }

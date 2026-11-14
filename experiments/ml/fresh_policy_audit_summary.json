@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "protocolSha256": "cc1e50bb6e852678a2d0eb7b555613eaaf03d3f489575d3741086310312f712c",
+  "episodeCount": 30,
+  "frozenPolicy": {
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.45
+  },
+  "selectedMetrics": {
+    "medianPhl": 166709.07446674333,
+    "medianFairness": 0.9688124710322943,
+    "medianHospitalMin": 0.8534971987772356,
+    "lowerPhlThanStaticDays": 11
+  },
+  "formerMetrics": {
+    "medianPhl": 171913.38914763444,
+    "medianFairness": 0.989124677831052,
+    "medianHospitalMin": 0.8291352315356599,
+    "lowerPhlThanStaticDays": 6
+  },
+  "staticMetrics": {
+    "medianPhl": 161798.6716411225,
+    "medianFairness": 0.9219522730940208,
+    "medianHospitalMin": 0.91
+  },
+  "selectedLowerPhlThanStaticDays": 11,
+  "medianPairedPhlImprovement": 4262.951555029402,
+  "selectedLowerPhlThanFormerDays": 23,
+  "criteria": {
+    "allCapacityChecksPass": true,
+    "medianFairnessAtLeast": 0.97,
+    "medianHospitalMinAtLeast": 0.8,
+    "medianPairedServiceLossImprovementAbove": 0,
+    "lowerServiceLossThanOldCouncilOnAtLeastDays": 18
+  },
+  "checks": {
+    "allCapacityChecksPass": true,
+    "medianFairnessAtLeast": false,
+    "medianHospitalMinAtLeast": true,
+    "medianPairedServiceLossImprovementAbove": true,
+    "lowerServiceLossThanOldCouncilOnAtLeastDays": true
+  },
+  "passAllCriteria": false,
+  "recommendation": "keep experimental; do not claim all targets are met"
+}
