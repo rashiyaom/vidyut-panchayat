@@ -1,0 +1,424 @@
+#tutorial-launcher {
+  position: fixed;
+  z-index: 20050;
+  right: 18px;
+  bottom: 231px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: 1px solid #d8c38f;
+  border-radius: 24px;
+  background: #203f32;
+  color: #fff9e9;
+  box-shadow: 0 8px 22px #10271b44;
+  font-size: 12px;
+}
+#tutorial-launcher span {
+  color: #efc777;
+  font-size: 17px;
+}
+#tutorial-launcher:hover {
+  background: #315b47;
+}
+#tutorial-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 20100;
+  pointer-events: none;
+  font-family: "Avenir Next", system-ui, sans-serif;
+}
+#tutorial-layer .tutorial-shade {
+  position: fixed;
+  inset: 0;
+  background: #06130d29;
+  pointer-events: none;
+}
+#tutorial-layer .tutorial-focus {
+  position: fixed;
+  border: 2px solid #e8c679;
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 9999px #071c13a8,
+    0 0 0 5px #e8c67933;
+  transition:
+    left 0.15s ease,
+    top 0.15s ease,
+    width 0.15s ease,
+    height 0.15s ease;
+  pointer-events: none;
+}
+#tutorial-layer .tutorial-arrow {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+#tutorial-arrow-path {
+  fill: none;
+  stroke: #e5bc72;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 9 7;
+  animation: tutorial-dash 1.1s linear infinite;
+  filter: drop-shadow(0 2px 4px #071c13a6);
+}
+@keyframes tutorial-dash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+#tutorial-layer .tutorial-card {
+  position: fixed;
+  width: min(350px, calc(100vw - 24px));
+  padding: 20px;
+  border: 1px solid #dbca9d;
+  border-radius: 14px;
+  background: #fdfbf4;
+  color: #244537;
+  box-shadow: 0 20px 65px #071c13a0;
+  pointer-events: auto;
+}
+.tutorial-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #7b6741;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+.tutorial-meter {
+  height: 4px;
+  margin: 12px 0 16px;
+  background: #e2e9df;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.tutorial-meter i {
+  display: block;
+  height: 100%;
+  background: #4e8864;
+  transition: width 0.25s;
+}
+#tutorial-title {
+  margin: 0 0 9px;
+  color: #204332;
+  font:
+    25px/1.18 Georgia,
+    serif;
+}
+#tutorial-body {
+  margin: 0;
+  color: #586b5d;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.tutorial-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+}
+.tutorial-actions button,
+#tutorial-confirm button {
+  padding: 9px 11px;
+  border-radius: 7px;
+  color: #345444;
+  font-size: 11px;
+}
+.tutorial-actions button:hover,
+#tutorial-confirm button:hover {
+  background: #e5ecdf;
+}
+#tutorial-next,
+#tutorial-skip-confirm {
+  margin-left: auto;
+  background: #234d39;
+  color: #fff9e9 !important;
+  font-weight: 700;
+}
+#tutorial-next:hover,
+#tutorial-skip-confirm:hover {
+  background: #367052 !important;
+}
+#tutorial-back:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+#tutorial-confirm {
+  margin-top: 16px;
+  padding: 13px;
+  background: #fff0d9;
+  border: 1px solid #ddbf87;
+  border-radius: 8px;
+  font-size: 12px;
+}
+#tutorial-confirm b {
+  display: block;
+  line-height: 1.5;
+}
+#tutorial-confirm > div {
+  display: flex;
+  margin-top: 10px;
+}
+.facility-tour {
+  position: absolute;
+  z-index: 16;
+  right: 28px;
+  bottom: 183px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 13px;
+  border: 1px solid #d2c395;
+  border-radius: 10px;
+  background: #203f32e8;
+  color: #fff7e6;
+  box-shadow: 0 6px 22px #12291e60;
+  font-size: 11px;
+}
+.facility-tour svg {
+  color: #f0cd82;
+}
+.facility-tour:hover {
+  background: #335b46;
+}
+.panchayat-pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 145px;
+  padding: 8px 10px;
+  border: 1px solid #f4d48d;
+  border-radius: 10px;
+  background: #214536f0;
+  color: #fff9e7;
+  box-shadow: 0 8px 20px #0920188c;
+  pointer-events: auto;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  animation: panchayat-bob 2.5s ease-in-out infinite;
+}
+.panchayat-pin svg {
+  color: #f5c66e;
+  width: 20px;
+  height: 20px;
+}
+.panchayat-pin small {
+  color: #d9e4d2;
+  font-size: 8px;
+  font-weight: 400;
+}
+@keyframes panchayat-bob {
+  50% {
+    margin-top: -7px;
+  }
+}
+body.in-council .facility-tour,
+body.reality-open .facility-tour,
+body.in-council #panchayat-pin,
+body.reality-open #panchayat-pin {
+  display: none;
+}
+body.in-council #tutorial-launcher {
+  bottom: 145px;
+}
+body.reality-open #tutorial-launcher {
+  bottom: 20px;
+}
+@media (max-width: 700px) {
+  #tutorial-launcher {
+    right: 10px;
+    bottom: 225px;
+    padding: 8px 10px;
+  }
+  #tutorial-launcher b {
+    font-size: 10px;
+  }
+  #tutorial-layer .tutorial-card {
+    width: calc(100vw - 24px);
+    padding: 16px;
+  }
+  #tutorial-title {
+    font-size: 22px;
+  }
+  .facility-tour {
+    right: 10px;
+    bottom: 180px;
+    padding: 8px 9px;
+  }
+  .facility-tour span {
+    display: none;
+  }
+  .panchayat-pin {
+    min-width: 0;
+    padding: 6px 7px;
+  }
+  .panchayat-pin span {
+    display: none;
+  }
+  body.in-council #tutorial-launcher {
+    bottom: 170px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panchayat-pin,
+  #tutorial-arrow-path {
+    animation: none;
+  }
+  #tutorial-layer .tutorial-focus {
+    transition: none;
+  }
+}
+
+/* Compact, unobstructed guide controls */
+body:not(.in-council):not(.reality-open) #tutorial-launcher {
+  left: 18px;
+  right: auto;
+  bottom: 143px;
+}
+#tutorial-launcher,
+.facility-tour {
+  border: 1px solid rgba(233, 209, 153, 0.45);
+  border-radius: 12px;
+  background: linear-gradient(
+    145deg,
+    rgba(17, 42, 39, 0.87),
+    rgba(24, 48, 45, 0.73)
+  );
+  color: #f8f1df;
+  box-shadow:
+    0 10px 30px #071b1990,
+    inset 0 1px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  font-weight: 650;
+}
+#tutorial-launcher {
+  padding: 9px 12px;
+}
+#tutorial-launcher:hover,
+.facility-tour:hover {
+  background: rgba(41, 74, 65, 0.94);
+  transform: translateY(-2px);
+}
+.facility-tour {
+  left: 18px;
+  right: auto;
+  bottom: 91px;
+  padding: 9px 12px;
+}
+.panchayat-pin {
+  min-width: 0;
+  padding: 5px 8px;
+  gap: 5px;
+  border: 1px solid rgba(246, 211, 131, 0.8);
+  border-radius: 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(19, 51, 42, 0.95),
+    rgba(33, 65, 54, 0.88)
+  );
+  box-shadow:
+    0 6px 22px #071d1890,
+    inset 0 1px rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(14px);
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  animation: none;
+}
+.panchayat-pin svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+}
+.panchayat-pin small {
+  display: none;
+}
+#tutorial-layer .tutorial-card {
+  width: min(325px, calc(100vw - 24px));
+  padding: 16px 17px 14px;
+  border: 1px solid rgba(235, 211, 160, 0.7);
+  border-radius: 15px;
+  background: rgba(250, 249, 241, 0.96);
+  box-shadow:
+    0 18px 55px #051b18ad,
+    inset 0 1px #fff;
+  backdrop-filter: blur(20px);
+}
+.tutorial-top {
+  align-items: center;
+}
+#tutorial-exit {
+  margin-left: auto;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  border: 1px solid #d3dbc9;
+  border-radius: 7px;
+  background: #edf0e8;
+  color: #315644;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+#tutorial-exit:hover {
+  background: #e0e9dc;
+}
+.tutorial-meter {
+  margin: 10px 0 13px;
+}
+#tutorial-title {
+  font-size: 21px;
+  line-height: 1.16;
+}
+#tutorial-body {
+  font-size: 12px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+.tutorial-actions {
+  margin-top: 15px;
+}
+#tutorial-arrow-path {
+  stroke-width: 2.4;
+  stroke-dasharray: 7 7;
+}
+#tutorial-layer .tutorial-focus {
+  border-radius: 10px;
+}
+@media (max-width: 700px) {
+  body:not(.in-council):not(.reality-open) #tutorial-launcher {
+    left: 10px;
+    bottom: 139px;
+  }
+  .facility-tour {
+    left: 10px;
+    bottom: 94px;
+  }
+  .facility-tour span {
+    display: inline;
+  }
+  .panchayat-pin span {
+    display: inline;
+  }
+  #tutorial-layer .tutorial-card {
+    padding: 14px;
+  }
+}
+body:not(.in-council):not(.reality-open) #tutorial-launcher { top: 105px; bottom: auto; }
+body:not(.in-council):not(.reality-open) .facility-tour { top: 155px; bottom: auto; }
+body.in-council #tutorial-launcher { top: 164px; bottom: auto; }
+@media (max-width: 700px) {
+  body:not(.in-council):not(.reality-open) #tutorial-launcher { top: 100px; bottom: auto; }
+  body:not(.in-council):not(.reality-open) .facility-tour { top: 146px; bottom: auto; }
+  body.in-council #tutorial-launcher { top: 132px; bottom: auto; }
+}
+body.in-council #tutorial-launcher { left: 18px; right: auto; top: auto; bottom: 166px; }
+@media (max-width: 700px) { body.in-council #tutorial-launcher { left: 10px; right: auto; top: auto; bottom: 172px; } }

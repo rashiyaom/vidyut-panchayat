@@ -13,6 +13,10 @@ try {
     }),
     errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
+  await page.addInitScript(() => {
+    for (const mode of ["city", "council", "reality", "facilities"])
+      localStorage.setItem(`vp:tutorial:${mode}:v1`, "done");
+  });
   await page.goto(process.env.PREVIEW_URL ?? "http://127.0.0.1:4173/");
   await page.waitForFunction(() => !!window.vidyutCity);
   const before = await page.evaluate(

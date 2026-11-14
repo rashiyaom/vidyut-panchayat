@@ -111,7 +111,7 @@
       "kind": "substation",
       "cell": [3, 7],
       "color": "#cbd0c6",
-      "description": "The city's grid connection supplies three distribution buses. Electrical simulation will be connected in a later phase.",
+      "description": "The city's simulated grid connection supplies three distribution buses. The council checks these buses and ten feeders before committing power.",
       "category": "Power infrastructure"
     }
   ],

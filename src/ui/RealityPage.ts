@@ -138,8 +138,8 @@ export function mountRealityPage() {
     renderAgent();
   };
   const pause = () => { if (timer !== undefined) window.clearInterval(timer); timer = undefined; $("rv-play").textContent = "▶"; };
-  const open = () => { page.hidden = false; document.body.classList.add("reality-open"); document.title = "The Real System · Vidyut Panchayat"; page.scrollTop = 0; render(); };
-  const close = () => { pause(); page.hidden = true; document.body.classList.remove("reality-open"); document.title = "Vidyut Panchayat"; };
+  const open = () => { page.hidden = false; document.body.classList.add("reality-open"); document.title = "The Real System · Vidyut Panchayat"; page.scrollTop = 0; render(); document.dispatchEvent(new Event("open-reality")); };
+  const close = () => { pause(); page.hidden = true; document.body.classList.remove("reality-open"); document.title = "Vidyut Panchayat"; document.dispatchEvent(new Event("close-reality")); };
   document.getElementById("reality-entry")?.addEventListener("click", (event) => {
     event.preventDefault();
     const url = new URL(location.href); url.searchParams.set("reality", "1");

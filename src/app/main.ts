@@ -35,6 +35,7 @@ import { EngineBridge } from "../worker/bridge";
 import { caseId, configForCase } from "../contract/cases";
 import { CouncilStore } from "./store";
 import { mountCouncilExperience } from "../ui/CouncilExperience";
+import { mountTutorial } from "../ui/Tutorial";
 import { mountCouncil } from "../ui/CouncilPanel";
 import { createPowerEffects } from "../world3d/powerLines";
 import { SplitComparison } from "../compare/splitScreen";
@@ -83,6 +84,7 @@ try {
 }
 
 let config = citySceneSchema.parse(sceneData);
+let tutorial: ReturnType<typeof mountTutorial> | undefined;
 const canvas = document.querySelector<HTMLCanvasElement>("#city-canvas")!;
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T;
@@ -170,12 +172,13 @@ scene.add(selectOutline);
 let selected: CityEntity | undefined,
   paused = false,
   speed = 1,
-  showLabels = false,
+  showLabels = true,
   lightingMode: LightingMode = "day",
   elapsed = 0,
   last = performance.now(),
   disposed = false;
 const markers = new Map<string, HTMLElement>();
+let panchayatPin: HTMLButtonElement | null = null;
 const facilityIcon = (f: Facility) =>
   f.kind === "hospital"
     ? icons.health
@@ -195,6 +198,7 @@ function rebuildLabels() {
   for (const e of city.entities.filter((e) => e.facility)) {
     const marker = document.createElement("button");
     marker.className = "landmark";
+    marker.dataset.facility = e.facility!.id;
     marker.innerHTML = facilityIcon(e.facility!);
     marker.title = e.name;
     marker.setAttribute("aria-label", e.name);
@@ -209,6 +213,16 @@ function rebuildLabels() {
     button.append(name);
     button.addEventListener("click", () => select(e, true));
     $("services").append(button);
+  }
+  const square = city.entities.find((entity) => entity.id === "block-3-3");
+  if (square) {
+    panchayatPin = document.createElement("button");
+    panchayatPin.id = "panchayat-pin";
+    panchayatPin.className = "panchayat-pin";
+    panchayatPin.innerHTML = `${icons.pin}<span>Panchayat Square</span>`;
+    panchayatPin.title = "Visit Panchayat Square to enter the disaster council";
+    panchayatPin.onclick = () => select(square, true);
+    $("landmarks").append(panchayatPin);
   }
   $("block-count").textContent = String(city.entities.length);
   $("service-count").textContent = config.facilities.length + " city services";
@@ -385,7 +399,9 @@ $("labels").onclick = () => {
   showLabels = !showLabels;
   $("labels").classList.toggle("active", showLabels);
   $("labels").setAttribute("aria-pressed", String(showLabels));
+  $("facility-tour").hidden = !showLabels;
 };
+$("labels").classList.add("active");
 function setLightingMode(mode: LightingMode) {
   if (!lightingModes.includes(mode)) throw new Error("Unknown lighting mode");
   lightingMode = mode;
@@ -408,6 +424,7 @@ $("daylight").onclick = () =>
       (lightingModes.indexOf(lightingMode) + 1) % lightingModes.length
     ],
   );
+setLightingMode("day");
 $("weather-toggle").onclick = () =>
   setWeather(currentWeather === "raining" ? "sunny" : "raining");
 const dialog = $<HTMLDialogElement>("controls-dialog");
@@ -575,6 +592,20 @@ function animate(now: number) {
         "px," +
         (-projected.y * 0.5 + 0.5) * window.innerHeight +
         "px) translate(-50%,-100%)";
+  }
+  const square = city.entities.find((entity) => entity.id === "block-3-3");
+  if (square && panchayatPin) {
+    projected
+      .copy(square.position)
+      .setY(square.height + 11)
+      .project(view.camera);
+    panchayatPin.hidden =
+      projected.z >= 1 ||
+      projected.z <= -1 ||
+      Math.abs(projected.x) > 0.98 ||
+      Math.abs(projected.y) > 0.98;
+    if (!panchayatPin.hidden)
+      panchayatPin.style.transform = `translate(${(projected.x * 0.5 + 0.5) * window.innerWidth}px,${(-projected.y * 0.5 + 0.5) * window.innerHeight}px) translate(-50%,-100%)`;
   }
   powerEffects.animate(elapsed);
   if (comparisonEnabled && comparisonPair && disasterOpen) {
@@ -752,6 +783,7 @@ if (import.meta.hot)
     audio.dispose();
     nightLighting.dispose();
     councilExperience.dispose();
+    tutorial?.dispose();
     bridge.dispose();
     comparison.dispose();
     powerEffects.dispose();
@@ -782,7 +814,7 @@ let disasterEffects = createDisasterEffects(
   config.gridSize * config.blockSize + 80,
 );
 scene.add(disasterEffects.group);
-let currentWeather: "raining" | "sunny" = isCalmMode ? "sunny" : "raining";
+let currentWeather: "raining" | "sunny" = "sunny";
 
 function updateWeatherToggle(weather: "raining" | "sunny") {
   currentWeather = weather;
@@ -868,7 +900,7 @@ function applyDisaster(
   }
   updateWeatherToggle(state.rain > 0.15 ? "raining" : "sunny");
 }
-applyDisaster(null);
+applyDisaster(null, true);
 function renderSignalReadout(tick: Tick | null) {
   const el = document.getElementById("signal-readout");
   if (!el) return;
@@ -1074,6 +1106,21 @@ const councilExperience = mountCouncilExperience(
     },
   },
 );
+tutorial = mountTutorial({
+  facilities: config.facilities.map((facility) => ({
+    id: facility.id,
+    name: facility.name,
+    description: facility.description,
+  })),
+  focusFacility(id) {
+    const entity = city.entities.find((item) => item.facility?.id === id);
+    if (entity) select(entity, true);
+  },
+  clearFacility() {
+    clearSelection();
+    view.reset();
+  },
+});
 if (urlParams.get("council") === "1")
   queueMicrotask(() => document.dispatchEvent(new Event("open-council")));
 document

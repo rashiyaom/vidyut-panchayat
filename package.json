@@ -36,7 +36,8 @@
     "jury:verify": "node --import tsx scripts/jury-verify.ts",
     "check:boundaries": "tsx scripts/check-boundaries.ts",
     "benchmark": "tsx scripts/performance.ts",
-    "test:council": "node --import tsx scripts/council-room-smoke.ts"
+    "test:council": "node --import tsx scripts/council-room-smoke.ts",
+    "test:tutorial": "node --import tsx scripts/tutorial-smoke.ts"
   },
   "dependencies": {
     "gsap": "^3.15.1",

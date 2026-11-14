@@ -7,6 +7,10 @@ const browser = await chromium.launch({
   args: ["--enable-unsafe-swiftshader"],
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+await page.addInitScript(() => {
+  for (const mode of ["city", "council", "reality", "facilities"])
+    localStorage.setItem(`vp:tutorial:${mode}:v1`, "done");
+});
 const errors: string[] = [];
 page.on("pageerror", (error) => errors.push(error.message));
 const base = process.env.VIDYUT_PREVIEW_URL ?? "http://127.0.0.1:4173";

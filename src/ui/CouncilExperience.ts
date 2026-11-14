@@ -419,6 +419,7 @@ export function mountCouncilExperience(
     render();
     frame = requestAnimationFrame(animate);
     el("leave-council").focus();
+    document.dispatchEvent(new Event("council-opened"));
   }
   function close() {
     if (root.hidden) return;
@@ -432,6 +433,7 @@ export function mountCouncilExperience(
     });
     inertSiblings.clear();
     document.body.classList.remove("in-council");
+    document.dispatchEvent(new Event("close-council"));
     cancelAnimationFrame(frame);
     previousFocus?.focus();
   }

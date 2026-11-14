@@ -77,8 +77,9 @@ export function mountExplorer(app: HTMLElement) {
       <span class="dock-divider"></span>
       <button id="pause" aria-label="Pause city activity" title="Pause activity (Space)">${icons.pause}</button><button id="speed" title="Change activity speed" aria-label="Change activity speed">1×</button>
       <span class="dock-divider"></span>
-      <button id="labels" aria-pressed="false" title="Show city services">${icons.pin}<span>Landmarks</span></button>
+      <button id="labels" aria-pressed="true" title="Show city services">${icons.pin}<span>Landmarks</span></button>
     </nav>
+    <button id="facility-tour" class="facility-tour" type="button">${icons.pin}<span>Tour all facilities</span><b>→</b></button>
     <span id="activity-count" class="sr-only"></span>
     <div class="minimap glass"><div class="minimap-heading"><b>NAGAR</b><span>N ↑</span></div><canvas id="minimap-canvas" width="360" height="260" aria-label="City minimap. Click to navigate." tabindex="0"></canvas></div>
     <dialog id="controls-dialog" class="glass"><button id="close-help" class="close-button" aria-label="Close help">${icons.close}</button><div class="eyebrow">A CITY AT YOUR FINGERTIPS</div><h2>Find your perspective.</h2><p>Explore a place from the menu, or click any city block.</p><dl><dt>Orbit</dt><dd>Drag · one finger</dd><dt>Pan</dt><dd>Right-drag · two fingers · W A S D</dd><dt>Zoom</dt><dd>Scroll · pinch · + / −</dd><dt>Pause</dt><dd>Space</dd><dt>Overview</dt><dd>Home</dd></dl><p class="muted">Explore the city freely. City services are available through Explore or Landmarks.</p></dialog>
