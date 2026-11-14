@@ -42,6 +42,8 @@ export function mountExplorer(app: HTMLElement) {
     <header class="topbar">
       <div class="brand glass"><span class="brand-icon">${icons.city}</span><div><strong>VIDYUT PANCHAYAT</strong><span>Nagar <i>/</i> City explorer</span></div><span class="live-dot" title="City sandbox"></span></div>
       <div class="top-actions glass">
+        <a id="reality-entry" class="reality-entry" href="?reality=1" aria-label="Explore the real system">Explore the real system <span>↗</span></a>
+        <span class="dock-divider"></span>
         <button id="weather-toggle" class="weather-toggle" title="Toggle world: Raining / Sunny day">${icons.cloudRain}<span>Raining</span></button>
         <span class="dock-divider"></span>
         <button id="daylight" title="Change lighting">${icons.sun}<span>Daylight</span></button>

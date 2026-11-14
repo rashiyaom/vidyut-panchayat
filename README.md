@@ -4,6 +4,8 @@
 
 Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. The optional historical replay bundles saved XGBoost forecasts; neither mode requires an API key or runtime internet access.
 
+Use **Explore the real system** in the city header, or open `?reality=1`, for an animated technical walkthrough of the datasets, trained models, executable agents, telemetry, validation results, and the boundaries between measured data and simulation. With a production preview on port 4173, `npm run test:reality-browser` checks its navigation and interactive replay.
+
 ## Agent System Architecture
 
 ![Vidyut Panchayat Agent Architecture](docs/assets/agent-architecture-overview.png)

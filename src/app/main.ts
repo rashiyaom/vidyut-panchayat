@@ -40,8 +40,10 @@ import { SplitComparison } from "../compare/splitScreen";
 import type { CommandInput, Tick, Strategy, Config, Allocation } from "../contract/types";
 
 import { icons, mountExplorer } from "../ui/CityExplorer";
+import { mountRealityPage } from "../ui/RealityPage";
 
 mountExplorer(document.querySelector<HTMLDivElement>("#app")!);
+mountRealityPage();
 const urlParams = new URLSearchParams(location.search);
 const historicalReplay = urlParams.get("historical") === "1";
 const isCalmMode =
@@ -512,8 +514,9 @@ let frames = 0;
 function animate(now: number) {
   if (disposed) return;
   if (
-    document.body.classList.contains("in-council") &&
-    !document.body.classList.contains("council-city-impact")
+    (document.body.classList.contains("reality-open") ||
+      (document.body.classList.contains("in-council") &&
+        !document.body.classList.contains("council-city-impact")))
   ) {
     last = now;
     requestAnimationFrame(animate);
