@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "purpose": "Fresh policy audit on 30 model-test dates unused by earlier allocation replays or the two manual inference demos",
+  "selection": "30 evenly spaced ranks from all eligible test midnights; index floor((i+0.5)*eligibleCount/30)",
+  "testStart": "2014-08-08 00:00:00",
+  "eligibleCount": 85,
+  "dates": [
+    "2014-08-11 00:00:00",
+    "2014-08-16 00:00:00",
+    "2014-08-21 00:00:00",
+    "2014-08-25 00:00:00",
+    "2014-08-30 00:00:00",
+    "2014-09-04 00:00:00",
+    "2014-09-09 00:00:00",
+    "2014-09-14 00:00:00",
+    "2014-09-20 00:00:00",
+    "2014-09-24 00:00:00",
+    "2014-09-29 00:00:00",
+    "2014-10-04 00:00:00",
+    "2014-10-09 00:00:00",
+    "2014-10-14 00:00:00",
+    "2014-10-19 00:00:00",
+    "2014-10-23 00:00:00",
+    "2014-10-28 00:00:00",
+    "2014-11-02 00:00:00",
+    "2014-11-07 00:00:00",
+    "2014-11-12 00:00:00",
+    "2014-11-17 00:00:00",
+    "2014-11-21 00:00:00",
+    "2014-11-26 00:00:00",
+    "2014-12-01 00:00:00",
+    "2014-12-06 00:00:00",
+    "2014-12-11 00:00:00",
+    "2014-12-16 00:00:00",
+    "2014-12-20 00:00:00",
+    "2014-12-25 00:00:00",
+    "2014-12-30 00:00:00"
+  ],
+  "priorSources": [
+    {
+      "file": "experiments/ml/replay_episodes.json",
+      "sha256": "014aefd19818904c5b04b4ce0bb517217d5e8957dcf313fffea1d5fa5ed16f40",
+      "dateCount": 30
+    },
+    {
+      "file": "experiments/ml/replay_confirmation.json",
+      "sha256": "c75a191c444403ffada3f8bd8ba35c555807e9599001822cc8ff108e3e1bd5de",
+      "dateCount": 30
+    },
+    {
+      "file": "experiments/ml/replay_validation.json",
+      "sha256": "7329bb8cf8afccc3598ae480b5c8cf7e78a463d066f56f9713b3e4d45ee7ba97",
+      "dateCount": 20
+    },
+    {
+      "file": "experiments/ml/replay_2014-08-08.json",
+      "sha256": "1cb2a95045a1056cb881dcfd59265ec8dfa586b3776a4d66bfc049a8437161b4",
+      "dateCount": 1
+    },
+    {
+      "file": "experiments/ml/inference_2014-08-09.json",
+      "sha256": "551c0eb0635956b8bb519200578b52cc13dd8c4fa9735fe6d6cff1043c1fe65e",
+      "dateCount": 1
+    },
+    {
+      "file": "experiments/ml/inference_2014-09-15.json",
+      "sha256": "96c01aa6c2c2d31353b0c0602190d91ff40c76a83aeee40a0d337e4f5c674b28",
+      "dateCount": 1
+    }
+  ],
+  "processedDataSha256": "9e17f3d05a738a2318379f83f03f8015264b8c3a181c905b4f7d542b87b16c81",
+  "savedModelSha256": "91264ff4362dad84678d83df49ce9ef4c1f4350c3c6104f18ac5772af60142d7",
+  "frozenPolicySha256": "1da49e8fe84a545580c200feefc9e9f1f511f2fffb374358df40f700fbdfc2c8",
+  "frozenPolicy": {
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.45
+  },
+  "criteria": {
+    "allCapacityChecksPass": true,
+    "medianFairnessAtLeast": 0.97,
+    "medianHospitalMinAtLeast": 0.8,
+    "medianPairedServiceLossImprovementAbove": 0,
+    "lowerServiceLossThanOldCouncilOnAtLeastDays": 18
+  },
+  "comparisons": [
+    "former 100% council",
+    "frozen selected policy",
+    "static priority"
+  ],
+  "limitation": "These are unused allocation-replay dates from the existing model test period, not a newly collected dataset or a real cyclone."
+}
