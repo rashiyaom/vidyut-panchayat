@@ -14,7 +14,7 @@ const browser = await chromium.launch({
   executablePath: process.env.CHROME_PATH ?? "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
   args: ["--enable-unsafe-swiftshader"],
 });
-const previewUrl = process.env.VIDYUT_PREVIEW_URL ?? "http://127.0.0.1:4173";
+const previewUrl = process.env.VIDYUT_PREVIEW_URL ?? process.env.PREVIEW_URL ?? "http://127.0.0.1:4174";
 const page = await browser.newPage();
 const errors: string[] = [];
 page.on("pageerror", (e) => errors.push(e.message));

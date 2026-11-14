@@ -1,10 +1,10 @@
-> **Round-two technical work:** XGBoost demand and weather forecasting are trained on historical electricity and ERA5 weather data and evaluated on held-out periods. Offline council replays compare electricity plans with baselines. The live city remains an authored cyclone simulation. See [pipeline.md](pipeline.md), [electricity evidence](docs/ml_evidence.md), and [weather evidence](docs/weather_evidence.md).
+> **Round-two technical work:** XGBoost demand and weather forecasting are trained on historical electricity and ERA5 weather data and evaluated on held-out periods. Offline council replays compare electricity plans with baselines. The live city remains an authored cyclone simulation. See [ML & Policy Evidence](docs/ml_and_policy_evidence.md).
 
 # Vidyut Panchayat
 
 Ten deterministic utility agents negotiate scarce power during a 24-hour cyclone. The existing Three.js city displays committed engine output. A browser worker runs negotiation, safety checks, forward plans, 30-future pre-simulation, approval and verification; the same pure TypeScript engine runs Node experiments. The optional historical replay bundles saved XGBoost forecasts; neither mode requires an API key or runtime internet access.
 
-Use **Explore the real system** in the city header, or open `?reality=1`, for an animated technical walkthrough of the datasets, trained models, executable agents, telemetry, validation results, and the boundaries between measured data and simulation. With a production preview on port 4173, `npm run test:reality-browser` checks its navigation and interactive replay.
+Use **Explore the real system** in the city header, or open `?reality=1`, for an animated technical walkthrough of the datasets, trained models, executable agents, telemetry, validation results, and the boundaries between measured data and simulation. With a production preview on port 4174, `npm run test:reality-browser` checks its navigation and interactive replay.
 
 ## Agent System Architecture
 
@@ -93,21 +93,19 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 [Implementation and final validation record](docs/implementation_validation.md) lists delivered behavior, exact checks, a measured crisis trace, and limitations.
 
-The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
+The complete forecast experiments, static-priority comparisons, Lisbon ERA5 weather forecasting, Portugal national grid telemetry, and the two frozen 30-day policy audits are documented in [ML & Policy Evidence](docs/ml_and_policy_evidence.md).
 
-A separate [Lisbon weather forecast](docs/weather_evidence.md) predicts three hours of wind speed and evaluates rainfall forecasts using 2013–2014 ERA5 reanalysis. In the opt-in historical replay, same-date forecasts feed an explicit weather sensitivity rule in the planner and engine: above 12 m/s wind or 5 mm/hour rain, it reduces scripted supply by at most 25% and feeder capacity by at most 35%. The selected date is mild, so it adds no derating. This rule is illustrative, not a trained outage model; the normal city simulation is unchanged.
+In the opt-in historical replay, matching-date forecasts feed an explicit weather sensitivity rule in the planner and engine: above 12 m/s wind or 5 mm/hour rain, it reduces scripted supply by at most 25% and feeder capacity by at most 35%. The selected date is mild, so it adds no derating. This rule is illustrative, not a trained outage model; the normal city simulation is unchanged.
 
-The same historical replay also loads [Portugal national grid telemetry](docs/grid_telemetry.md) from ENTSO-E's 2014 hourly-load archive. Completed-hour MW values appear in engine ticks and the metrics panel. They are measured national load, not local feeder capacity or available city supply, and do not enter planning.
+The same historical replay also loads Portugal national grid telemetry from ENTSO-E's 2014 hourly-load archive. Completed-hour MW values appear in engine ticks and the metrics panel. They are measured national load, not local feeder capacity or available city supply, and do not enter planning.
 
-The [allocation-policy experiment](docs/ml_policy_optimization.md) records the initial candidate search and 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. The later audits below determined which rule the opt-in historical replay uses.
+A revised 25% priority blend, chosen with a strict validation margin ($\ge 0.980$), passed all frozen criteria on 30 further unused allocation-replay dates with 0.9804 median fairness and 0 violations. The opt-in historical replay uses that revision.
 
-The [first frozen unused-date audit](docs/ml_fresh_policy_audit.md) found a fairness failure for the 45% blend. A [revised 25% blend](docs/ml_revision_audit.md), chosen with a stricter validation margin, passed all frozen criteria on 30 further unused allocation-replay dates. The opt-in historical replay now uses that revision. These are simulation audits using the existing model test period, not real-grid validation.
-
-For jury review, run `npm run jury:verify` after installing Node and Python dependencies. It regenerates a saved-model inference report and the frozen revised-policy audit, checks hashes and date separation, runs the tests and production build, verifies the browser replay, and writes [the evidence manifest](experiments/ml/jury_evidence_manifest.json). Follow the [short jury walkthrough](docs/round_two_demo.md).
+For jury review, run `npm run jury:verify` after installing Node and Python dependencies. It regenerates a saved-model inference report and the frozen revised-policy audit, checks hashes and date separation, runs the tests and production build, verifies the browser replay, and writes [the evidence manifest](experiments/ml/jury_evidence_manifest.json). Follow the [demonstration and jury walkthrough](docs/demonstration_and_qa_runbook.md).
 
 Open `?historical=1` to run the bundled three-hour held-out electricity replay in the browser. It uses precomputed XGBoost forecasts, separate held-out demand, and the validated replay-only supply setting; the banner identifies it as an illustrative historical replay. The normal city simulation is unchanged. Regenerate the aggregate evidence with `npm run evidence:ml` after updating experiment results.
 
-To run the saved models on another held-out midnight, use `npm run ml:infer -- --date 2014-09-15 --activate` and `npm run weather:infer -- --date 2014-09-15 --activate`, then `npm run build` and open `?historical=1`. These commands save separate dated reports and update the browser replay; earlier frozen inference reports stay unchanged. Omit `--activate` to generate reports without changing the browser episode. On a new machine, first run `python3 -m venv ml/.venv` and `ml/.venv/bin/python -m pip install -r ml/requirements-inference.txt`. With preview on port 4173, `npm run demo:ml` records the walkthrough in `docs/assets/ml-demo.webm`.
+To run the saved models on another held-out midnight, use `npm run ml:infer -- --date 2014-09-15 --activate` and `npm run weather:infer -- --date 2014-09-15 --activate`, then `npm run build` and open `?historical=1`. These commands save separate dated reports and update the browser replay; earlier frozen inference reports stay unchanged. Omit `--activate` to generate reports without changing the browser episode. On a new machine, first run `python3 -m venv ml/.venv` and `ml/.venv/bin/python -m pip install -r ml/requirements-inference.txt`. With preview on port 4174, `npm run demo:ml` records the walkthrough in `docs/assets/ml-demo.webm`.
 
 ## Validate and reproduce
 
@@ -155,7 +153,7 @@ A clean architecture separates the pure TypeScript simulation engine, frontend d
 - Om Rashiya — frontend, 3D and demo lead (`rashiyaom@gmail.com`)
 - Krish Ardeshana — simulation engine lead (`krishardeshana@gmail.com`)
 
-The design and original execution plan remain in [architecture.md](architecture.md) and [timeline.md](timeline.md). Implemented formulas and assumptions are in [damage model](docs/damage_model.md), [impact model](docs/impact_model.md), and the [demo runbook](docs/demo_script.md).
+The core architecture and design invariants are detailed in [architecture.md](architecture.md). Mathematical formulas and cascade assumptions are in [damage and impact model](docs/damage_and_impact_model.md), and execution procedures are in the [demonstration and QA runbook](docs/demonstration_and_qa_runbook.md).
 
 ## Panchayat conference room
 

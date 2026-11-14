@@ -18,16 +18,17 @@ page.on("pageerror", (e) => errors.push(e.message));
 page.on("console", (m) => {
   if (m.type() === "error") errors.push(m.text());
 });
+const baseUrl = process.env.VIDYUT_PREVIEW_URL ?? process.env.PREVIEW_URL ?? "http://127.0.0.1:4174";
 await context.route("**/*", (route) => {
   const url = route.request().url();
   requests.push(url);
-  if (!url.startsWith("http://127.0.0.1:4173/")) {
+  if (!url.startsWith(baseUrl)) {
     external.push(url);
     void route.abort();
   } else void route.continue();
 });
 try {
-  await page.goto("http://127.0.0.1:4173/?seed=42");
+  await page.goto(`${baseUrl}/?seed=42`);
   await page.locator("#enter-council").click();
   await page.waitForFunction(
     () => window.vidyutCity?.getSimulation().state === "AwaitingHuman",
@@ -195,7 +196,7 @@ try {
     crashDetected,
     rejoined,
     unmanagedDraw: unmanaged.allocated,
-    productionURL: "http://127.0.0.1:4173/",
+    productionURL: baseUrl,
     externalRequests: external,
     consoleErrors: errors,
     requests,

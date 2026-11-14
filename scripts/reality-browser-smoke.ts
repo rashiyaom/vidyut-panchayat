@@ -13,7 +13,7 @@ await page.addInitScript(() => {
 });
 const errors: string[] = [];
 page.on("pageerror", (error) => errors.push(error.message));
-const base = process.env.VIDYUT_PREVIEW_URL ?? "http://127.0.0.1:4173";
+const base = process.env.VIDYUT_PREVIEW_URL ?? process.env.PREVIEW_URL ?? "http://127.0.0.1:4174";
 try {
   await page.goto(`${base}/?reality=1`);
   await page.locator("#reality-page").waitFor({ state: "visible" });

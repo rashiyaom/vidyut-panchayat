@@ -16,8 +16,9 @@ const context = await browser.newContext({
   recordVideo: { dir: recordingDir, size: { width: 1440, height: 900 } },
 });
 const page = await context.newPage();
+const previewUrl = process.env.VIDYUT_PREVIEW_URL ?? process.env.PREVIEW_URL ?? "http://127.0.0.1:4174";
 try {
-  await page.goto("http://127.0.0.1:4173/?historical=1");
+  await page.goto(`${previewUrl}/?historical=1`);
   await page.locator("#enter-council").click();
   await page.waitForFunction(() => window.vidyutCity?.getSimulation().state === "AwaitingHuman", null, { timeout: 30000 });
   await page.locator('[data-room-tab="evidence"]').click();

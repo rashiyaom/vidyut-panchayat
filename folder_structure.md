@@ -46,11 +46,13 @@ vidyut-panchayat/
 ├── docs/                     # Technical Architecture, Impact Models & Validation Documentation
 │   ├── assets/               # Showcase screenshots, diagrams, and demonstration GIFs
 │   ├── implementation_validation.md  # Formal verification record across all deliverables
-│   ├── ml_evidence.md        # Electricity demand forecast benchmarks and held-out metrics
-│   ├── weather_evidence.md   # Coastal weather model evaluation against ERA5 reanalysis
-│   ├── protocol.md           # Multi-agent negotiation protocol (BID, CONCEDE, COMMIT)
-│   ├── damage_model.md       # Inter-service cascade degradation mathematics
-│   └── round_two_demo.md     # 5-minute step-by-step jury walkthrough script
+│   ├── ml_and_policy_evidence.md     # Electricity demand & weather benchmarks, telemetry, and frozen audits
+│   ├── protocol.md           # Multi-agent negotiation protocol (BID, CONCEDE, COMMIT) & Invariants
+│   ├── damage_and_impact_model.md    # Cascade degradation mathematics & synthetic population exposure (PHL)
+│   ├── audio_and_visual_design.md    # Spatial Web Audio synthesizer & dynamic 3D lighting cycles
+│   ├── demonstration_and_qa_runbook.md # Jury walkthrough, presentation script & technical Q&A defense
+│   ├── city_customization.md # 3D city scene customization and procedural block overrides
+│   └── civic_discussion.md   # Disaster council dialogue and scenario briefing model
 │
 ├── scripts/                  # Automated Test Suites, Batch Runners & Packaging
 │   ├── batch.ts              # Multi-seed Monte Carlo matrix batch execution
@@ -66,7 +68,6 @@ vidyut-panchayat/
 ├── package.json              # NPM scripts and dependency definitions
 ├── tsconfig.json             # Strict TypeScript compiler configuration
 ├── vite.config.ts            # Vite client build & Vitest test runner configuration
-├── pipeline.md               # Round 2 ML & Telemetry Data Pipeline Specification
 ├── architecture.md           # Master architectural blueprint and design invariants
 └── README.md                 # Primary project overview, quickstart & visual showcase
 ```
