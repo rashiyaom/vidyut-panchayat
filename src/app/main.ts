@@ -31,13 +31,20 @@ import {
 import { createDisasterEffects } from "../world3d/disasterEffects";
 import { createMobility } from "../world3d/mobility";
 import "./styles.css";
-import { EngineBridge, defaultConfig } from "../worker/bridge";
+import { EngineBridge } from "../worker/bridge";
+import { caseId, configForCase } from "../contract/cases";
 import { CouncilStore } from "./store";
 import { mountCouncilExperience } from "../ui/CouncilExperience";
 import { mountCouncil } from "../ui/CouncilPanel";
 import { createPowerEffects } from "../world3d/powerLines";
 import { SplitComparison } from "../compare/splitScreen";
-import type { CommandInput, Tick, Strategy, Config, Allocation } from "../contract/types";
+import type {
+  CommandInput,
+  Tick,
+  Strategy,
+  Config,
+  Allocation,
+} from "../contract/types";
 
 import { icons, mountExplorer } from "../ui/CityExplorer";
 import { mountRealityPage } from "../ui/RealityPage";
@@ -45,16 +52,26 @@ import { mountRealityPage } from "../ui/RealityPage";
 mountExplorer(document.querySelector<HTMLDivElement>("#app")!);
 mountRealityPage();
 const urlParams = new URLSearchParams(location.search);
-const historicalReplay = urlParams.get("historical") === "1";
+const selectedCase = caseId(
+  urlParams.get("case") ??
+    (urlParams.get("historical") === "1" ? "historical" : null),
+);
+const historicalReplay = selectedCase === "historical";
 const isCalmMode =
   urlParams.get("calm") === "1" || urlParams.get("weather") === "calm";
 let simulationConfig: Config;
 try {
-  simulationConfig = defaultConfig(
+  simulationConfig = configForCase(
     Number(urlParams.get("seed") ?? 42),
+    selectedCase,
   );
   if (historicalReplay)
-    simulationConfig.scenario = { ...simulationConfig.scenario, demandNoise: 0, dropRate: 0, timingJitter: 0 };
+    simulationConfig.scenario = {
+      ...simulationConfig.scenario,
+      demandNoise: 0,
+      dropRate: 0,
+      timingJitter: 0,
+    };
 } catch (error) {
   const alert = document.createElement("main");
   alert.setAttribute("role", "alert");
@@ -514,9 +531,9 @@ let frames = 0;
 function animate(now: number) {
   if (disposed) return;
   if (
-    (document.body.classList.contains("reality-open") ||
-      (document.body.classList.contains("in-council") &&
-        !document.body.classList.contains("council-city-impact")))
+    document.body.classList.contains("reality-open") ||
+    (document.body.classList.contains("in-council") &&
+      !document.body.classList.contains("council-city-impact"))
   ) {
     last = now;
     requestAnimationFrame(animate);
@@ -804,7 +821,9 @@ function applyDisaster(
         ? disasterState(tick, simulationConfig.scenario.initialSupply)
         : tick
           ? disasterState(tick, simulationConfig.scenario.initialSupply)
-          : defaultCycloneState();
+          : selectedCase === "cyclone"
+            ? defaultCycloneState()
+            : disasterState(null, simulationConfig.scenario.initialSupply);
   renderSignalReadout(tick);
   const warningPanel = document.getElementById("street-warnings");
   if (warningPanel) {
@@ -835,12 +854,14 @@ function applyDisaster(
     title.textContent = state.active
       ? tick
         ? "City under disruption"
-        : "Cyclone in progress · Preseeded disruption"
+        : selectedCase === "cyclone"
+          ? "Cyclone scenario · illustrative disruption"
+          : "Illustrative disruption"
       : tick
         ? "City moving normally"
         : "Waiting for a decision";
     detail.textContent = state.active
-      ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People run toward amber assembly markers or wait there." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Wind-driven rain illustrates cyclone disruption." : ""}`
+      ? `Cars slow and stop with hazard lights. ${state.busSpeed === 0 ? "Buses and trains are halted." : "Buses and trains run at reduced speed."} ${state.gathering ? "People run toward amber assembly markers or wait there." : "Pedestrians move with urgency."}${state.rain > 0.15 ? " Rain illustrates scenario conditions." : ""}`
       : tick
         ? "Services support ordinary street activity. Advance the disaster clock to see changing conditions."
         : "Approve a plan, then advance the simulation to see its effect.";
@@ -925,10 +946,13 @@ const panel = mountCouncil(
   },
 );
 if (historicalReplay) {
-  (document.getElementById("sim-baseline") as HTMLSelectElement).disabled = true;
+  (document.getElementById("sim-baseline") as HTMLSelectElement).disabled =
+    true;
   const badge = document.createElement("div");
   badge.className = "historical-replay-badge";
-  const auditLabel = revisionAudit.passAllCriteria ? "revised policy passed 30-date simulation audit" : "policy audit criteria missed";
+  const auditLabel = revisionAudit.passAllCriteria
+    ? "revised policy passed 30-date simulation audit"
+    : "policy audit criteria missed";
   badge.textContent = `HISTORICAL REPLAY · ${browserReplay.origin.slice(0, 10)} · ${auditLabel} · illustrative utility mapping`;
   document.querySelector("#app")!.append(badge);
 }
@@ -936,6 +960,7 @@ let engineInitialized = false;
 let disasterOpen = false;
 const councilExperience = mountCouncilExperience(
   simulationConfig,
+  selectedCase,
   councilStore,
   (command) => {
     void dispatchSimulation(command).catch(showError);
@@ -950,30 +975,60 @@ const councilExperience = mountCouncilExperience(
       if (!engineInitialized) {
         engineInitialized = true;
         void bridge
-          .send({ type: "INIT", config: simulationConfig,
-            ...(historicalReplay ? { historicalReplay: {
-              origin: browserReplay.origin,
-              modelSha256: browserReplay.modelSha256,
-              actualDemand: Array.from({ length: 18 }, (_, t) => browserReplay.actualDemand[String(t) as keyof typeof browserReplay.actualDemand] as Allocation),
-              forecastDemand: Array.from({ length: 18 }, (_, t) => browserReplay.forecastDemand[String(t) as keyof typeof browserReplay.forecastDemand] as Allocation),
-              supplyFraction: 1 as const,
-              fillFraction: browserReplay.policy.fillFraction,
-              priorityBlend: browserReplay.policy.priorityBlend,
-              ...(weatherReplay.originPortugal.slice(0, 10) === browserReplay.origin.slice(0, 10) ? {
-                weatherForecast: {
-                  originPortugal: weatherReplay.originPortugal,
-                  windSpeed: weatherReplay.weather.wind_speed_10m.rows.map((row) => row.forecast),
-                  precipitation: weatherReplay.weather.precipitation.rows.map((row) => row.forecast),
-                },
-              } : {}),
-              ...(gridTelemetry.originPortugal.slice(0, 10) === browserReplay.origin.slice(0, 10) ? {
-                gridTelemetry: {
-                  originPortugal: gridTelemetry.originPortugal,
-                  originUtc: gridTelemetry.originUtc,
-                  samples: gridTelemetry.samples,
-                },
-              } : {}),
-            } } : {}),
+          .send({
+            type: "INIT",
+            config: simulationConfig,
+            ...(historicalReplay
+              ? {
+                  historicalReplay: {
+                    origin: browserReplay.origin,
+                    modelSha256: browserReplay.modelSha256,
+                    actualDemand: Array.from(
+                      { length: 18 },
+                      (_, t) =>
+                        browserReplay.actualDemand[
+                          String(t) as keyof typeof browserReplay.actualDemand
+                        ] as Allocation,
+                    ),
+                    forecastDemand: Array.from(
+                      { length: 18 },
+                      (_, t) =>
+                        browserReplay.forecastDemand[
+                          String(t) as keyof typeof browserReplay.forecastDemand
+                        ] as Allocation,
+                    ),
+                    supplyFraction: 1 as const,
+                    fillFraction: browserReplay.policy.fillFraction,
+                    priorityBlend: browserReplay.policy.priorityBlend,
+                    ...(weatherReplay.originPortugal.slice(0, 10) ===
+                    browserReplay.origin.slice(0, 10)
+                      ? {
+                          weatherForecast: {
+                            originPortugal: weatherReplay.originPortugal,
+                            windSpeed:
+                              weatherReplay.weather.wind_speed_10m.rows.map(
+                                (row) => row.forecast,
+                              ),
+                            precipitation:
+                              weatherReplay.weather.precipitation.rows.map(
+                                (row) => row.forecast,
+                              ),
+                          },
+                        }
+                      : {}),
+                    ...(gridTelemetry.originPortugal.slice(0, 10) ===
+                    browserReplay.origin.slice(0, 10)
+                      ? {
+                          gridTelemetry: {
+                            originPortugal: gridTelemetry.originPortugal,
+                            originUtc: gridTelemetry.originUtc,
+                            samples: gridTelemetry.samples,
+                          },
+                        }
+                      : {}),
+                  },
+                }
+              : {}),
           })
           .then(() => bridge.send({ type: "REQUEST_PLAN", horizonTicks: 18 }))
           .catch(showError);
@@ -1019,6 +1074,8 @@ const councilExperience = mountCouncilExperience(
     },
   },
 );
+if (urlParams.get("council") === "1")
+  queueMicrotask(() => document.dispatchEvent(new Event("open-council")));
 document
   .getElementById("signal-focus")!
   .addEventListener("change", syncSignalControls);

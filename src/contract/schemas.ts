@@ -27,16 +27,22 @@ export const gridLoadSampleSchema = z.object({
   periodEndUtc: z.string().datetime({ offset: true }),
   loadMw: n.positive(),
 });
-export const gridTelemetrySchema = z.object({
-  originPortugal: z.string().datetime({ offset: true }),
-  originUtc: z.string().datetime({ offset: true }),
-  samples: z.array(gridLoadSampleSchema).length(4),
-}).refine((telemetry) => {
-  const origin = Date.parse(telemetry.originUtc);
-  return origin === Date.parse(telemetry.originPortugal) &&
-    telemetry.samples.every((sample, hour) =>
-      Date.parse(sample.periodEndUtc) === origin + hour * 3_600_000);
-}, "Grid telemetry timestamps must align with the replay origin and each hourly period end");
+export const gridTelemetrySchema = z
+  .object({
+    originPortugal: z.string().datetime({ offset: true }),
+    originUtc: z.string().datetime({ offset: true }),
+    samples: z.array(gridLoadSampleSchema).length(4),
+  })
+  .refine((telemetry) => {
+    const origin = Date.parse(telemetry.originUtc);
+    return (
+      origin === Date.parse(telemetry.originPortugal) &&
+      telemetry.samples.every(
+        (sample, hour) =>
+          Date.parse(sample.periodEndUtc) === origin + hour * 3_600_000,
+      )
+    );
+  }, "Grid telemetry timestamps must align with the replay origin and each hourly period end");
 export const strategySchema = z.enum(["council", "static", "equal", "optimum"]);
 export const busSchema = z.enum(["east", "central", "west"]);
 export const profileSchema = z
@@ -138,7 +144,12 @@ export const eventSchema = z.discriminatedUnion("type", [
 export const scenarioSchema = z
   .object({
     version: z.literal(1),
-    id: z.literal("cyclone_24h"),
+    id: z.enum([
+      "cyclone_24h",
+      "urban_flood_24h",
+      "heatwave_24h",
+      "grid_fault_24h",
+    ]),
     ticks: z.literal(144),
     tickMinutes: z.literal(10),
     initialSupply: n,
@@ -359,18 +370,23 @@ export const stateSchema = z.enum([
 ]);
 const base = { requestId: z.number().int().nonnegative() };
 export const commandSchema = z.discriminatedUnion("type", [
-  z.object({ ...base, type: z.literal("INIT"), config: configSchema,
-    historicalReplay: z.object({
-      origin: z.string(),
-      modelSha256: z.string().regex(/^[0-9a-f]{64}$/),
-      actualDemand: z.array(allocationSchema).length(18),
-      forecastDemand: z.array(allocationSchema).length(18),
-      supplyFraction: z.literal(1),
-      fillFraction: z.number().min(0).max(1).optional(),
-      priorityBlend: z.number().min(0).max(1).optional(),
-      weatherForecast: weatherForecastSchema.optional(),
-      gridTelemetry: gridTelemetrySchema.optional(),
-    }).optional(),
+  z.object({
+    ...base,
+    type: z.literal("INIT"),
+    config: configSchema,
+    historicalReplay: z
+      .object({
+        origin: z.string(),
+        modelSha256: z.string().regex(/^[0-9a-f]{64}$/),
+        actualDemand: z.array(allocationSchema).length(18),
+        forecastDemand: z.array(allocationSchema).length(18),
+        supplyFraction: z.literal(1),
+        fillFraction: z.number().min(0).max(1).optional(),
+        priorityBlend: z.number().min(0).max(1).optional(),
+        weatherForecast: weatherForecastSchema.optional(),
+        gridTelemetry: gridTelemetrySchema.optional(),
+      })
+      .optional(),
   }),
   z.object({
     ...base,

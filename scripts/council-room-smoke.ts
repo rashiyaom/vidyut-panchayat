@@ -40,6 +40,8 @@ try {
   );
   await expect(page.locator("#conference-canvas")).toBeVisible();
   await expect(page.locator(".delegate-label")).toHaveCount(10);
+  await expect(page.locator("#delegate-detail")).toBeHidden();
+  await expect(page.locator("#case-select")).toHaveValue("cyclone");
   await expect(page.locator("#global-approve")).toBeVisible();
   await expect(page.locator("#action-title")).toHaveText(
     "Your approval is needed",
@@ -49,6 +51,9 @@ try {
   await page.screenshot({ path: "experiments/results/council-room.png" });
   await page.locator('[data-delegate="telecom"]').click();
   await expect(page.locator("#delegate-detail h2")).toHaveText("Telecom AI");
+  await page.locator("#delegate-close").click();
+  await expect(page.locator("#delegate-detail")).toBeHidden();
+  await page.locator('[data-delegate="telecom"]').click();
   await page.locator("#room-top").click();
   await page.waitForTimeout(500);
   await page.screenshot({ path: "experiments/results/council-overhead.png" });
@@ -72,14 +77,11 @@ try {
   );
   await page.locator('[data-room-tab="chat"]').click();
   await page.locator("#show-all-messages").click();
-  await expect(page.locator("#chat-messages")).toContainText(
-    "Revised water-routing proposal",
-  );
-  await expect(page.locator("#chat-messages")).toContainText("Palm Beach");
-  await expect(page.locator(".chat-message")).toHaveCount(19);
+  await expect(page.locator("#chat-messages")).toContainText("coastal access");
+  await expect(page.locator(".chat-message")).toHaveCount(11);
   await page.selectOption("#topic-filter", "Water");
-  await expect(page.locator(".chat-message")).toHaveCount(6);
-  await page.locator('[data-reply="water-opening"]').first().click();
+  await expect(page.locator(".chat-message")).toHaveCount(1);
+  await page.locator(".discussion-reply").first().click();
   await expect(page.locator("#topic-filter")).toHaveValue("all");
   await page.screenshot({ path: "experiments/results/civic-discussion.png" });
   await page.locator('[data-discussion-mode="protocol"]').click();
@@ -96,6 +98,16 @@ try {
   await expect(page.locator(".result-balance>div")).toHaveCount(3);
   await expect(page.locator(".history-chart>div")).toHaveCount(1);
   await expect(page.locator(".result-tier")).toHaveCount(3);
+  await expect(page.locator(".result-ledger")).toHaveCount(2);
+  await expect(
+    page.locator(".result-ledger").first().locator("tbody tr"),
+  ).toHaveCount(10);
+  const downloadPromise = page.waitForEvent("download");
+  await page.locator("#download-decision-pdf").click();
+  const download = await downloadPromise;
+  if (!download.suggestedFilename().endsWith(".pdf"))
+    throw new Error("PDF download filename missing");
+  await download.saveAs("experiments/results/council-decision.pdf");
   await page.screenshot({ path: "experiments/results/council-results.png" });
   await page.locator('[data-room-tab="impact"]').click();
   await expect(page.locator("#city-impact-view #city-canvas")).toBeVisible();
@@ -151,6 +163,57 @@ try {
     throw new Error("Sound popover is not compact");
   await expect(page.locator("#audio-fine-tune")).not.toHaveAttribute("open");
   await page.screenshot({ path: "experiments/results/civic-audio-mobile.png" });
+  await page.locator('[data-room-tab="room"]').click();
+  await page.selectOption("#case-select", "flood");
+  await Promise.all([
+    page.waitForURL(/case=flood/),
+    page.locator("#case-load").click(),
+  ]);
+  await page.waitForFunction(
+    () => window.vidyutCity?.getSimulation().state === "AwaitingHuman",
+  );
+  await expect(page.locator("#case-select")).toHaveValue("flood");
+  await page.locator('[data-room-tab="chat"]').click();
+  await page.locator("#show-all-messages").click();
+  await expect(page.locator(".chat-message").first()).toContainText("pumping");
+  await expect(page.locator(".chat-message").nth(1)).toContainText("Water AI");
+  await page.locator("#global-approve").click();
+  await page.waitForFunction(
+    () => window.vidyutCity.getSimulation().state === "Executing",
+  );
+  await page.locator("#room-step").click();
+  await page.waitForFunction(
+    () => window.vidyutCity.getSimulation().tick?.t === 0,
+  );
+  await page.locator('[data-room-tab="results"]').click();
+  await expect(page.locator(".result-numbers")).toContainText("182.0");
+  await page.locator('[data-room-tab="room"]').click();
+  await page.selectOption("#case-select", "historical");
+  await Promise.all([
+    page.waitForURL(/case=historical/),
+    page.locator("#case-load").click(),
+  ]);
+  await page.waitForFunction(
+    () => window.vidyutCity?.getSimulation().state === "AwaitingHuman",
+  );
+  await expect(page.locator("#case-source")).toContainText(
+    "Held-out meter demand",
+  );
+  await page.locator("#global-approve").click();
+  await page.waitForFunction(
+    () => window.vidyutCity.getSimulation().state === "Executing",
+  );
+  await page.locator("#room-step").click();
+  await page.waitForFunction(
+    () => window.vidyutCity.getSimulation().tick?.t === 0,
+  );
+  await page.locator('[data-room-tab="results"]').click();
+  await expect(page.locator("#collective-result")).toContainText(
+    "HISTORICAL INPUTS",
+  );
+  await expect(page.locator("#collective-result")).toContainText(
+    "Observed Portugal national load",
+  );
   if (errors.length) throw new Error(errors.join("\n"));
   await writeFile(
     "experiments/results/council-room-smoke.json",
@@ -172,6 +235,9 @@ try {
           "group messages",
           "filter",
           "collective result",
+          "full ledger and PDF download",
+          "case-driven flood allocation",
+          "historical replay provenance",
           "city return",
           "Panchayat entry",
           "mobile layout",

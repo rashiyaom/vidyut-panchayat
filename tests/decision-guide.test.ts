@@ -26,4 +26,11 @@ it("shows real forecast values and flags failed guardrails in plain language", (
   expect(html).toContain("Needs review");
   expect(html).toContain("Approve this plan");
   expect(html).toContain(store.plan.id);
+  expect(html).toContain("WATER AND COMMUNICATIONS");
+  expect(html).toContain(
+    `${store.plan.blocks[0].allocations.water.toFixed(1)}`,
+  );
+  expect(html).toContain(
+    `${store.plan.blocks[0].allocations.telecom.toFixed(1)}`,
+  );
 });

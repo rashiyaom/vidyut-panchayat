@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "id": "grid_fault_24h",
+  "ticks": 144,
+  "tickMinutes": 10,
+  "initialSupply": 200,
+  "demandNoise": 0.06,
+  "dropRate": 0.02,
+  "timingJitter": 0,
+  "events": [
+    { "type": "bus", "tick": 6, "id": "central", "value": 25, "label": "Central distribution bus fault" },
+    { "type": "supply", "tick": 12, "value": 130, "label": "Protective generation trip" },
+    { "type": "crash", "tick": 18, "id": "telecom", "duration": 6, "label": "Telecom control crash" },
+    { "type": "feeder", "tick": 30, "id": "hospital", "value": 12, "label": "Hospital feeder constrained" },
+    { "type": "bus", "tick": 60, "id": "central", "value": 55, "label": "Central bus partial repair" },
+    { "type": "feeder", "tick": 84, "id": "hospital", "value": 35, "label": "Hospital feeder repaired" },
+    { "type": "bus", "tick": 108, "id": "central", "value": 80, "label": "Central bus restored" },
+    { "type": "supply", "tick": 120, "value": 190, "label": "Generation restored" }
+  ]
+}

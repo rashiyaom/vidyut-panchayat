@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "id": "urban_flood_24h",
+  "ticks": 144,
+  "tickMinutes": 10,
+  "initialSupply": 182,
+  "demandNoise": 0.08,
+  "dropRate": 0.01,
+  "timingJitter": 0,
+  "events": [
+    { "type": "demand", "tick": 6, "id": "water", "value": 1.4, "label": "Water pumping surge" },
+    { "type": "supply", "tick": 12, "value": 115, "label": "Flooded substation margin" },
+    { "type": "feeder", "tick": 18, "id": "water", "value": 11, "label": "Water feeder constrained" },
+    { "type": "demand", "tick": 24, "id": "shelter", "value": 1.8, "label": "Shelter intake demand" },
+    { "type": "flood", "tick": 36, "id": "fuel", "label": "Fuel depot flooded" },
+    { "type": "supply", "tick": 54, "value": 90, "label": "Second flood-related outage" },
+    { "type": "feeder", "tick": 84, "id": "water", "value": 28, "label": "Water feeder restored" },
+    { "type": "supply", "tick": 108, "value": 165, "label": "Grid recovery" }
+  ]
+}

@@ -17,6 +17,7 @@ dist/
 
 # Test artifacts and build bundles
 experiments/results/*.png
+experiments/results/*.pdf
 demo/offline_bundle/*
 !demo/offline_bundle/.gitkeep
 

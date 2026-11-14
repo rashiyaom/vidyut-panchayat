@@ -35,7 +35,12 @@ export function disasterState(tick: Tick | null, initialSupply = 200) {
   return {
     active,
     severity,
-    rain: tick?.scenario === "cyclone_24h" && active ? shortage : 0,
+    rain:
+      tick &&
+      ["cyclone_24h", "urban_flood_24h"].includes(tick.scenario) &&
+      active
+        ? shortage
+        : 0,
     carSpeed: active
       ? Math.max(0.08, service("traffic") * (1 - severity * 0.65))
       : 1,
@@ -46,7 +51,11 @@ export function disasterState(tick: Tick | null, initialSupply = 200) {
         : transit * (1 - severity * 0.3)
       : 1,
     pedestrianSpeed: active ? 1 + severity * 1.8 : 1,
-    gathering: active && severity > 0.4,
+    gathering:
+      active &&
+      severity > 0.4 &&
+      !!tick &&
+      ["cyclone_24h", "urban_flood_24h"].includes(tick.scenario),
   };
 }
 export type DisasterState = ReturnType<typeof disasterState>;
@@ -60,9 +69,9 @@ export function disasterWarnings(tick: Tick | null) {
   if (service("residential") < 0.45)
     warnings.push({
       id: "residential",
-      title: "Residential · evacuation demonstration",
+      title: "Residential · severe service disruption",
       detail:
-        "Residents run to marked sidewalk assembly points. These are illustrative gathering places, not verified safe sites.",
+        "Street activity illustrates disruption. Any assembly markers are illustrative, not verified safe sites or a completed evacuation.",
     });
   if (service("transit") < 0.2)
     warnings.push({

@@ -1,18 +1,8 @@
 import type { CommandInput, Config, Reply } from "../contract/types";
-import { commandSchema, configSchema, replySchema } from "../contract/schemas";
-import profiles from "../../data/agents/profiles.json";
-import network from "../../data/network/electrical_v1.json";
-import scenario from "../../data/scenarios/cyclone_24h.json";
+import { commandSchema, replySchema } from "../contract/schemas";
+import { configForCase } from "../contract/cases";
 export function defaultConfig(seed = 42): Config {
-  return configSchema.parse({
-    version: 1,
-    seed,
-    strategy: "council",
-    profiles,
-    network,
-    scenario,
-    enabledAgents: profiles.agents.map((p) => p.id),
-  });
+  return configForCase(seed, "cyclone");
 }
 export class EngineBridge {
   private worker: Worker;
