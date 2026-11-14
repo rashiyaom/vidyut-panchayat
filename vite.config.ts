@@ -7,7 +7,8 @@ export default defineConfig({
   },
   preview: {
     port: 4174,
-    host: "127.0.0.1",
+    host: "0.0.0.0",
+    allowedHosts: true,
   },
   test: {
     testTimeout: 20000,

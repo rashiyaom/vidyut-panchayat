@@ -9,7 +9,9 @@
 [![XGBoost](https://img.shields.io/badge/XGBoost-Multi--Output-11557c?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
 [![Vitest](https://img.shields.io/badge/Vitest-70_Tests_PASS-729B1B?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
 [![Offline First](https://img.shields.io/badge/Zero_Cloud_Dependencies-100%25_Offline-success?style=for-the-badge)](http://127.0.0.1:4174/)
+[![Live on Render](https://img.shields.io/badge/Render-Live_Demo-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://vidyut-panchayat.onrender.com)
 
+> **Live Deployment on Render**: **[https://vidyut-panchayat.onrender.com](https://vidyut-panchayat.onrender.com)**  
 > **Vidyut Panchayat** is a decentralized multi-agent crisis governance system and real-time 3D digital twin. During severe grid collapse caused by a 24-hour coastal cyclone, ten autonomous utility agents (Hospital, Emergency, Water, Telecom, Shelter, Traffic, Fuel, Residential, Commercial, Transit) deliberate and clear power allocations using a two-phase commit protocol under a stateless Constitutional validator. Trained XGBoost models predict held-out demand and weather stress, while a background Web Worker guarantees non-blocking, zero-cloud execution with 100% offline reproducibility.
 
 ---
