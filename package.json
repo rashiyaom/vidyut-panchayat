@@ -12,6 +12,8 @@
     "batch": "tsx scripts/batch.ts",
     "replay:forecast": "node --import tsx scripts/forecast-replay.ts",
     "evidence:ml": "node --import tsx scripts/export-ml-evidence.ts",
+    "ml:infer": "ml/.venv/bin/python ml/infer_electricity.py",
+    "demo:ml": "node --import tsx scripts/record-ml-demo.ts",
     "demo": "npm run build && tsx scripts/package-offline.ts",
     "test:browser": "tsx scripts/browser-smoke.ts",
     "test:historical-browser": "node --import tsx scripts/forecast-browser-smoke.ts",

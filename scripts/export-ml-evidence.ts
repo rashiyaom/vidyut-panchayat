@@ -9,7 +9,6 @@ const [forecast, confirmation, baseline, manifest, modelBytes] = await Promise.a
   read("data/processed/electricity/manifest.json"),
   readFile("artifacts/xgboost/electricity_10_meter_3h.json"),
 ]);
-const replaySource = await read("experiments/ml/replay_confirmation.json");
 if (confirmation.episodeCount !== 30 || baseline.episodeCount !== 30)
   throw new Error("Expected 30 confirmation episodes for both policy settings");
 if (confirmation.supplyFraction !== 1 || baseline.supplyFraction !== 0.85 ||
@@ -55,14 +54,4 @@ const evidence = {
 };
 await mkdir("data/ml", { recursive: true });
 await writeFile("data/ml/evidence_v1.json", JSON.stringify(evidence, null, 2) + "\n");
-const first = replaySource.episodes[0];
-await writeFile("data/ml/browser_replay_v1.json", JSON.stringify({
-  version: 1,
-  origin: first.origin,
-  modelSha256: evidence.modelSha256,
-  selection: "First predetermined confirmation episode; precomputed XGBoost inference",
-  actualDemand: first.actualDemand,
-  forecastDemand: first.calibratedForecast,
-  supplyFraction: 1,
-}, null, 2) + "\n");
-console.log(`Exported ${rows.length} held-out decision rows and 3 forecast horizons.`);
+console.log(`Exported ${rows.length} held-out decision rows and 3 forecast horizons. Active browser episode is set by ml:infer.`);
