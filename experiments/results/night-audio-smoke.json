@@ -1,0 +1,732 @@
+{
+  "passed": true,
+  "lighting": {
+    "mode": "night",
+    "amount": 0.9936556201371932,
+    "streetLights": 418,
+    "movingLights": 110,
+    "windowMaterials": 10
+  },
+  "cues": [
+    {
+      "cueRms": 0.04590600636168152,
+      "outputRms": 0.016518344933163693,
+      "lastCue": {
+        "kind": "electric",
+        "entity": "substation",
+        "at": 2.421333333333333
+      },
+      "activeCues": [
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 4,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.10838069766759872,
+          "x": -44.102970123291016,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.08132937550544739,
+          "x": 46.39508056640625,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.002932311035692692,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.004570055287331343,
+          "x": 98,
+          "z": -14
+        }
+      ]
+    },
+    {
+      "cueRms": 0.06109524000106679,
+      "outputRms": 0.049035819619502555,
+      "lastCue": {
+        "kind": "water",
+        "entity": "water",
+        "at": 2.6933333333333334
+      },
+      "activeCues": [
+        "selection",
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 5,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.10659756511449814,
+          "x": -46.76734161376953,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.08231879770755768,
+          "x": 49.30168914794922,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.002989525906741619,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.024246707558631897,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.0011696262517943978,
+          "x": -98,
+          "z": -14
+        }
+      ]
+    },
+    {
+      "cueRms": 0.0927432909620336,
+      "outputRms": 0.1578238049296277,
+      "lastCue": {
+        "kind": "hospital",
+        "entity": "hospital",
+        "at": 2.944
+      },
+      "activeCues": [
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 6,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.10068173706531525,
+          "x": -52.22096633911133,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.0827789455652237,
+          "x": 55.25071716308594,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.0030583555344492197,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.01184718869626522,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.015861308202147484,
+          "x": -98,
+          "z": -14
+        },
+        {
+          "id": "hospital",
+          "sound": "hospital",
+          "gain": 0.02383432351052761,
+          "x": 14,
+          "z": -14
+        }
+      ]
+    },
+    {
+      "cueRms": 0.03209470353184374,
+      "outputRms": 0.020315152848797136,
+      "lastCue": {
+        "kind": "telecom",
+        "entity": "telecom",
+        "at": 3.7546666666666666
+      },
+      "activeCues": [
+        "selection",
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 7,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.09175354987382889,
+          "x": -58.53897476196289,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.08149506151676178,
+          "x": 62.1425895690918,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.003093732288107276,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.005085419397801161,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.006808480713516474,
+          "x": -98,
+          "z": -14
+        },
+        {
+          "id": "hospital",
+          "sound": "hospital",
+          "gain": 0.0482804998755455,
+          "x": 14,
+          "z": -14
+        },
+        {
+          "id": "telecom",
+          "sound": "telecom",
+          "gain": 0.004572214558720589,
+          "x": 14,
+          "z": -70
+        }
+      ]
+    },
+    {
+      "cueRms": 0.047099174262011045,
+      "outputRms": 0.031586502733728296,
+      "lastCue": {
+        "kind": "fuel",
+        "entity": "fuel",
+        "at": 4.032
+      },
+      "activeCues": [
+        "selection",
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 8,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.0866435095667839,
+          "x": -62.02367401123047,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.08027303963899612,
+          "x": 65.94497680664062,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.003102573798969388,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.003268961561843753,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.004376566968858242,
+          "x": -98,
+          "z": -14
+        },
+        {
+          "id": "hospital",
+          "sound": "hospital",
+          "gain": 0.031035233289003372,
+          "x": 14,
+          "z": -14
+        },
+        {
+          "id": "telecom",
+          "sound": "telecom",
+          "gain": 0.02247758023440838,
+          "x": 14,
+          "z": -70
+        },
+        {
+          "id": "fuel",
+          "sound": "fuel",
+          "gain": 0.0075474753975868225,
+          "x": 98,
+          "z": 70
+        }
+      ]
+    },
+    {
+      "cueRms": 0.041160518224482225,
+      "outputRms": 0.06672265904195573,
+      "lastCue": {
+        "kind": "crowd",
+        "entity": "residential",
+        "at": 4.314666666666667
+      },
+      "activeCues": [
+        "selection",
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 9,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.08290916681289673,
+          "x": -64.5621337890625,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.07921838760375977,
+          "x": 68.71403503417969,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.0031071200501173735,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.002391980029642582,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.003202439984306693,
+          "x": -98,
+          "z": -14
+        },
+        {
+          "id": "hospital",
+          "sound": "hospital",
+          "gain": 0.022709248587489128,
+          "x": 14,
+          "z": -14
+        },
+        {
+          "id": "telecom",
+          "sound": "telecom",
+          "gain": 0.0164474043995142,
+          "x": 14,
+          "z": -70
+        },
+        {
+          "id": "fuel",
+          "sound": "fuel",
+          "gain": 0.02481754682958126,
+          "x": 98,
+          "z": 70
+        },
+        {
+          "id": "residential",
+          "sound": "crowd",
+          "gain": 0.0011696262517943978,
+          "x": -98,
+          "z": -70
+        }
+      ]
+    },
+    {
+      "cueRms": 0.08545159126286263,
+      "outputRms": 0.05747777509789427,
+      "lastCue": {
+        "kind": "transit",
+        "entity": "transit",
+        "at": 4.549333333333333
+      },
+      "activeCues": [
+        "selection",
+        "selection"
+      ],
+      "state": "running",
+      "settings": {
+        "muted": false,
+        "master": 0.65,
+        "music": 0.45,
+        "ambience": 0.7,
+        "ui": 0.45
+      },
+      "council": false,
+      "voices": 10,
+      "recordings": [
+        "train-horn",
+        "crowd"
+      ],
+      "sources": [
+        {
+          "id": "trains-3",
+          "sound": "train",
+          "gain": 0.07889293134212494,
+          "x": -67.11553955078125,
+          "z": 84
+        },
+        {
+          "id": "trains-0",
+          "sound": "train",
+          "gain": 0.07793623954057693,
+          "x": 71.53843688964844,
+          "z": -84
+        },
+        {
+          "id": "block-4-5",
+          "sound": "crowd",
+          "gain": 0.003109712852165103,
+          "x": 42,
+          "z": 14
+        },
+        {
+          "id": "substation",
+          "sound": "electric",
+          "gain": 0.001717196311801672,
+          "x": 98,
+          "z": -14
+        },
+        {
+          "id": "water",
+          "sound": "water",
+          "gain": 0.002299026120454073,
+          "x": -98,
+          "z": -14
+        },
+        {
+          "id": "hospital",
+          "sound": "hospital",
+          "gain": 0.016302894800901413,
+          "x": 14,
+          "z": -14
+        },
+        {
+          "id": "telecom",
+          "sound": "telecom",
+          "gain": 0.011807538568973541,
+          "x": 14,
+          "z": -70
+        },
+        {
+          "id": "fuel",
+          "sound": "fuel",
+          "gain": 0.01774871163070202,
+          "x": 98,
+          "z": 70
+        },
+        {
+          "id": "residential",
+          "sound": "crowd",
+          "gain": 0.021571513265371323,
+          "x": -98,
+          "z": -70
+        },
+        {
+          "id": "transit",
+          "sound": "transit",
+          "gain": 0.0008784433593973517,
+          "x": 70,
+          "z": 42
+        }
+      ]
+    }
+  ],
+  "train": {
+    "cueRms": 0.0006482477130669872,
+    "outputRms": 0.07197693544064608,
+    "lastCue": {
+      "kind": "train-horn",
+      "entity": "trains-0",
+      "at": 12.632
+    },
+    "activeCues": [
+      "train-horn"
+    ],
+    "state": "running",
+    "settings": {
+      "muted": false,
+      "master": 0.65,
+      "music": 0.45,
+      "ambience": 0.7,
+      "ui": 0.45
+    },
+    "council": false,
+    "voices": 21,
+    "recordings": [
+      "train-horn",
+      "crowd"
+    ],
+    "sources": [
+      {
+        "id": "trains-3",
+        "sound": "train",
+        "gain": 0.07973027229309082,
+        "x": -83.981689453125,
+        "z": 14.602958679199219
+      },
+      {
+        "id": "trains-0",
+        "sound": "train",
+        "gain": 0.7460009455680847,
+        "x": 83.981689453125,
+        "z": -2.477146863937378
+      },
+      {
+        "id": "block-4-5",
+        "sound": "crowd",
+        "gain": 0.21486996114253998,
+        "x": 42,
+        "z": 14
+      },
+      {
+        "id": "fuel",
+        "sound": "fuel",
+        "gain": 0.21486996114253998,
+        "x": 98,
+        "z": 70
+      },
+      {
+        "id": "transit",
+        "sound": "transit",
+        "gain": 0.2955341339111328,
+        "x": 70,
+        "z": 42
+      },
+      {
+        "id": "buses-1",
+        "sound": "bus",
+        "gain": 0.2607366144657135,
+        "x": 54.340843200683594,
+        "z": 38.11071014404297
+      },
+      {
+        "id": "block-5-5",
+        "sound": "crowd",
+        "gain": 0.2517763376235962,
+        "x": 42,
+        "z": 42
+      },
+      {
+        "id": "cars-45",
+        "sound": "car",
+        "gain": 0.2620165944099426,
+        "x": 54.340843200683594,
+        "z": 44.46297073364258
+      },
+      {
+        "id": "cars-46",
+        "sound": "car",
+        "gain": 0.263446182012558,
+        "x": 81.06065368652344,
+        "z": 53.99000930786133
+      },
+      {
+        "id": "block-4-6",
+        "sound": "park",
+        "gain": 0.2517763376235962,
+        "x": 70,
+        "z": 14
+      },
+      {
+        "id": "cars-53",
+        "sound": "car",
+        "gain": 0.054694220423698425,
+        "x": 54.34812545776367,
+        "z": 79.72412109375
+      },
+      {
+        "id": "block-6-5",
+        "sound": "crowd",
+        "gain": 0.21486996114253998,
+        "x": 42,
+        "z": 70
+      },
+      {
+        "id": "cars-54",
+        "sound": "car",
+        "gain": 0.03142897039651871,
+        "x": 82.30482482910156,
+        "z": 80.3807601928711
+      },
+      {
+        "id": "block-6-6",
+        "sound": "crowd",
+        "gain": 0.2517763376235962,
+        "x": 70,
+        "z": 70
+      },
+      {
+        "id": "block-5-7",
+        "sound": "crowd",
+        "gain": 0.2517763376235962,
+        "x": 98,
+        "z": 42
+      },
+      {
+        "id": "block-4-7",
+        "sound": "crowd",
+        "gain": 0.21486996114253998,
+        "x": 98,
+        "z": 14
+      },
+      {
+        "id": "cars-39",
+        "sound": "car",
+        "gain": 0.22141779959201813,
+        "x": 85.6683120727539,
+        "z": 9.90756893157959
+      },
+      {
+        "id": "buses-3",
+        "sound": "bus",
+        "gain": 0.2452801614999771,
+        "x": 86.24508666992188,
+        "z": 58.42997360229492
+      },
+      {
+        "id": "cars-38",
+        "sound": "car",
+        "gain": 0.16499829292297363,
+        "x": 72.1265869140625,
+        "z": 1.649999976158142
+      },
+      {
+        "id": "cars-37",
+        "sound": "car",
+        "gain": 0.15832024812698364,
+        "x": 54.349998474121094,
+        "z": 10.026344299316406
+      },
+      {
+        "id": "cars-47",
+        "sound": "car",
+        "gain": 0.00719109084457159,
+        "x": 108.4303970336914,
+        "z": 54.29410171508789
+      }
+    ]
+  },
+  "errors": []
+}

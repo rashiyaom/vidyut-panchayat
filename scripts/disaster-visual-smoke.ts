@@ -46,7 +46,13 @@ try {
   expect(crisis.disaster.active).toBe(true);
   expect(crisis.disaster.busSpeed).toBe(0);
   expect(crisis.disaster.trainSpeed).toBe(0);
-  await page.locator("#impact-key summary").click();
+  await expect(page.locator("#street-warnings")).toContainText(
+    "evacuation demonstration",
+  );
+  await expect(page.locator("#street-warnings")).toContainText(
+    "services halted",
+  );
+  await page.locator("#impact-key > summary").click();
   await expect(page.locator("#impact-key")).toContainText("electricity");
   await page.selectOption("#signal-focus", "hospital");
   expect(
@@ -60,10 +66,10 @@ try {
   await page.waitForTimeout(400);
   await mkdir("experiments/results", { recursive: true });
   await page.screenshot({ path: "experiments/results/disaster-signals.png" });
-  await page.locator("#impact-key summary").click();
+  await page.locator("#impact-key > summary").click();
   await page.locator("#signal-visible").uncheck();
-  await page.evaluate(() => window.vidyutCity.focus("transit"));
-  await page.waitForTimeout(800);
+  await page.locator('[data-warning="residential"]').click();
+  await page.waitForTimeout(1800);
   await page.screenshot({ path: "experiments/results/disaster-streets.png" });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator("#signal-visible")).toBeInViewport();

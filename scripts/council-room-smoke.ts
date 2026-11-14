@@ -59,6 +59,17 @@ try {
   await page.locator('[data-room-tab="chat"]').click();
   await page.locator("#show-all-messages").click();
   await expect(page.locator("#chat-messages")).toContainText(
+    "Revised water-routing proposal",
+  );
+  await expect(page.locator("#chat-messages")).toContainText("Palm Beach");
+  await expect(page.locator(".chat-message")).toHaveCount(19);
+  await page.selectOption("#topic-filter", "Water");
+  await expect(page.locator(".chat-message")).toHaveCount(6);
+  await page.locator('[data-reply="water-opening"]').first().click();
+  await expect(page.locator("#topic-filter")).toHaveValue("all");
+  await page.screenshot({ path: "experiments/results/civic-discussion.png" });
+  await page.locator('[data-discussion-mode="protocol"]').click();
+  await expect(page.locator("#chat-messages")).toContainText(
     "Agreement confirmed",
   );
   await page.selectOption("#chat-filter", "hospital");
@@ -111,6 +122,17 @@ try {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForTimeout(300);
   await page.screenshot({ path: "experiments/results/council-mobile.png" });
+  await page.locator('[data-room-tab="chat"]').click();
+  await page.locator('[data-discussion-mode="civic"]').click();
+  await page.selectOption("#topic-filter", "Public safety");
+  await expect(page.locator(".chat-message")).toHaveCount(5);
+  await page.screenshot({ path: "experiments/results/civic-mobile.png" });
+  await page.locator("#audio-settings").click();
+  const bounds = await page.locator("#audio-panel").boundingBox();
+  if (!bounds || bounds.width > 215 || bounds.height > 190)
+    throw new Error("Sound popover is not compact");
+  await expect(page.locator("#audio-fine-tune")).not.toHaveAttribute("open");
+  await page.screenshot({ path: "experiments/results/civic-audio-mobile.png" });
   if (errors.length) throw new Error(errors.join("\n"));
   await writeFile(
     "experiments/results/council-room-smoke.json",

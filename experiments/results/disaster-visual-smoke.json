@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "crisis": {
+    "drawCalls": 207,
+    "triangles": 1598009,
+    "buildings": 64,
+    "ambientPaused": false,
+    "ambientSpeed": 1,
+    "ambientTime": 1.4790300000059597,
+    "vehicles": 96,
+    "buses": 12,
+    "trains": 2,
+    "pedestrians": 204,
+    "disaster": {
+      "active": true,
+      "severity": 1,
+      "rain": 0.725,
+      "carSpeed": 0.08,
+      "busSpeed": 0,
+      "trainSpeed": 0,
+      "pedestrianSpeed": 2.8,
+      "gathering": true
+    },
+    "signals": {
+      "visible": true,
+      "focus": "all",
+      "routes": 13,
+      "clearance": 49.659998930990696
+    }
+  },
+  "restored": {
+    "drawCalls": 102,
+    "triangles": 1531557,
+    "buildings": 64,
+    "ambientPaused": false,
+    "ambientSpeed": 1,
+    "ambientTime": 8.378030000005966,
+    "vehicles": 96,
+    "buses": 12,
+    "trains": 2,
+    "pedestrians": 204,
+    "disaster": {
+      "active": false,
+      "severity": 0,
+      "rain": 0,
+      "carSpeed": 1,
+      "busSpeed": 1,
+      "trainSpeed": 1,
+      "pedestrianSpeed": 1,
+      "gathering": false
+    },
+    "signals": {
+      "visible": false,
+      "focus": "hospital",
+      "routes": 0,
+      "clearance": 49.659998930990696
+    }
+  },
+  "rebuilt": {
+    "drawCalls": 129,
+    "triangles": 2107841,
+    "buildings": 64,
+    "ambientPaused": false,
+    "ambientSpeed": 1,
+    "ambientTime": 9.161230000005961,
+    "vehicles": 96,
+    "buses": 12,
+    "trains": 2,
+    "pedestrians": 204,
+    "disaster": {
+      "active": true,
+      "severity": 1,
+      "rain": 0.725,
+      "carSpeed": 0.08,
+      "busSpeed": 0,
+      "trainSpeed": 0,
+      "pedestrianSpeed": 2.8,
+      "gathering": true
+    },
+    "signals": {
+      "visible": false,
+      "focus": "hospital",
+      "routes": 0,
+      "clearance": 49.659998930990696
+    }
+  },
+  "errors": []
+}
