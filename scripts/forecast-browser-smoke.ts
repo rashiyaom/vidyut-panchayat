@@ -2,6 +2,7 @@ import { chromium } from "@playwright/test";
 import activeReplay from "../data/ml/browser_replay_v1.json";
 import revisionAudit from "../experiments/ml/revision_audit_summary.json";
 import weatherReplay from "../data/ml/weather_browser_replay_v1.json";
+import gridTelemetry from "../data/processed/telemetry/pt_load_2014-09-15.json";
 
 if (!revisionAudit.passAllCriteria ||
     activeReplay.policy.priorityBlend !== revisionAudit.frozenPolicy.priorityBlend ||
@@ -46,6 +47,10 @@ try {
   await page.waitForFunction(() => window.vidyutCity.getSimulation().tick?.t === 0);
   const firstDemand = await page.evaluate(() => window.vidyutCity.getSimulation().tick?.agents.find((a) => a.id === "hospital")?.demand);
   if (firstDemand !== activeReplay.actualDemand["0"].hospital) throw new Error("Replay demand differs from selected measured reading");
+  if (gridTelemetry.originPortugal.slice(0, 10) === activeReplay.origin.slice(0, 10)) {
+    const firstGridLoad = await page.evaluate(() => window.vidyutCity.getSimulation().tick?.gridLoad?.loadMw);
+    if (firstGridLoad !== gridTelemetry.samples[0].loadMw) throw new Error("Replay national load differs from dated ENTSO-E extract");
+  }
   if (errors.length) throw new Error(errors.join("; "));
   console.log("Historical replay opened, displayed model evidence, and executed its first held-out tick.");
 } finally {

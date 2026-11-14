@@ -26,6 +26,8 @@
     "weather:train": "ml/.venv/bin/python ml/train_weather.py",
     "weather:infer": "ml/.venv/bin/python ml/infer_weather.py",
     "weather:verify": "ml/.venv/bin/python ml/verify_weather.py",
+    "telemetry:prepare": "python3 ml/prepare_grid_telemetry.py",
+    "telemetry:verify": "python3 ml/verify_grid_telemetry.py",
     "demo:ml": "node --import tsx scripts/record-ml-demo.ts",
     "demo": "npm run build && tsx scripts/package-offline.ts",
     "test:browser": "tsx scripts/browser-smoke.ts",

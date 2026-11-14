@@ -7,11 +7,13 @@ import type {
   Plan,
   ScenarioEvent,
   WeatherForecast,
+  GridTelemetry,
   Tick,
   Trace,
 } from "../contract/types";
 import { agentIds, configSchema } from "../contract/schemas";
 import { environment } from "./events";
+import { gridLoadAt } from "../contract/gridTelemetry";
 import { rng, quantize } from "./rng";
 import { hour } from "./clock";
 import { UtilityAgent, type PrivateState } from "./agents/baseAgent";
@@ -43,6 +45,8 @@ export interface World {
   forecastDemand?: Partial<Record<number, Allocation>>;
   /** Forecast-only input for the first three hours of historical replay. */
   weatherForecast?: WeatherForecast;
+  /** Measured national load, visible only after each hourly period ends. */
+  gridTelemetry?: GridTelemetry;
   /** Replay-only policy experiment; the normal plan keeps its 85% reserve. */
   planSupplyFraction?: number;
   /** Replay-only negotiated-floor top-up policy, selected on validation days. */
@@ -262,6 +266,7 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
       price: trace.prices[f.bus],
     })),
   ];
+  const gridLoad = gridLoadAt(world.gridTelemetry, t);
   const tick: Tick = {
     version: 1,
     t,
@@ -270,6 +275,7 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
     scenario: config.scenario.id,
     strategy: config.strategy,
     supply: env.supply,
+    ...(gridLoad ? { gridLoad } : {}),
     events: env.events,
     agents,
     lines,

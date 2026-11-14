@@ -10,6 +10,7 @@ export type Config = z.infer<typeof s.configSchema>;
 export type Strategy = z.infer<typeof s.strategySchema>;
 export type Allocation = z.infer<typeof s.allocationSchema>;
 export type WeatherForecast = z.infer<typeof s.weatherForecastSchema>;
+export type GridTelemetry = z.infer<typeof s.gridTelemetrySchema>;
 export type Bid = z.infer<typeof s.bidSchema>;
 export type Message = z.infer<typeof s.messageSchema>;
 export type Trace = z.infer<typeof s.traceSchema>;

@@ -9,6 +9,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import sceneData from "../../data/scenes/city_v1.json";
 import browserReplay from "../../data/ml/browser_replay_v1.json";
 import weatherReplay from "../../data/ml/weather_browser_replay_v1.json";
+import gridTelemetry from "../../data/processed/telemetry/pt_load_2014-09-15.json";
 import revisionAudit from "../../experiments/ml/revision_audit_summary.json";
 import { citySceneSchema } from "../world3d/sceneSchema";
 import type {
@@ -960,6 +961,13 @@ const councilExperience = mountCouncilExperience(
                   originPortugal: weatherReplay.originPortugal,
                   windSpeed: weatherReplay.weather.wind_speed_10m.rows.map((row) => row.forecast),
                   precipitation: weatherReplay.weather.precipitation.rows.map((row) => row.forecast),
+                },
+              } : {}),
+              ...(gridTelemetry.originPortugal.slice(0, 10) === browserReplay.origin.slice(0, 10) ? {
+                gridTelemetry: {
+                  originPortugal: gridTelemetry.originPortugal,
+                  originUtc: gridTelemetry.originUtc,
+                  samples: gridTelemetry.samples,
                 },
               } : {}),
             } } : {}),

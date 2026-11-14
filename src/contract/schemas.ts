@@ -23,6 +23,20 @@ export const weatherForecastSchema = z.object({
   windSpeed: z.array(n).length(3),
   precipitation: z.array(n).length(3),
 });
+export const gridLoadSampleSchema = z.object({
+  periodEndUtc: z.string().datetime({ offset: true }),
+  loadMw: n.positive(),
+});
+export const gridTelemetrySchema = z.object({
+  originPortugal: z.string().datetime({ offset: true }),
+  originUtc: z.string().datetime({ offset: true }),
+  samples: z.array(gridLoadSampleSchema).length(4),
+}).refine((telemetry) => {
+  const origin = Date.parse(telemetry.originUtc);
+  return origin === Date.parse(telemetry.originPortugal) &&
+    telemetry.samples.every((sample, hour) =>
+      Date.parse(sample.periodEndUtc) === origin + hour * 3_600_000);
+}, "Grid telemetry timestamps must align with the replay origin and each hourly period end");
 export const strategySchema = z.enum(["council", "static", "equal", "optimum"]);
 export const busSchema = z.enum(["east", "central", "west"]);
 export const profileSchema = z
@@ -249,6 +263,7 @@ export const tickSchema = z
     scenario: z.string(),
     strategy: strategySchema,
     supply: n,
+    gridLoad: gridLoadSampleSchema.optional(),
     events: z.array(z.string()),
     agents: z.array(agentTickSchema).length(10),
     lines: z.array(lineSchema).length(13),
@@ -354,6 +369,7 @@ export const commandSchema = z.discriminatedUnion("type", [
       fillFraction: z.number().min(0).max(1).optional(),
       priorityBlend: z.number().min(0).max(1).optional(),
       weatherForecast: weatherForecastSchema.optional(),
+      gridTelemetry: gridTelemetrySchema.optional(),
     }).optional(),
   }),
   z.object({

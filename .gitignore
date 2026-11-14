@@ -4,6 +4,7 @@ ml/Informer2020/
 **/__pycache__/
 *.pyc
 data/raw/electricity/*.zip
+data/raw/telemetry/*.xlsx
 /electricityloaddiagrams20112014.zip
 experiments/ml/*.log
 dist/

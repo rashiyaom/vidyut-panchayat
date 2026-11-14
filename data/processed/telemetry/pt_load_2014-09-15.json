@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "originPortugal": "2014-09-15T00:00:00+01:00",
+  "originUtc": "2014-09-14T23:00:00+00:00",
+  "source": "https://www.entsoe.eu/publications/data/power-stats//Monthly-hourly-load-values_2006-2015.xlsx",
+  "sourceWorkbookSha256": "3a762b8dcee5567cfc84912deee1bbe5e908553d813228634bbd43e7ff0a0b20",
+  "rawExtractSha256": "d50308e7c07776fe83d74ff8f04e0a08728005059c0e8e66dce23d91475169e6",
+  "scope": "Portugal national total load, not local feeder load or available supply",
+  "unit": "MW",
+  "availabilityAssumption": "A sample enters the replay at its period end. Archive publication delay is unknown; values never enter planning.",
+  "samples": [
+    {
+      "periodEndUtc": "2014-09-14T23:00:00+00:00",
+      "loadMw": 4528.0
+    },
+    {
+      "periodEndUtc": "2014-09-15T00:00:00+00:00",
+      "loadMw": 4357.0
+    },
+    {
+      "periodEndUtc": "2014-09-15T01:00:00+00:00",
+      "loadMw": 4241.0
+    },
+    {
+      "periodEndUtc": "2014-09-15T02:00:00+00:00",
+      "loadMw": 4184.0
+    }
+  ]
+}
