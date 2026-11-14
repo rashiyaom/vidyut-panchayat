@@ -29,7 +29,7 @@ export function validatePlan(
       const envs = Array.from(
         { length: block.toTick - block.fromTick + 1 },
         (_, i) =>
-          environment(source.config, block.fromTick + i, source.injected),
+          environment(source.config, block.fromTick + i, source.injected, source.weatherForecast),
       );
       if (block.supply > Math.min(...envs.map((e) => e.supply)) * (source.planSupplyFraction ?? 0.85) + 1e-7)
         errors.push("I8: optimistic supply envelope");

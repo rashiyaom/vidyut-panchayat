@@ -8,6 +8,7 @@ import { CityAudio } from "../audio/CityAudio";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import sceneData from "../../data/scenes/city_v1.json";
 import browserReplay from "../../data/ml/browser_replay_v1.json";
+import weatherReplay from "../../data/ml/weather_browser_replay_v1.json";
 import revisionAudit from "../../experiments/ml/revision_audit_summary.json";
 import { citySceneSchema } from "../world3d/sceneSchema";
 import type {
@@ -954,6 +955,13 @@ const councilExperience = mountCouncilExperience(
               supplyFraction: 1 as const,
               fillFraction: browserReplay.policy.fillFraction,
               priorityBlend: browserReplay.policy.priorityBlend,
+              ...(weatherReplay.originPortugal.slice(0, 10) === browserReplay.origin.slice(0, 10) ? {
+                weatherForecast: {
+                  originPortugal: weatherReplay.originPortugal,
+                  windSpeed: weatherReplay.weather.wind_speed_10m.rows.map((row) => row.forecast),
+                  precipitation: weatherReplay.weather.precipitation.rows.map((row) => row.forecast),
+                },
+              } : {}),
             } } : {}),
           })
           .then(() => bridge.send({ type: "REQUEST_PLAN", horizonTicks: 18 }))

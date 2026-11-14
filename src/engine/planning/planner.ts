@@ -42,7 +42,7 @@ export function createPlan(
   for (let from = source.t; from < source.t + horizon; from += 3) {
     const to = Math.min(from + 2, source.t + horizon - 1),
       envs = Array.from({ length: to - from + 1 }, (_, i) =>
-        environment(future.config, from + i, future.injected),
+        environment(future.config, from + i, future.injected, future.weatherForecast),
       );
     const busCaps = Object.fromEntries(
       future.config.network.buses.map((b) => [

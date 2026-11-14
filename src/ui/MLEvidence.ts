@@ -5,12 +5,19 @@ import freshAudit from "../../experiments/ml/fresh_policy_audit_summary.json";
 import revisionAudit from "../../experiments/ml/revision_audit_summary.json";
 import weatherReplay from "../../data/ml/weather_browser_replay_v1.json";
 import weatherEvaluation from "../../experiments/ml/weather_model_evaluation.json";
+import { weatherStress } from "../contract/weatherStress";
 
 const fmt = (value: number) => Math.round(value).toLocaleString();
 
 /** Static, versioned research evidence; never presented as the live city tick. */
 export function mlEvidence() {
   const weatherMatches = weatherReplay.originPortugal.slice(0, 10) === activeReplay.origin.slice(0, 10);
+  const weatherForecast = {
+    originPortugal: weatherReplay.originPortugal,
+    windSpeed: weatherReplay.weather.wind_speed_10m.rows.map((row) => row.forecast),
+    precipitation: weatherReplay.weather.precipitation.rows.map((row) => row.forecast),
+  };
+  const peakStress = Math.max(...[0, 6, 12].map((tick) => weatherStress(weatherForecast, tick)));
   const weatherRows = weatherReplay.weather.wind_speed_10m.rows.map((wind, i) => {
     const rain = weatherReplay.weather.precipitation.rows[i];
     return `<tr><td>${wind.hourAhead} h</td><td>${wind.forecast.toFixed(2)}</td><td>${wind.actualReanalysis.toFixed(2)}</td><td>${rain.forecast.toFixed(2)}</td><td>${rain.actualReanalysis.toFixed(2)}</td></tr>`;
@@ -32,7 +39,7 @@ export function mlEvidence() {
     <p><strong>Selected held-out date:</strong> ${activeReplay.origin.slice(0, 10)} · saved model ${activeReplay.modelSha256.slice(0, 12)}. This browser replay uses the predictions below.</p>
     ${weatherMatches ? `<p><strong>Weather forecast for the same local date:</strong> a saved XGBoost model predicts Lisbon-area wind speed; validation-selected baselines supply rainfall where its trained model was weaker. The table compares forecasts with later ERA5 reanalysis, not station sensors.</p>
     <div class="ml-evidence-scroll"><table><caption>Lisbon-area weather forecast · wind m/s, rain mm/hour</caption><thead><tr><th>Horizon</th><th>Wind forecast</th><th>Wind ERA5</th><th>Rain forecast</th><th>Rain ERA5</th></tr></thead><tbody>${weatherRows}</tbody></table></div>
-    <p>Across ${weatherEvaluation.split.test.windows.toLocaleString()} held-out weather windows, wind XGBoost MAE was ${weatherEvaluation.targets.wind_speed_10m.per_horizon.map((r) => r.xgboost_mae.toFixed(2)).join(" / ")} m/s at 1 / 2 / 3 hours. Rainfall XGBoost was weaker than simple baselines, so the selected rainfall forecast uses persistence then zero-rain on this validation split. Weather does not currently change cyclone supply or feeder capacity. <a href="${weatherReplay.source}" target="_blank" rel="noopener noreferrer">Open-Meteo ERA5 source</a> · CC BY 4.0.</p>` : `<p class="council-note">Weather evidence is available for ${weatherReplay.originPortugal.slice(0, 10)}. Generate and activate weather inference for ${activeReplay.origin.slice(0, 10)} to align the two replays.</p>`}
+    <p>Across ${weatherEvaluation.split.test.windows.toLocaleString()} held-out weather windows, wind XGBoost MAE was ${weatherEvaluation.targets.wind_speed_10m.per_horizon.map((r) => r.xgboost_mae.toFixed(2)).join(" / ")} m/s at 1 / 2 / 3 hours. Rainfall XGBoost was weaker than simple baselines, so the selected rainfall forecast uses persistence then zero-rain on this validation split. The forecast now drives a bounded, illustrative capacity rule: stress begins above 12 m/s wind or 5 mm/hour rain, reducing scripted supply by up to 25% and feeder caps by up to 35%. This date has ${peakStress === 0 ? "no extra weather derating" : `peak stress ${peakStress.toFixed(2)}`}. The rule is not a trained outage model. <a href="${weatherReplay.source}" target="_blank" rel="noopener noreferrer">Open-Meteo ERA5 source</a> · CC BY 4.0.</p>` : `<p class="council-note">Weather evidence is available for ${weatherReplay.originPortugal.slice(0, 10)}. Generate and activate weather inference for ${activeReplay.origin.slice(0, 10)} to align the two replays.</p>`}
     <p><strong>Validation-selected planning rule:</strong> ${activeReplay.policy.bufferMultiplier}× residual buffer, ${Math.round(activeReplay.policy.fillFraction * 100)}% capacity top-up, ${Math.round(activeReplay.policy.priorityBlend * 100)}% priority blend. The proposal still requires agent agreement and human approval.</p>
     <p><strong>Revised policy · frozen audit passed:</strong> ${revisionAudit.episodeCount} additional unused allocation-replay dates. The revised rule lowered modeled service loss versus the former council on ${revisionAudit.selectedLowerPhlThanFormerDays} days (median paired improvement ${fmt(revisionAudit.medianPairedPhlImprovement)} synthetic person-hours). Median fairness was ${revisionAudit.selectedMetrics.medianFairness.toFixed(4)}, above the frozen ${revisionAudit.criteria.medianFairnessAtLeast.toFixed(3)} gate. Hospital minimum service was ${revisionAudit.selectedMetrics.medianHospitalMin.toFixed(3)}; capacity checks passed. Static priority still had lower service loss on ${revisionAudit.episodeCount - revisionAudit.selectedLowerPhlThanStaticDays} days.</p>
     <p><strong>Earlier failed audit:</strong> the former 45% priority blend improved modeled service loss but missed its fairness gate (${freshAudit.selectedMetrics.medianFairness.toFixed(4)} versus ${freshAudit.criteria.medianFairnessAtLeast.toFixed(3)}). It was replaced by the revised 25% blend above.</p>

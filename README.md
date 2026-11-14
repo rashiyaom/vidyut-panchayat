@@ -93,7 +93,7 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
 
-A separate [Lisbon weather forecast](docs/weather_evidence.md) predicts three hours of wind speed and evaluates rainfall forecasts using 2013–2014 ERA5 reanalysis. The opt-in historical evidence panel shows the matching date's forecast and later reanalysis. Weather currently does not alter the authored cyclone supply or feeder failures.
+A separate [Lisbon weather forecast](docs/weather_evidence.md) predicts three hours of wind speed and evaluates rainfall forecasts using 2013–2014 ERA5 reanalysis. In the opt-in historical replay, same-date forecasts feed an explicit weather sensitivity rule in the planner and engine: above 12 m/s wind or 5 mm/hour rain, it reduces scripted supply by at most 25% and feeder capacity by at most 35%. The selected date is mild, so it adds no derating. This rule is illustrative, not a trained outage model; the normal city simulation is unchanged.
 
 The [allocation-policy experiment](docs/ml_policy_optimization.md) records the initial candidate search and 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. The later audits below determined which rule the opt-in historical replay uses.
 

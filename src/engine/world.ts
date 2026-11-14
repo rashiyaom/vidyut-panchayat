@@ -6,6 +6,7 @@ import type {
   Config,
   Plan,
   ScenarioEvent,
+  WeatherForecast,
   Tick,
   Trace,
 } from "../contract/types";
@@ -40,6 +41,8 @@ export interface World {
   observedDemand?: Partial<Record<number, Allocation>>;
   /** Forecast snapshot issued at the current decision point, in power units. */
   forecastDemand?: Partial<Record<number, Allocation>>;
+  /** Forecast-only input for the first three hours of historical replay. */
+  weatherForecast?: WeatherForecast;
   /** Replay-only policy experiment; the normal plan keeps its 85% reserve. */
   planSupplyFraction?: number;
   /** Replay-only negotiated-floor top-up policy, selected on validation days. */
@@ -76,7 +79,7 @@ export function step(input: World, plan?: Plan): { world: World; tick: Tick } {
   if (input.t >= 144) throw new Error("Scenario complete");
   const world: World = { ...input, states: structuredClone(input.states) },
     { config, t } = world,
-    env = environment(config, t, world.injected),
+    env = environment(config, t, world.injected, world.weatherForecast),
     random = rng(config.seed ^ Math.imul(t + 1, 997));
   const c: Constraints = { ...env, network: config.network },
     previous = world.previous?.agents ?? [],

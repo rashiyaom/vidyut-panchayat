@@ -18,6 +18,11 @@ const n = z.number().finite().nonnegative();
 const ratio = n.max(1);
 const tickIndex = z.number().int().min(0).max(143);
 export const allocationSchema = z.record(idSchema, n);
+export const weatherForecastSchema = z.object({
+  originPortugal: z.string().datetime({ offset: true }),
+  windSpeed: z.array(n).length(3),
+  precipitation: z.array(n).length(3),
+});
 export const strategySchema = z.enum(["council", "static", "equal", "optimum"]);
 export const busSchema = z.enum(["east", "central", "west"]);
 export const profileSchema = z
@@ -348,6 +353,7 @@ export const commandSchema = z.discriminatedUnion("type", [
       supplyFraction: z.literal(1),
       fillFraction: z.number().min(0).max(1).optional(),
       priorityBlend: z.number().min(0).max(1).optional(),
+      weatherForecast: weatherForecastSchema.optional(),
     }).optional(),
   }),
   z.object({

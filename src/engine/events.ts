@@ -4,8 +4,10 @@ import type {
   Config,
   AgentId,
   ScenarioEvent,
+  WeatherForecast,
 } from "../contract/types";
 import { rng } from "./rng";
+import { weatherStress } from "../contract/weatherStress";
 export interface Environment {
   supply: number;
   busCaps: Record<BusId, number>;
@@ -20,6 +22,7 @@ export function environment(
   config: Config,
   t: number,
   injected: ScenarioEvent[] = [],
+  weatherForecast?: WeatherForecast,
 ): Environment {
   const random = rng(config.seed ^ 0x5043);
   const schedule = config.scenario.events.map((e) => ({
@@ -75,6 +78,13 @@ export function environment(
         env.forceDrop = e.tick === t;
         break;
     }
+  }
+  const stress = weatherStress(weatherForecast, t);
+  if (stress > 0) {
+    env.supply = Math.floor(env.supply * (1 - 0.25 * stress) * 100) / 100;
+    for (const id of Object.keys(env.feederCaps) as AgentId[])
+      env.feederCaps[id] = Math.floor(env.feederCaps[id] * (1 - 0.35 * stress) * 100) / 100;
+    if (t % 6 === 0) env.events.push("Forecast weather stress · illustrative capacity rule");
   }
   return env;
 }

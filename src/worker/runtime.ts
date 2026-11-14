@@ -232,8 +232,11 @@ export class EngineRuntime {
         this.world = initialWorld(command.config);
         if (command.historicalReplay) {
           const replay = command.historicalReplay;
+          if (replay.weatherForecast && replay.weatherForecast.originPortugal.slice(0, 10) !== replay.origin.slice(0, 10))
+            throw new Error("Weather forecast date differs from electricity replay date");
           this.world.observedDemand = Object.fromEntries(replay.actualDemand.entries());
           this.world.forecastDemand = Object.fromEntries(replay.forecastDemand.entries());
+          this.world.weatherForecast = replay.weatherForecast;
           this.world.planSupplyFraction = replay.supplyFraction;
           this.world.planFillFraction = replay.fillFraction;
           this.world.planPriorityBlend = replay.priorityBlend;
