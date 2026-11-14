@@ -23,6 +23,7 @@ data_path = ROOT / "data/processed/electricity/ecl_10_hourly.csv"
 model_path = ROOT / "artifacts/xgboost/electricity_10_meter_3h.json"
 manifest = json.loads((data_path.parent / "manifest.json").read_text())
 buffer = json.loads((model_path.parent / "demand_buffer.json").read_text())
+selected_policy = json.loads((ROOT / "experiments/ml/policy_selected.json").read_text())["selected"]
 df = pd.read_csv(data_path, parse_dates=["date"])
 meter_names = list(df.columns[1:])
 if meter_names != manifest["selected_meters"] or meter_names != buffer["meter_order"]:
@@ -57,8 +58,9 @@ prediction = model.predict(np.asarray(features, dtype=np.float32)).reshape(3, le
 actual = y[t:t + 3]
 previous_day = y[t - 24:t - 21]
 upper_buffer = np.asarray(buffer["buffer_kw_by_horizon"])
+effective_buffer = upper_buffer * selected_policy["bufferMultiplier"]
 profiles = json.loads((ROOT / "data/agents/profiles.json").read_text())["agents"]
-if len(profiles) != len(meter_names) or upper_buffer.shape != prediction.shape:
+if len(profiles) != len(meter_names) or effective_buffer.shape != prediction.shape:
     raise ValueError("Profile or buffer dimensions do not match the model")
 actual_demand, forecast_demand = {}, {}
 for h in range(3):
@@ -68,7 +70,7 @@ for h in range(3):
         for m, profile in enumerate(profiles):
             scale = profile["demand"] / float(mean[m])
             actual_demand[str(tick)][profile["id"]] = round(max(0, float(actual[h, m]) * scale), 2)
-            forecast_demand[str(tick)][profile["id"]] = round(max(0, float(prediction[h, m] + upper_buffer[h, m]) * scale), 2)
+            forecast_demand[str(tick)][profile["id"]] = round(max(0, float(prediction[h, m] + effective_buffer[h, m]) * scale), 2)
 
 rows = []
 for h in range(3):
@@ -77,7 +79,7 @@ for h in range(3):
             "hourAhead": h + 1, "meter": meter,
             "actualKw": round(float(actual[h, m]), 3),
             "predictedKw": round(float(prediction[h, m]), 3),
-            "bufferedKw": round(float(prediction[h, m] + upper_buffer[h, m]), 3),
+            "bufferedKw": round(float(prediction[h, m] + effective_buffer[h, m]), 3),
             "previousDayKw": round(float(previous_day[h, m]), 3),
         })
 metrics = [{
@@ -92,6 +94,7 @@ report = {
     "dataSha256": hashlib.sha256(data_path.read_bytes()).hexdigest(),
     "sourceSha256": manifest["source_sha256"],
     "selection": "User-selected held-out test date; saved XGBoost inference",
+    "policy": {key: selected_policy[key] for key in ("name", "sha256", "supplyFraction", "fillFraction", "bufferMultiplier", "priorityBlend")},
     "meterIds": meter_names,
     "metrics": metrics,
     "meterReadings": rows,

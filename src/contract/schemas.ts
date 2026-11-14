@@ -346,6 +346,8 @@ export const commandSchema = z.discriminatedUnion("type", [
       actualDemand: z.array(allocationSchema).length(18),
       forecastDemand: z.array(allocationSchema).length(18),
       supplyFraction: z.literal(1),
+      fillFraction: z.number().min(0).max(1).optional(),
+      priorityBlend: z.number().min(0).max(1).optional(),
     }).optional(),
   }),
   z.object({

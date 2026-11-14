@@ -93,6 +93,8 @@ Choose a baseline in the comparison selector for two synchronized views of the s
 
 The current forecast experiment, its static-priority comparison, and limitations are documented in [electricity ML evidence](docs/ml_evidence.md).
 
+The [validation-selected allocation policy](docs/ml_policy_optimization.md) records the candidate search and separate 30-day confirmation. It improved modeled service loss and hospital service versus the former council, with lower fairness; static priority still won most days. Only the opt-in historical replay uses this policy.
+
 Open `?historical=1` to run the bundled three-hour held-out electricity replay in the browser. It uses precomputed XGBoost forecasts, separate held-out demand, and the validated replay-only supply setting; the banner identifies it as an illustrative historical replay. The normal city simulation is unchanged. Regenerate the aggregate evidence with `npm run evidence:ml` after updating experiment results.
 
 To run the saved model on another held-out midnight, use `npm run ml:infer -- --date 2014-09-15 --activate`, then `npm run build` and open `?historical=1`. The command saves a dated report in `experiments/ml/` and updates the browser replay with its predicted and measured kW readings. Omit `--activate` to generate a report without changing the browser episode. On a new machine, first run `python3 -m venv ml/.venv` and `ml/.venv/bin/python -m pip install -r ml/requirements-inference.txt`. With preview on port 4173, `npm run demo:ml` records the model-to-decision walkthrough in `docs/assets/ml-demo.webm`.

@@ -2,6 +2,8 @@ import { expect, it } from "vitest";
 import { EngineRuntime } from "../src/worker/runtime";
 import { config } from "./fixtures";
 import browserReplay from "../data/ml/browser_replay_v1.json";
+import { initialWorld } from "../src/engine/world";
+import { createPlan } from "../src/engine/planning/planner";
 import type { Reply, CommandInput, Plan, Allocation } from "../src/contract/types";
 function fixture() {
   const replies: Reply[] = [];
@@ -110,12 +112,21 @@ it("runs the trained-model historical replay with held-out demand and stops at 1
   const f = fixture();
   const actualDemand = Array.from({ length: 18 }, (_, t) => browserReplay.actualDemand[String(t) as keyof typeof browserReplay.actualDemand] as Allocation);
   const forecastDemand = Array.from({ length: 18 }, (_, t) => browserReplay.forecastDemand[String(t) as keyof typeof browserReplay.forecastDemand] as Allocation);
-  await f.send({ type: "INIT", config: { ...config, scenario: { ...config.scenario, demandNoise: 0, dropRate: 0, timingJitter: 0 } },
+  const replayConfig = { ...config, scenario: { ...config.scenario, demandNoise: 0, dropRate: 0, timingJitter: 0 } };
+  await f.send({ type: "INIT", config: replayConfig,
     historicalReplay: { origin: browserReplay.origin, modelSha256: browserReplay.modelSha256,
-      actualDemand, forecastDemand, supplyFraction: 1 } });
+      actualDemand, forecastDemand, supplyFraction: 1,
+      fillFraction: browserReplay.policy.fillFraction,
+      priorityBlend: browserReplay.policy.priorityBlend } });
   await f.send({ type: "REQUEST_PLAN", horizonTicks: 18 });
   const plan = f.replies.find((r) => r.type === "PLAN_READY") as { plan: Plan };
   expect(plan.plan.constitution.ok).toBe(true);
+  const expected = initialWorld(replayConfig);
+  expected.forecastDemand = Object.fromEntries(forecastDemand.entries());
+  expected.planSupplyFraction = 1;
+  expected.planFillFraction = browserReplay.policy.fillFraction;
+  expected.planPriorityBlend = browserReplay.policy.priorityBlend;
+  expect(plan.plan.hash).toBe(createPlan(expected, 18, 1).hash);
   await f.send({ type: "APPROVE", planId: plan.plan.id, hash: plan.plan.hash });
   for (let i = 0; i < 18; i++) await f.send({ type: "STEP" });
   const ticks = f.runtime.branches.get(0)!.ticks;

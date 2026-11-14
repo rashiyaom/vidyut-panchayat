@@ -42,6 +42,10 @@ export interface World {
   forecastDemand?: Partial<Record<number, Allocation>>;
   /** Replay-only policy experiment; the normal plan keeps its 85% reserve. */
   planSupplyFraction?: number;
+  /** Replay-only negotiated-floor top-up policy, selected on validation days. */
+  planFillFraction?: number;
+  /** Replay-only share of a fixed-priority proposal in the approved plan. */
+  planPriorityBlend?: number;
   replayEndTick?: number;
 }
 export function initialWorld(input: Config): World {

@@ -922,7 +922,7 @@ if (historicalReplay) {
   (document.getElementById("sim-baseline") as HTMLSelectElement).disabled = true;
   const badge = document.createElement("div");
   badge.className = "historical-replay-badge";
-  badge.textContent = `HISTORICAL REPLAY · ${browserReplay.origin.slice(0, 10)} · precomputed XGBoost forecasts · illustrative utility mapping`;
+  badge.textContent = `HISTORICAL REPLAY · ${browserReplay.origin.slice(0, 10)} · trained XGBoost + validation-selected policy · illustrative utility mapping`;
   document.querySelector("#app")!.append(badge);
 }
 let engineInitialized = false;
@@ -950,6 +950,8 @@ const councilExperience = mountCouncilExperience(
               actualDemand: Array.from({ length: 18 }, (_, t) => browserReplay.actualDemand[String(t) as keyof typeof browserReplay.actualDemand] as Allocation),
               forecastDemand: Array.from({ length: 18 }, (_, t) => browserReplay.forecastDemand[String(t) as keyof typeof browserReplay.forecastDemand] as Allocation),
               supplyFraction: 1 as const,
+              fillFraction: browserReplay.policy.fillFraction,
+              priorityBlend: browserReplay.policy.priorityBlend,
             } } : {}),
           })
           .then(() => bridge.send({ type: "REQUEST_PLAN", horizonTicks: 18 }))

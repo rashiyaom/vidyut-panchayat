@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "selected": {
+    "name": "blend_validation_045",
+    "sha256": "43fa078df1a3fe177cb6a5f2970b8be6ee1eb3523b39237f682cee94f2cf8933",
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.45,
+    "medianPhl": 170105.70204778746,
+    "medianFairness": 0.9706955836991157,
+    "medianHospitalMin": 0.8264333247743261,
+    "lowerPhlThanStaticDays": 2,
+    "eligible": true
+  },
+  "episodeCount": 30,
+  "selectedMetrics": {
+    "medianPhl": 168650.61502702985,
+    "medianFairness": 0.9681223017975991,
+    "medianHospitalMin": 0.8434360831194113,
+    "lowerPhlThanStaticDays": 8
+  },
+  "baselineMetrics": {
+    "medianPhl": 180277.9354220596,
+    "medianFairness": 0.9876862281719927,
+    "medianHospitalMin": 0.8173566458283399,
+    "lowerPhlThanStaticDays": 7
+  },
+  "medianPairedPhlImprovement": 5196.055564047085,
+  "betterThanOldCouncilDays": 24,
+  "betterThanStaticDays": 8,
+  "staticMedianPhl": 162528.1146990401,
+  "allRunsSafe": true,
+  "limitation": "Actual customer meters are mapped illustratively to utilities; cyclone supply and service outcomes are simulated."
+}

@@ -63,7 +63,32 @@ it("keeps held-out observed demand out of plan construction", () => {
   const forecast = Object.fromEntries(config.profiles.agents.map((p) => [p.id, p.demand])) as Allocation;
   first.forecastDemand = { 0: forecast };
   second.forecastDemand = { 0: forecast };
+  first.planFillFraction = second.planFillFraction = 1;
+  first.planPriorityBlend = second.planPriorityBlend = 0.45;
   first.observedDemand = { 0: Object.fromEntries(config.profiles.agents.map((p) => [p.id, 1])) as Allocation };
   second.observedDemand = { 0: Object.fromEntries(config.profiles.agents.map((p) => [p.id, 100])) as Allocation };
   expect(createPlan(first, 3).hash).toBe(createPlan(second, 3).hash);
+});
+it("top-up plans preserve negotiated allocations and capacity safety", () => {
+  const base = initialWorld(config);
+  base.planSupplyFraction = 1;
+  const original = createPlan(base, 3);
+  base.planFillFraction = 1;
+  const improved = createPlan(base, 3);
+  expect(improved.constitution.ok).toBe(true);
+  for (const [i, block] of original.blocks.entries())
+    for (const id of Object.keys(block.allocations) as (keyof Allocation)[])
+      expect(improved.blocks[i].allocations[id]).toBeGreaterThanOrEqual(block.allocations[id] - 0.01);
+  base.planFillFraction = 1.01;
+  expect(() => createPlan(base, 3)).toThrow();
+});
+it("priority compromises stay within the approved forecast envelope", () => {
+  const world = initialWorld(config);
+  world.planSupplyFraction = 1;
+  world.planPriorityBlend = 0.5;
+  const plan = createPlan(world, 6);
+  expect(plan.constitution.ok).toBe(true);
+  expect(validatePlan(plan, config.network, world).ok).toBe(true);
+  world.planPriorityBlend = -0.1;
+  expect(() => createPlan(world, 3)).toThrow();
 });

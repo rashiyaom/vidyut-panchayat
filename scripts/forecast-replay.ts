@@ -19,8 +19,17 @@ interface Episode {
 const replayFile = process.argv[2] ?? "experiments/ml/replay_episodes.json";
 const supplyFraction = Number(process.argv[3] ?? 0.85);
 const reportFile = process.argv[4] ?? "experiments/ml/allocation_replay.json";
+const fillFraction = Number(process.argv[5] ?? 0);
+const bufferMultiplier = Number(process.argv[6] ?? 1);
+const priorityBlend = Number(process.argv[7] ?? 0);
 if (!Number.isFinite(supplyFraction) || supplyFraction < 0.85 || supplyFraction > 1)
   throw new Error("Supply fraction must be between 0.85 and 1");
+if (!Number.isFinite(fillFraction) || fillFraction < 0 || fillFraction > 1)
+  throw new Error("Top-up fraction must be between 0 and 1");
+if (!Number.isFinite(bufferMultiplier) || bufferMultiplier < 0 || bufferMultiplier > 3)
+  throw new Error("Forecast buffer multiplier must be between 0 and 3");
+if (!Number.isFinite(priorityBlend) || priorityBlend < 0 || priorityBlend > 1)
+  throw new Error("Priority blend must be between 0 and 1");
 const replay = JSON.parse(await readFile(replayFile, "utf8")) as {
   mapping: string;
   selection: string;
@@ -40,6 +49,8 @@ function run(episode: Episode, forecast: Series | undefined, strategy: "council"
   world.observedDemand = episode.actualDemand;
   world.forecastDemand = forecast;
   if (strategy === "council") world.planSupplyFraction = supplyFraction;
+  if (strategy === "council") world.planFillFraction = fillFraction;
+  if (strategy === "council") world.planPriorityBlend = priorityBlend;
   const plan = strategy === "council" ? createPlan(world, 18) : undefined;
   if (plan && !plan.constitution.ok) throw new Error(plan.constitution.errors.join("; "));
   const ticks: Tick[] = [];
@@ -64,7 +75,15 @@ function run(episode: Episode, forecast: Series | undefined, strategy: "council"
 }
 const episodes = replay.episodes.map((episode) => {
   const xgboost = run(episode, episode.xgboostForecast);
-  const calibrated = run(episode, episode.calibratedForecast);
+  const adjustedForecast = Object.fromEntries(Object.entries(episode.calibratedForecast).map(([tick, allocation]) => [
+    tick,
+    Object.fromEntries(Object.keys(allocation).map((id) => {
+      const key = id as keyof Allocation;
+      const raw = episode.xgboostForecast[tick][key];
+      return [id, Math.max(0, Math.round((raw + (allocation[key] - raw) * bufferMultiplier) * 100) / 100)];
+    })) as Allocation,
+  ])) as Series;
+  const calibrated = run(episode, adjustedForecast);
   const previousDay = run(episode, episode.previousDayForecast);
   const staticPriority = run(episode, undefined, "static");
   const decisionsDifferent = xgboost.plan!.blocks.some((b, i) =>
@@ -103,6 +122,9 @@ const median = (values: number[]) => {
 };
 const report = {
   supplyFraction,
+  fillFraction,
+  bufferMultiplier,
+  priorityBlend,
   mapping: replay.mapping,
   selection: replay.selection,
   scenario: "same authored cyclone supply schedule, actual demand, and seed for each pair",

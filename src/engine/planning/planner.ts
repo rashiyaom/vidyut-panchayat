@@ -19,6 +19,8 @@ import { quantize } from "../rng";
 import { step, type World } from "../world";
 import { planDocument, planHash } from "./planDocument";
 import { validatePlan } from "../constitution/planValidator";
+import { topUpPlan } from "./topUp";
+import { priorityBlend } from "./priorityBlend";
 export function createPlan(
   source: World,
   horizonTicks = 18,
@@ -96,10 +98,12 @@ export function createPlan(
       future.config.seed,
       0,
     );
+    const toppedUp = topUpPlan(result.allocation, bids, c, source.planFillFraction ?? 0);
+    const fixedWeights = Object.fromEntries(source.config.profiles.agents.map((p) => [p.id, p.weight])) as Allocation;
     const block: PlanBlock = {
       fromTick: from,
       toTick: to,
-      allocations: result.allocation,
+      allocations: priorityBlend(toppedUp, bids, c, fixedWeights, source.planPriorityBlend ?? 0),
       supply,
       busCaps,
       feederCaps,

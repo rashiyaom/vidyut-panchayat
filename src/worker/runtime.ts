@@ -235,6 +235,8 @@ export class EngineRuntime {
           this.world.observedDemand = Object.fromEntries(replay.actualDemand.entries());
           this.world.forecastDemand = Object.fromEntries(replay.forecastDemand.entries());
           this.world.planSupplyFraction = replay.supplyFraction;
+          this.world.planFillFraction = replay.fillFraction;
+          this.world.planPriorityBlend = replay.priorityBlend;
           this.world.replayEndTick = 18;
         }
         this.branches.clear();
