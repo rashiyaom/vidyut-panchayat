@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "selectionRule": "Lowest validation median service loss with fairness >=0.980, hospital minimum >=0.800, zero capacity violations",
+  "selected": {
+    "name": "blend_validation_025",
+    "sha256": "ea25d03c1268682e3990676fe8a50510777d134ce016155cd4f09d0dff3e55b7",
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.25,
+    "medianPhl": 170540.79577046272,
+    "medianFairness": 0.9816197135740752,
+    "medianHospitalMin": 0.8264333247743261,
+    "lowerPhlThanStaticDays": 2,
+    "eligible": true
+  }
+}

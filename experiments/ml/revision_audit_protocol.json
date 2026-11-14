@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "purpose": "Second policy audit after tightening validation fairness margin; no second-audit outcomes used for selection",
+  "testStart": "2014-08-08 00:00:00",
+  "dateRule": "30 evenly spaced ranks of remaining unused test midnights",
+  "eligibleCount": 55,
+  "dates": [
+    "2014-08-10 00:00:00",
+    "2014-08-15 00:00:00",
+    "2014-08-20 00:00:00",
+    "2014-08-26 00:00:00",
+    "2014-08-31 00:00:00",
+    "2014-09-05 00:00:00",
+    "2014-09-08 00:00:00",
+    "2014-09-13 00:00:00",
+    "2014-09-19 00:00:00",
+    "2014-09-27 00:00:00",
+    "2014-10-02 00:00:00",
+    "2014-10-07 00:00:00",
+    "2014-10-08 00:00:00",
+    "2014-10-13 00:00:00",
+    "2014-10-18 00:00:00",
+    "2014-10-24 00:00:00",
+    "2014-10-29 00:00:00",
+    "2014-11-03 00:00:00",
+    "2014-11-06 00:00:00",
+    "2014-11-11 00:00:00",
+    "2014-11-16 00:00:00",
+    "2014-11-22 00:00:00",
+    "2014-11-27 00:00:00",
+    "2014-12-02 00:00:00",
+    "2014-12-05 00:00:00",
+    "2014-12-10 00:00:00",
+    "2014-12-15 00:00:00",
+    "2014-12-21 00:00:00",
+    "2014-12-26 00:00:00",
+    "2014-12-31 00:00:00"
+  ],
+  "priorSources": [
+    {
+      "file": "experiments/ml/replay_episodes.json",
+      "sha256": "014aefd19818904c5b04b4ce0bb517217d5e8957dcf313fffea1d5fa5ed16f40",
+      "dateCount": 30
+    },
+    {
+      "file": "experiments/ml/replay_confirmation.json",
+      "sha256": "c75a191c444403ffada3f8bd8ba35c555807e9599001822cc8ff108e3e1bd5de",
+      "dateCount": 30
+    },
+    {
+      "file": "experiments/ml/replay_validation.json",
+      "sha256": "7329bb8cf8afccc3598ae480b5c8cf7e78a463d066f56f9713b3e4d45ee7ba97",
+      "dateCount": 20
+    },
+    {
+      "file": "experiments/ml/replay_2014-08-08.json",
+      "sha256": "1cb2a95045a1056cb881dcfd59265ec8dfa586b3776a4d66bfc049a8437161b4",
+      "dateCount": 1
+    },
+    {
+      "file": "experiments/ml/replay_fresh_audit.json",
+      "sha256": "49daec622aaf8d4c80d4b137c6657080575e9efb74dac74dff3b3ddb98c27583",
+      "dateCount": 30
+    },
+    {
+      "file": "experiments/ml/inference_2014-08-09.json",
+      "sha256": "551c0eb0635956b8bb519200578b52cc13dd8c4fa9735fe6d6cff1043c1fe65e",
+      "dateCount": 1
+    },
+    {
+      "file": "experiments/ml/inference_2014-09-15.json",
+      "sha256": "215fda2d7bbe29cee333514d30e3d8168787dccd96cf19c04eb2efa497728386",
+      "dateCount": 1
+    },
+    {
+      "file": "experiments/ml/inference_2014-08-11.json",
+      "sha256": "d3884f654f4da9f05e5201d7fa72902fa987c58339748b7203157ce3dbf39f6a",
+      "dateCount": 1
+    }
+  ],
+  "originalSelectionSha256": "1da49e8fe84a545580c200feefc9e9f1f511f2fffb374358df40f700fbdfc2c8",
+  "selectedValidationSha256": "ea25d03c1268682e3990676fe8a50510777d134ce016155cd4f09d0dff3e55b7",
+  "policySourceFile": "experiments/ml/policy_revision_selected.json",
+  "frozenPolicySha256": "de023fc0a3c7f129fa362fef594d7360d8a76344d19ef2982f1a8add5f6b93d2",
+  "frozenPolicy": {
+    "supplyFraction": 1,
+    "fillFraction": 1,
+    "bufferMultiplier": 2,
+    "priorityBlend": 0.25
+  },
+  "processedDataSha256": "9e17f3d05a738a2318379f83f03f8015264b8c3a181c905b4f7d542b87b16c81",
+  "savedModelSha256": "91264ff4362dad84678d83df49ce9ef4c1f4350c3c6104f18ac5772af60142d7",
+  "criteria": {
+    "allCapacityChecksPass": true,
+    "medianFairnessAtLeast": 0.97,
+    "medianHospitalMinAtLeast": 0.8,
+    "medianPairedServiceLossImprovementAbove": 0,
+    "lowerServiceLossThanOldCouncilOnAtLeastDays": 18
+  },
+  "comparisons": [
+    "former 100% council",
+    "revised council",
+    "static priority"
+  ],
+  "limitation": "Dates are unused for allocation replays but belong to the existing model test period."
+}
