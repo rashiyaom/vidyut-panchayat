@@ -69,6 +69,7 @@ vidyut-panchayat/
 ├── tsconfig.json             # Strict TypeScript compiler configuration
 ├── vite.config.ts            # Vite client build & Vitest test runner configuration
 ├── architecture.md           # Master architectural blueprint and design invariants
+├── Hackathon Final Report Vidyut Panchayat (विद्युत पंचायत).pdf # Official Hackathon Final Report Document
 └── README.md                 # Primary project overview, quickstart & visual showcase
 ```
 

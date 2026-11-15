@@ -12,7 +12,18 @@
 [![Live on Render](https://img.shields.io/badge/Render-Live_Demo-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://vidyut-panchayat.onrender.com)
 
 > **Live Deployment on Render**: **[https://vidyut-panchayat.onrender.com](https://vidyut-panchayat.onrender.com)**  
+> **Official Final Hackathon Report (PDF)**: **[Hackathon Final Report Vidyut Panchayat (विद्युत पंचायत).pdf](<Hackathon Final Report Vidyut Panchayat (विद्युत पंचायत).pdf>)**  
+> **YouTube Video Demonstration**: **[Watch on YouTube](https://youtu.be/M47bBrZDhqE?si=066olxvsF4FaSSmz)**  
 > **Vidyut Panchayat** is a decentralized multi-agent crisis governance system and real-time 3D digital twin. During severe grid collapse caused by a 24-hour coastal cyclone, ten autonomous utility agents (Hospital, Emergency, Water, Telecom, Shelter, Traffic, Fuel, Residential, Commercial, Transit) deliberate and clear power allocations using a two-phase commit protocol under a stateless Constitutional validator. Trained XGBoost models predict held-out demand and weather stress, while a background Web Worker guarantees non-blocking, zero-cloud execution with 100% offline reproducibility.
+
+---
+
+## Project Video Demonstration & Walkthrough
+
+[![Vidyut Panchayat Video Walkthrough](docs/assets/youtube-walkthrough-thumbnail.jpg)](https://youtu.be/M47bBrZDhqE?si=066olxvsF4FaSSmz)
+
+> 🎥 **[Click here to watch the full walkthrough on YouTube](https://youtu.be/M47bBrZDhqE?si=066olxvsF4FaSSmz)**  
+> *Touring the 3D crisis simulation city, the living coastal storm front, the interior 3D Vidyut Panchayat council chamber, autonomous multi-agent negotiations, and real-time Constitution verification.*
 
 ---
 
@@ -289,6 +300,7 @@ npm test                  # 17 Vitest test suites (70 tests including 200-seed M
 
 For in-depth technical specifications, consult the consolidated guides:
 
+- **[`Hackathon Final Report Vidyut Panchayat (विद्युत पंचायत).pdf`](<Hackathon Final Report Vidyut Panchayat (विद्युत पंचायत).pdf>)**: Official final hackathon report submitted for Build Beyond'26 (The Techtonics, CHARUSAT).
 - **[`docs/ml_and_policy_evidence.md`](docs/ml_and_policy_evidence.md)**: Quantitative ML evaluation tables, ERA5 weather comparisons, ENTSO-E telemetry extracts, and frozen 30-day revision audit proofs.
 - **[`docs/damage_and_impact_model.md`](docs/damage_and_impact_model.md)**: Mathematical formulas for energy reserve depletion/recharge, lagged cross-utility cascades $\prod(1-w_{ij}(1-s_j))$, and synthetic person-hour loss (PHL).
 - **[`docs/demonstration_and_qa_runbook.md`](docs/demonstration_and_qa_runbook.md)**: Step-by-step jury walkthrough script, 5-minute presentation flow, and technical defense Q&A.
